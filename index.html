@@ -1,0 +1,3392 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPH &amp; Invoice Manager • GitHub Pages Ready</title>
+  <script>
+window.elementSdk = window.elementSdk || { init(){}, setConfig(){} };
+window.dataSdk = window.dataSdk || {
+  async init(handler){ try { if (handler && typeof handler.onDataChanged === "function") handler.onDataChanged([]); } catch (_) {} return { isOk:true }; },
+  async create(record){ return { isOk:true, data:record }; },
+  async update(record){ return { isOk:true, data:record }; },
+  async delete(record){ return { isOk:true, data:record }; }
+};
+  </script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { jakarta: ['Plus Jakarta Sans', 'sans-serif'] },
+      colors: {
+        brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
+        surface: { 50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+* { font-family: 'Plus Jakarta Sans', sans-serif; }
+html, body { height: 100%; margin: 0; overflow: hidden; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.sidebar-item { transition: all 0.2s ease; }
+.sidebar-item:hover, .sidebar-item.active { background: rgba(99,102,241,0.1); color: #6366f1; }
+.sidebar-item.active { border-right: 3px solid #6366f1; font-weight: 600; }
+.card-stat { transition: transform 0.2s, box-shadow 0.2s; }
+.card-stat:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.btn-primary { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; transition: all 0.2s; }
+.btn-primary:hover { background: linear-gradient(135deg, #818cf8, #6366f1); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.4); }
+.btn-secondary { background: #f1f5f9; color: #475569; transition: all 0.2s; }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-danger { background: #fef2f2; color: #dc2626; transition: all 0.2s; }
+.btn-danger:hover { background: #fee2e2; }
+.btn-success { background: #f0fdf4; color: #16a34a; transition: all 0.2s; }
+.btn-success:hover { background: #dcfce7; }
+.modal-overlay { background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
+.table-row:hover { background: #f8fafc; }
+.input-field { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; transition: all 0.2s; outline: none; width: 100%; }
+.input-field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+select.input-field { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+.toast { animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s; }
+@keyframes slideIn { from{transform:translateX(100%);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes fadeOut { from{opacity:1} to{opacity:0} }
+@media print {
+  .no-print { display: none !important; }
+  .print-area { position: fixed; top: 0; left: 0; width: 210mm; min-height: 297mm; background: white; z-index: 99999; padding: 15mm 20mm; }
+  
+  /* FORCE COLOR PRESERVATION - Multiple methods for maximum compatibility */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    -webkit-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    -moz-print-color-adjust: exact !important;
+    page-break-inside: avoid !important;
+  }
+  
+  html, body {
+    background: white !important;
+    color: #1e293b !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* UNIVERSAL BACKGROUND & COLOR PRESERVATION */
+  div, p, span, table, thead, tbody, tr, th, td, section, article, header, footer, h1, h2, h3, h4, h5, h6, ul, ol, li, blockquote {
+    background-color: inherit !important;
+    background-image: inherit !important;
+    background: inherit !important;
+    color: inherit !important;
+    text-shadow: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* AGGRESSIVE COLOR PRESERVATION FOR ALL STYLED ELEMENTS */
+  [style*="background"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: inherit !important;
+  }
+  
+  [style*="color"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color: inherit !important;
+  }
+  
+  /* TABLE STYLING - CRITICAL FOR HEADERS */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  thead {
+    display: table-header-group !important;
+    background-color: #4f46e5 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    page-break-after: avoid !important;
+  }
+  
+  tbody {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  tr {
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  th {
+    background-color: #4f46e5 !important;
+    background: #4f46e5 !important;
+    color: white !important;
+    font-weight: 700 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 10px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  td {
+    background-color: inherit !important;
+    color: inherit !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 10px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* DOC PREVIEW - SPECIAL STYLING */
+  .doc-preview {
+    background: white !important;
+    width: 100% !important;
+    page-break-after: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .doc-preview table {
+    border-collapse: collapse !important;
+    margin-bottom: 12px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .doc-preview table th {
+    background-color: #4f46e5 !important;
+    background: #4f46e5 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .doc-preview table td {
+    border: 1px solid #cbd5e1 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* BORDERS AND DIVIDERS */
+  hr, .divider {
+    background-color: #cbd5e1 !important;
+    background: #cbd5e1 !important;
+    border: none !important;
+    height: 1px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* REMOVE UNNECESSARY EFFECTS */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  /* HEADINGS */
+  h1, h2, h3, h4, h5, h6 {
+    color: inherit !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* INLINE STYLES - EXPLICIT PRESERVATION */
+  [style] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* ANDROID/CHROME SPECIFIC - EXTRA FORCE */
+  @supports (-webkit-appearance: none) {
+    * {
+      -webkit-print-color-adjust: exact !important;
+    }
+  }
+}
+.doc-preview { width: 210mm; min-height: 297mm; background: white; padding: 12mm 14mm; font-size: 9.5pt; line-height: 1.35; color: #1e293b; }
+.doc-preview table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.doc-preview table th, .doc-preview table td { border: 1px solid #cbd5e1; padding: 4px 6px; vertical-align: top; word-break: break-word; }
+.doc-preview table th { background: var(--doc-accent, #4f46e5); color: white; font-weight: 600; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-surface-50 font-jakarta">
+  <div id="app" class="flex h-full w-full"><!-- Sidebar -->
+   <aside id="sidebar" class="w-60 bg-white border-r border-surface-200 flex flex-col h-full flex-shrink-0 no-print">
+    <div class="p-5 border-b border-surface-100">
+     <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center"><i data-lucide="file-text" class="w-5 h-5 text-white"></i>
+      </div>
+      <div>
+       <h1 id="sidebarTitle" class="text-sm font-bold text-surface-900">SPH &amp; Invoice</h1>
+       <p class="text-[10px] text-surface-400 font-medium">Management System<br><span class="text-[10px] text-brand-500 font-semibold">GitHub Pages Ready</span></p>
+      </div>
+     </div>
+    </div>
+    <nav class="flex-1 py-3 overflow-y-auto">
+     <div class="px-3 mb-1">
+      <span class="text-[10px] font-semibold text-surface-400 uppercase tracking-wider">Menu Utama</span>
+     </div><button onclick="navigate('dashboard')" class="sidebar-item active w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="dashboard"><i data-lucide="layout-dashboard" class="w-4 h-4"></i>Dashboard</button> <button onclick="navigate('sph')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="sph"><i data-lucide="file-plus" class="w-4 h-4"></i>SPH</button> <button onclick="navigate('invoice')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="invoice"><i data-lucide="receipt" class="w-4 h-4"></i>Invoice</button> <button onclick="navigate('transaksi')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="transaksi"><i data-lucide="list" class="w-4 h-4"></i>Transaksi</button>
+     <div class="px-3 mt-4 mb-1">
+      <span class="text-[10px] font-semibold text-surface-400 uppercase tracking-wider">Data Master</span>
+     </div><button onclick="navigate('customer')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="customer"><i data-lucide="users" class="w-4 h-4"></i>Data Customer</button> <button onclick="navigate('produk')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="produk"><i data-lucide="package" class="w-4 h-4"></i>Data Produk</button>
+     <div class="px-3 mt-4 mb-1">
+      <span class="text-[10px] font-semibold text-surface-400 uppercase tracking-wider">Laporan</span>
+     </div><button onclick="navigate('rekap')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="rekap"><i data-lucide="bar-chart-3" class="w-4 h-4"></i>Rekap Bulanan</button> <button onclick="navigate('settings')" class="sidebar-item w-full flex items-center gap-3 px-5 py-2.5 text-sm text-surface-600" data-page="settings"><i data-lucide="settings" class="w-4 h-4"></i>Pengaturan</button>
+    </nav>
+    <div class="p-4 border-t border-surface-100">
+     <div class="text-[10px] text-surface-400 text-center">
+      v2.0-github • ameerqhan
+     </div>
+    </div>
+   </aside><!-- Main Content -->
+   <main id="mainContent" class="flex-1 h-full overflow-y-auto"><!-- Pages rendered here -->
+   </main>
+  </div><!-- Toast Container -->
+  <div id="toastContainer" class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 no-print"></div><!-- Modal Container -->
+  <div id="modalContainer" class="hidden fixed inset-0 z-[9998] no-print"></div><!-- Print Area -->
+  <div id="printArea" class="hidden"></div>
+  <script>
+// ==================== STATE ====================
+let allData = [];
+let currentPage = 'dashboard';
+let companySettings = {
+  company_name: 'PT. Nama Perusahaan',
+  company_description: 'Contractor & Supplier',
+  company_address: 'Jl. Contoh Alamat No. 123',
+  company_city: 'Jakarta',
+  company_phone: '021-12345678',
+  company_email: 'info@perusahaan.com',
+  doc_accent: '#4f46e5',
+  sph_notes: 'Penawaran berlaku 30 hari sejak tanggal surat.',
+  invoice_notes: 'Pembayaran dapat ditransfer ke rekening perusahaan.',
+  sph_terms: 'Syarat dan ketentuan SPH berlaku sesuai dengan peraturan perusahaan.',
+  invoice_terms: 'Syarat dan ketentuan Invoice berlaku sesuai dengan peraturan perusahaan.',
+  director_name: 'Nama Direktur',
+  director_title: 'Direktur Utama',
+  sph_format: 'SPH-{NUM}/{ABBR}/{MM}/{YY}',
+  inv_format: 'INV-{NUM}/{ABBR}/{MM}/{YY}',
+  logo_data: '',
+  signature_data: '',
+  show_secondary_signature: false,
+  secondary_signature_label: 'Menyetujui,',
+  secondary_signature_name: '',
+  secondary_signature_title: '',
+  secondary_signature_data: '',
+  show_logo_watermark: true,
+  ppn_rate: 11,
+  ppn_enabled: true,
+  discount_enabled: false,
+  shipping_enabled: false,
+  pph_enabled: false,
+  pph_rate: 15,
+  api_web_app_url: '',
+  api_auto_sync: false,
+  api_last_sync: ''
+};
+let editingRecord = null;
+let docFormItems = [];
+let docFormType = 'SPH';
+let currentRecordCount = 0;
+let docFormState = {
+  ppn_active: true,
+  discount: 0,
+  shipping_cost: 0,
+  tax_pph: 0
+};
+
+// ==================== HELPERS ====================
+function getByCategory(cat) { return allData.filter(d => d.data_category === cat); }
+function getCustomers() { return getByCategory('customer'); }
+function getProducts() { return getByCategory('product'); }
+function getSPHs() { return getByCategory('sph'); }
+function getInvoices() { return getByCategory('invoice'); }
+function getSettings() { return getByCategory('setting'); }
+function getDocuments() { return [...getSPHs(), ...getInvoices()]; }
+
+function formatCurrency(n) {
+  return new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', minimumFractionDigits:0, maximumFractionDigits:0 }).format(n || 0);
+}
+function formatDate(d) {
+  if (!d) return '-';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('id-ID', { day:'2-digit', month:'long', year:'numeric' });
+}
+function formatDateShort(d) {
+  if (!d) return '-';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('id-ID', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+function terbilang(n) {
+  if (n === 0) return 'Nol Rupiah';
+  const satuan = ['','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan','Sepuluh','Sebelas'];
+  function convert(x) {
+    x = Math.floor(x);
+    if (x < 12) return satuan[x];
+    if (x < 20) return satuan[x-10] + ' Belas';
+    if (x < 100) return satuan[Math.floor(x/10)] + ' Puluh' + (x%10?' '+satuan[x%10]:'');
+    if (x < 200) return 'Seratus' + (x%100?' '+convert(x%100):'');
+    if (x < 1000) return satuan[Math.floor(x/100)] + ' Ratus' + (x%100?' '+convert(x%100):'');
+    if (x < 2000) return 'Seribu' + (x%1000?' '+convert(x%1000):'');
+    if (x < 1000000) return convert(Math.floor(x/1000)) + ' Ribu' + (x%1000?' '+convert(x%1000):'');
+    if (x < 1000000000) return convert(Math.floor(x/1000000)) + ' Juta' + (x%1000000?' '+convert(x%1000000):'');
+    if (x < 1000000000000) return convert(Math.floor(x/1000000000)) + ' Miliar' + (x%1000000000?' '+convert(x%1000000000):'');
+    return convert(Math.floor(x/1000000000000)) + ' Triliun' + (x%1000000000000?' '+convert(x%1000000000000):'');
+  }
+  return convert(n) + ' Rupiah';
+}
+
+function getRomanMonth(value) {
+  const romans = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  const monthIndex = Math.max(0, Math.min(11, Number(value) || 0));
+  return romans[monthIndex] || 'I';
+}
+
+function normalizeDocumentFormat(fmtRaw, normalizedType) {
+  const defaultFmt = normalizedType === 'sph' ? 'SPH-{NUM}/{ABBR}/{MM}/{YY}' : 'INV-{NUM}/{ABBR}/{MM}/{YY}';
+  let fmt = String(fmtRaw || '').trim() || defaultFmt;
+  fmt = fmt.replaceAll('SSG', '{ABBR}');
+  fmt = fmt.replace(/(^|[\/\-\s])(PREFIX)(?=($|[\/\-\s]))/g, '$1{PREFIX}');
+  fmt = fmt.replace(/(^|[\/\-\s])(NUM)(?=($|[\/\-\s]))/g, '$1{NUM}');
+  fmt = fmt.replace(/(^|[\/\-\s])(ABBR)(?=($|[\/\-\s]))/g, '$1{ABBR}');
+  fmt = fmt.replace(/(^|[\/\-\s])(MM_NUM)(?=($|[\/\-\s]))/g, '$1{MM_NUM}');
+  fmt = fmt.replace(/(^|[\/\-\s])(YYYY)(?=($|[\/\-\s]))/g, '$1{YYYY}');
+  fmt = fmt.replace(/(^|[\/\-\s])(YY)(?=($|[\/\-\s]))/g, '$1{YY}');
+  fmt = fmt.replace(/(^|[\/\-\s])(MM)(?=($|[\/\-\s]))/g, '$1{MM}');
+  return fmt;
+}
+
+function formatDocumentNumber(docType, runningNumber, docDate, abbr='SSG') {
+  const normalizedType = docType === 'SPH' || docType === 'sph' ? 'sph' : 'invoice';
+  const dt = new Date(docDate || new Date().toISOString());
+  const safeDt = Number.isNaN(dt.getTime()) ? new Date() : dt;
+  const year = safeDt.getFullYear();
+  const yy = String(year).slice(-2);
+  const mmNum = String(safeDt.getMonth() + 1).padStart(2, '0');
+  const mmRoman = getRomanMonth(safeDt.getMonth());
+  const num = String(Math.max(1, Number(runningNumber) || 1)).padStart(3, '0');
+  const prefix = normalizedType === 'sph' ? 'SPH' : 'INV';
+  const fmtRaw = normalizedType === 'sph' ? companySettings.sph_format : companySettings.inv_format;
+  const fmt = normalizeDocumentFormat(fmtRaw, normalizedType);
+  return String(fmt || '')
+    .replaceAll('{PREFIX}', prefix)
+    .replaceAll('{NUM}', num)
+    .replaceAll('{ABBR}', (abbr || 'SSG').toUpperCase())
+    .replaceAll('{YY}', yy)
+    .replaceAll('{YYYY}', String(year))
+    .replaceAll('{MM_NUM}', mmNum)
+    .replaceAll('{MM}', mmRoman);
+}
+
+function parseDocumentNumber(docNumber, type) {
+  const expectedPrefix = type === 'SPH' || type === 'sph' ? 'SPH' : 'INV';
+  const match = String(docNumber || '').trim().match(/^([A-Za-z]+)-(\d+)(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?$/);
+  if (!match) return null;
+  const prefix = String(match[1] || '').toUpperCase();
+  if (prefix !== expectedPrefix) return null;
+  return {
+    prefix,
+    runningNumber: Math.max(1, parseInt(match[2], 10) || 1),
+    abbr: (match[3] || 'SSG').trim() || 'SSG'
+  };
+}
+
+function syncDocNumberWithDate(forceAuto=false) {
+  const docNumEl = document.getElementById('docNum');
+  const docDateEl = document.getElementById('docDate');
+  if (!docNumEl || !docDateEl) return;
+  const docDate = docDateEl.value || new Date().toISOString().split('T')[0];
+  const current = (docNumEl.value || '').trim();
+  if (forceAuto || !current) {
+    docNumEl.value = peekNextDocumentNumber(docFormType, docDate, editingRecord?.__backendId);
+    return;
+  }
+  const parsed = parseDocumentNumber(current, docFormType);
+  if (!parsed) return;
+  docNumEl.value = formatDocumentNumber(docFormType, parsed.runningNumber, docDate, parsed.abbr);
+}
+
+function generateDocNumber(type) {
+  const dateInput = document.getElementById('docDate')?.value || new Date().toISOString().split('T')[0];
+  return peekNextDocumentNumber(type, dateInput, editingRecord?.__backendId);
+}
+
+function showToast(msg, type='success') {
+  const c = document.getElementById('toastContainer');
+  const colors = { success:'bg-emerald-500', error:'bg-red-500', info:'bg-brand-500' };
+  const icons = { success:'check-circle', error:'alert-circle', info:'info' };
+  const t = document.createElement('div');
+  t.className = `toast flex items-center gap-2 px-4 py-3 rounded-lg text-white text-sm font-medium shadow-lg ${colors[type]}`;
+  t.innerHTML = `<i data-lucide="${icons[type]}" class="w-4 h-4"></i>${msg}`;
+  c.appendChild(t);
+  lucide.createIcons({attrs:{class:'w-4 h-4'},nameAttr:'data-lucide'});
+  setTimeout(() => t.remove(), 3000);
+}
+
+function showModal(content, wide=false) {
+  const m = document.getElementById('modalContainer');
+  m.className = 'fixed inset-0 z-[9998] flex items-center justify-center no-print';
+  m.innerHTML = `<div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
+    <div class="relative bg-white rounded-xl shadow-2xl ${wide?'w-[90%] max-w-5xl':'w-full max-w-lg'} max-h-[90%] overflow-y-auto fade-in z-10">${content}</div>`;
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+function closeModal() { document.getElementById('modalContainer').className = 'hidden fixed inset-0 z-[9998] no-print'; }
+
+// ==================== NAVIGATION ====================
+function navigate(page) {
+  currentPage = page;
+  document.querySelectorAll('.sidebar-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === page);
+  });
+  renderPage();
+}
+
+function renderPage() {
+  const main = document.getElementById('mainContent');
+  switch(currentPage) {
+    case 'dashboard': main.innerHTML = renderDashboard(); break;
+    case 'sph': main.innerHTML = renderDocList('SPH'); break;
+    case 'invoice': main.innerHTML = renderDocList('Invoice'); break;
+    case 'transaksi': main.innerHTML = renderTransaksi(); break;
+    case 'customer': main.innerHTML = renderCustomerPage(); break;
+    case 'produk': main.innerHTML = renderProdukPage(); break;
+    case 'rekap': main.innerHTML = renderRekap(); break;
+    case 'settings': main.innerHTML = renderSettings(); break;
+    default: main.innerHTML = renderDashboard();
+  }
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+// ==================== DASHBOARD ====================
+function renderDashboard() {
+  const sphs = getSPHs(), invs = getInvoices(), custs = getCustomers(), prods = getProducts();
+  const docs = getDocuments();
+  const totalRevenue = invs.reduce((s,d) => s + (d.grand_total||0), 0);
+  
+  // Monthly chart data
+  const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const year = new Date().getFullYear();
+  const monthlyData = months.map((m,i) => {
+    const mDocs = docs.filter(d => { const dt = new Date(d.created_at); return dt.getFullYear()===year && dt.getMonth()===i; });
+    return { month:m, sph: mDocs.filter(d=>d.data_category==='sph').length, inv: mDocs.filter(d=>d.data_category==='invoice').length, total: mDocs.reduce((s,d)=>s+(d.grand_total||0),0) };
+  });
+  const maxTotal = Math.max(...monthlyData.map(d=>d.total), 1);
+
+  const recentDocs = docs.sort((a,b) => new Date(b.doc_date||b.created_at)-new Date(a.doc_date||a.created_at)).slice(0,5);
+
+  return `<div class="p-6 fade-in">
+    <div class="flex items-center justify-between mb-6">
+      <div><h2 class="text-2xl font-bold text-surface-900">Dashboard</h2><p class="text-sm text-surface-500">Ringkasan data bisnis Anda</p></div>
+      <div class="text-sm text-surface-400">${formatDate(new Date().toISOString())}</div>
+    </div>
+    
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="card-stat bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center"><i data-lucide="file-plus" class="w-5 h-5 text-blue-500"></i></div>
+          <span class="text-xs font-medium text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">SPH</span>
+        </div>
+        <div class="text-2xl font-bold text-surface-900">${sphs.length}</div>
+        <div class="text-xs text-surface-400 mt-1">Total SPH</div>
+      </div>
+      <div class="card-stat bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5 text-emerald-500"></i></div>
+          <span class="text-xs font-medium text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full">INV</span>
+        </div>
+        <div class="text-2xl font-bold text-surface-900">${invs.length}</div>
+        <div class="text-xs text-surface-400 mt-1">Total Invoice</div>
+      </div>
+      <div class="card-stat bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-50 flex items-center justify-center"><i data-lucide="users" class="w-5 h-5 text-violet-500"></i></div>
+          <span class="text-xs font-medium text-violet-500 bg-violet-50 px-2 py-0.5 rounded-full">CUS</span>
+        </div>
+        <div class="text-2xl font-bold text-surface-900">${custs.length}</div>
+        <div class="text-xs text-surface-400 mt-1">Total Customer</div>
+      </div>
+      <div class="card-stat bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center"><i data-lucide="package" class="w-5 h-5 text-amber-500"></i></div>
+          <span class="text-xs font-medium text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full">PRD</span>
+        </div>
+        <div class="text-2xl font-bold text-surface-900">${prods.length}</div>
+        <div class="text-xs text-surface-400 mt-1">Total Produk</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+      <div class="lg:col-span-2 bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4">Grafik Transaksi Bulanan ${year}</h3>
+        <div class="flex items-end gap-1.5 h-40">
+          ${monthlyData.map(d => `<div class="flex-1 flex flex-col items-center gap-1">
+            <div class="w-full flex flex-col gap-0.5" style="height:140px;justify-content:flex-end">
+              <div class="w-full rounded-t bg-brand-400 transition-all" style="height:${Math.max(d.total/maxTotal*100,2)}%" title="${formatCurrency(d.total)}"></div>
+            </div>
+            <span class="text-[9px] text-surface-400 font-medium">${d.month}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <h3 class="text-sm font-semibold text-surface-800 mb-2">Total Pendapatan</h3>
+        <div class="text-xl font-bold text-brand-600 mb-4">${formatCurrency(totalRevenue)}</div>
+        <div class="space-y-2">
+          <div class="flex justify-between text-xs"><span class="text-surface-500">SPH Bulan Ini</span><span class="font-semibold">${monthlyData[new Date().getMonth()].sph}</span></div>
+          <div class="flex justify-between text-xs"><span class="text-surface-500">Invoice Bulan Ini</span><span class="font-semibold">${monthlyData[new Date().getMonth()].inv}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-surface-100 shadow-sm">
+      <div class="p-5 border-b border-surface-100 flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-surface-800">Transaksi Terbaru</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-surface-50 text-surface-500 text-xs">
+            <th class="text-left px-5 py-3 font-medium">No. Dokumen</th>
+            <th class="text-left px-5 py-3 font-medium">Tipe</th>
+            <th class="text-left px-5 py-3 font-medium">Customer</th>
+            <th class="text-left px-5 py-3 font-medium">Tanggal</th>
+            <th class="text-right px-5 py-3 font-medium">Total</th>
+          </tr></thead>
+          <tbody>${recentDocs.length ? recentDocs.map(d => `<tr class="table-row border-b border-surface-50">
+            <td class="px-5 py-3 font-medium text-surface-800">${d.doc_number||'-'}</td>
+            <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${d.data_category==='sph'?'bg-blue-50 text-blue-600':'bg-emerald-50 text-emerald-600'}">${d.data_category==='sph'?'SPH':'Invoice'}</span></td>
+            <td class="px-5 py-3 text-surface-600">${d.customer_company||d.customer_name||'-'}</td>
+            <td class="px-5 py-3 text-surface-500">${formatDateShort(d.doc_date||d.created_at)}</td>
+            <td class="px-5 py-3 text-right font-semibold text-surface-800">${formatCurrency(d.grand_total)}</td>
+          </tr>`).join('') : '<tr><td colspan="5" class="px-5 py-8 text-center text-surface-400">Belum ada transaksi</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ==================== DOC LIST (SPH / Invoice) ====================
+function renderDocList(type) {
+  const docs = type === 'SPH' ? getSPHs() : getInvoices();
+  const sorted = docs.sort((a,b) => new Date(b.created_at)-new Date(a.created_at));
+  const icon = type==='SPH'?'file-plus':'receipt';
+  const color = type==='SPH'?'blue':'emerald';
+  
+  return `<div class="p-6 fade-in">
+    <div class="flex items-center justify-between mb-6">
+      <div><h2 class="text-2xl font-bold text-surface-900">Daftar ${type}</h2><p class="text-sm text-surface-500">Kelola ${type === 'SPH' ? 'Surat Penawaran Harga' : 'Invoice'} Anda</p></div>
+      <button onclick="openDocForm('${type}')" class="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium">
+        <i data-lucide="plus" class="w-4 h-4"></i>Buat ${type} Baru
+      </button>
+    </div>
+    <div class="mb-4 flex gap-3">
+      <div class="relative flex-1"><i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-surface-400"></i>
+        <input type="text" placeholder="Cari nomor dokumen atau customer..." class="input-field pl-9" id="searchDoc${type}" oninput="filterDocList('${type}')">
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-surface-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto" id="docListTable${type}">
+        ${renderDocTable(sorted, type)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDocTable(docs, type) {
+  return `<table class="w-full text-sm">
+    <thead><tr class="bg-surface-50 text-surface-500 text-xs">
+      <th class="text-left px-5 py-3 font-medium">No. Dokumen</th>
+      <th class="text-left px-5 py-3 font-medium">Customer</th>
+      <th class="text-left px-5 py-3 font-medium">Tanggal</th>
+      <th class="text-right px-5 py-3 font-medium">Grand Total</th>
+      <th class="text-center px-5 py-3 font-medium">Aksi</th>
+    </tr></thead>
+    <tbody>${docs.length ? docs.map(d => `<tr class="table-row border-b border-surface-50">
+      <td class="px-5 py-3 font-medium text-surface-800">${d.doc_number||'-'}</td>
+      <td class="px-5 py-3 text-surface-600">${d.customer_company||d.customer_name||'-'}</td>
+      <td class="px-5 py-3 text-surface-500">${formatDateShort(d.doc_date||d.created_at)}</td>
+      <td class="px-5 py-3 text-right font-semibold">${formatCurrency(d.grand_total)}</td>
+      <td class="px-5 py-3 text-center">
+        <div class="flex items-center justify-center gap-1">
+          <button onclick="previewDoc('${d.__backendId}')" class="p-1.5 rounded-lg hover:bg-surface-100 text-surface-500 transition-colors" title="Preview"><i data-lucide="eye" class="w-4 h-4"></i></button>
+          <button onclick="printDoc('${d.__backendId}')" class="p-1.5 rounded-lg hover:bg-surface-100 text-surface-500 transition-colors" title="Print"><i data-lucide="printer" class="w-4 h-4"></i></button>
+          <button onclick="editDocument('${d.__backendId}')" class="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="Edit Dokumen"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+          ${type==='SPH'?`<button onclick="convertToInvoice('${d.__backendId}')" class="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-500 transition-colors" title="Konversi ke Invoice"><i data-lucide="arrow-right-circle" class="w-4 h-4"></i></button>`:''}
+          <button onclick="confirmDeleteDoc('${d.__backendId}')" class="p-1.5 rounded-lg hover:bg-red-50 text-red-400 transition-colors" title="Hapus"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="5" class="px-5 py-8 text-center text-surface-400">Belum ada dokumen</td></tr>'}</tbody>
+  </table>`;
+}
+
+function filterDocList(type) {
+  const q = document.getElementById(`searchDoc${type}`).value.toLowerCase();
+  const docs = (type === 'SPH' ? getSPHs() : getInvoices()).filter(d =>
+    (d.doc_number||'').toLowerCase().includes(q) || (d.customer_company||'').toLowerCase().includes(q) || (d.customer_name||'').toLowerCase().includes(q)
+  ).sort((a,b) => new Date(b.created_at)-new Date(a.created_at));
+  document.getElementById(`docListTable${type}`).innerHTML = renderDocTable(docs, type);
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+// ==================== DOC FORM ====================
+function openDocForm(type, prefill=null) {
+  docFormType = type;
+  docFormItems = prefill ? JSON.parse(prefill.items_json||'[]') : [];
+  editingRecord = prefill;
+  docFormState = {
+    ppn_active: prefill ? prefill.ppn_active !== false : true,
+    discount: prefill ? (prefill.discount || 0) : 0,
+    shipping_cost: prefill ? (prefill.shipping_cost || 0) : 0,
+    tax_pph: prefill ? (prefill.tax_pph || 0) : 0
+  };
+  const custs = getCustomers();
+  const prods = getProducts();
+  const docNum = prefill ? prefill.doc_number : generateDocNumber(type);
+  
+  const content = `<div class="p-6">
+    <div class="flex items-center justify-between mb-5">
+      <h3 class="text-lg font-bold text-surface-900">Buat ${type} Baru</h3>
+      <button onclick="closeModal()" class="p-1.5 hover:bg-surface-100 rounded-lg"><i data-lucide="x" class="w-5 h-5 text-surface-400"></i></button>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">No. Dokumen</label><input id="docNum" class="input-field" value="${docNum}" placeholder="SPH-001/SSG/IV/26"><div class="text-[11px] text-surface-500 mt-1">Nomor otomatis, tetap bisa diedit manual.</div></div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Tanggal</label><input id="docDate" type="date" class="input-field" value="${prefill ? prefill.doc_date : new Date().toISOString().split('T')[0]}" onchange="syncDocNumberWithDate()"></div>
+    </div>
+    <div class="mb-4">
+      <label class="text-xs font-medium text-surface-600 mb-1 block">Customer</label>
+      <select id="docCustomer" class="input-field" onchange="fillCustomerDetail()">
+        <option value="">Pilih Customer</option>
+        ${custs.map(c => `<option value="${c.__backendId}" ${prefill && prefill.customer_name===c.customer_name?'selected':''}>${c.customer_name} - ${c.customer_company||''}</option>`).join('')}
+      </select>
+    </div>
+    <div id="custDetail" class="mb-4 p-3 bg-surface-50 rounded-lg text-xs text-surface-600 hidden"></div>
+    
+    <div class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-xs font-semibold text-surface-700">Item Barang</label>
+        <div class="flex gap-2">
+          <select id="productSelect" class="input-field text-xs py-1.5 w-48">
+            <option value="">Tambah dari Produk...</option>
+            ${prods.map(p => `<option value="${p.__backendId}">${p.product_code} - ${p.product_name}</option>`).join('')}
+          </select>
+          <button onclick="addProductItem()" class="btn-secondary text-xs px-3 py-1.5 rounded-lg">Tambah</button>
+        </div>
+      </div>
+      <div id="docItemsContainer">${renderDocFormItems()}</div>
+      <button onclick="addDocItem()" class="mt-2 text-xs text-brand-600 font-medium flex items-center gap-1 hover:text-brand-700"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>Tambah Baris</button>
+    </div>
+    
+    <div class="bg-amber-50 rounded-lg p-4 mb-4 border border-amber-200">
+      <div class="text-xs font-semibold text-amber-900 mb-3">Opsi Pajak & Biaya</div>
+      <div class="space-y-2">
+        ${companySettings.ppn_enabled ? `<label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="ppnCheck" ${docFormState.ppn_active ? 'checked' : ''} onchange="updateDocForm()" class="w-4 h-4 accent-amber-600">
+          <span class="text-xs text-amber-900">PPN ${companySettings.ppn_rate}%</span>
+        </label>` : ''}
+        ${companySettings.discount_enabled ? `<div class="flex items-center gap-2">
+          <input type="number" id="discountInput" class="input-field text-xs w-24" placeholder="Diskon" value="${docFormState.discount}" min="0" onchange="updateDocForm()">
+          <span class="text-xs text-amber-900">Diskon</span>
+        </div>` : ''}
+        ${companySettings.shipping_enabled ? `<div class="flex items-center gap-2">
+          <input type="number" id="shippingInput" class="input-field text-xs w-24" placeholder="Biaya" value="${docFormState.shipping_cost}" min="0" onchange="updateDocForm()">
+          <span class="text-xs text-amber-900">Biaya Tambahan</span>
+        </div>` : ''}
+        ${companySettings.pph_enabled ? `<div class="flex items-center gap-2">
+          <input type="number" id="pphInput" class="input-field text-xs w-24" placeholder="PPH" value="${docFormState.tax_pph}" min="0" onchange="updateDocForm()">
+          <span class="text-xs text-amber-900">PPH ${companySettings.pph_rate}%</span>
+        </div>` : ''}
+      </div>
+    </div>
+    
+    <div class="bg-surface-50 rounded-lg p-4 mb-4">
+      <div id="docTotals">${renderDocTotals()}</div>
+    </div>
+
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal()" class="btn-secondary px-4 py-2.5 rounded-lg text-sm font-medium">Batal</button>
+      <button onclick="saveDocument()" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium" id="saveDocBtn">${prefill ? 'Update' : 'Simpan'} ${type}</button>
+    </div>
+  </div>`;
+  showModal(content, true);
+  if(prefill) { setTimeout(()=>fillCustomerDetail(),100); }
+}
+
+function renderDocFormItems() {
+  return `<div class="space-y-2 max-h-96 overflow-y-auto pr-2 border border-surface-200 rounded-lg p-2 bg-surface-50">${docFormItems.length ? docFormItems.map((item,i) => `
+    <div class="flex gap-2 items-start bg-white p-3 rounded-lg border border-surface-200">
+      <div class="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-brand-100 text-brand-600 text-xs font-semibold rounded">${i+1}</div>
+      <input class="input-field text-xs flex-[2]" placeholder="Nama Barang" value="${item.name||''}" onchange="updateDocItem(${i},'name',this.value)">
+      <input class="input-field text-xs w-16 text-center" placeholder="UoM" value="${item.uom||''}" onchange="updateDocItem(${i},'uom',this.value)">
+      <input type="number" class="input-field text-xs w-16 text-center" placeholder="Qty" value="${item.qty||1}" min="1" onchange="updateDocItem(${i},'qty',this.value)">
+      <input type="number" class="input-field text-xs w-24" placeholder="Harga" value="${item.price||0}" onchange="updateDocItem(${i},'price',this.value)">
+      <div class="text-xs font-semibold text-brand-600 w-28 text-right flex-shrink-0">${formatCurrency((item.qty||0)*(item.price||0))}</div>
+      <button onclick="removeDocItem(${i})" class="flex-shrink-0 p-1.5 hover:bg-red-50 rounded text-red-400 transition-colors" title="Hapus"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>`).join('') : '<div class="text-xs text-surface-400 text-center py-6">Belum ada item. Klik "Tambah Baris" untuk menambahkan item (unlimited).</div>'}</div>`;
+}
+
+function renderDocTotals() {
+  const sub = docFormItems.reduce((s,i)=>s+(i.qty||0)*(i.price||0),0);
+  const ppnAmount = docFormState.ppn_active ? Math.round(sub * (companySettings.ppn_rate/100)) : 0;
+  const discountAmount = docFormState.discount || 0;
+  const shippingAmount = docFormState.shipping_cost || 0;
+  const pphAmount = docFormState.tax_pph || 0;
+  const grand = sub - discountAmount + ppnAmount + shippingAmount - pphAmount;
+  
+  let html = `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">Subtotal</span><span class="font-medium">${formatCurrency(sub)}</span></div>`;
+  if (companySettings.discount_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">Diskon</span><span class="font-medium">-${formatCurrency(discountAmount)}</span></div>`;
+  if (companySettings.ppn_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">PPN ${companySettings.ppn_rate}%</span><span class="font-medium">${docFormState.ppn_active ? formatCurrency(ppnAmount) : '0'}</span></div>`;
+  if (companySettings.shipping_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">Biaya Tambahan</span><span class="font-medium">+${formatCurrency(shippingAmount)}</span></div>`;
+  if (companySettings.pph_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">PPH ${companySettings.pph_rate}%</span><span class="font-medium">-${formatCurrency(pphAmount)}</span></div>`;
+  
+  html += `<div class="border-t border-surface-200 my-2"></div>
+    <div class="flex justify-between text-sm"><span class="font-semibold text-surface-800">Grand Total</span><span class="font-bold text-brand-600">${formatCurrency(grand)}</span></div>
+    <div class="text-[10px] text-surface-400 mt-1 italic">${terbilang(grand)}</div>`;
+  return html;
+}
+
+function updateDocItem(idx, field, val) {
+  if (field==='qty') docFormItems[idx].qty = parseInt(val)||0;
+  else if (field==='price') docFormItems[idx].price = parseFloat(val)||0;
+  else docFormItems[idx][field] = val;
+  document.getElementById('docTotals').innerHTML = renderDocTotals();
+}
+
+function addDocItem() {
+  docFormItems.push({ name:'', qty:1, price:0, uom:'' });
+  document.getElementById('docItemsContainer').innerHTML = renderDocFormItems();
+  document.getElementById('docTotals').innerHTML = renderDocTotals();
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+function removeDocItem(idx) {
+  docFormItems.splice(idx, 1);
+  document.getElementById('docItemsContainer').innerHTML = renderDocFormItems();
+  document.getElementById('docTotals').innerHTML = renderDocTotals();
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+function updateDocForm() {
+  docFormState.ppn_active = document.getElementById('ppnCheck')?.checked ?? docFormState.ppn_active;
+  docFormState.discount = parseFloat(document.getElementById('discountInput')?.value || 0);
+  docFormState.shipping_cost = parseFloat(document.getElementById('shippingInput')?.value || 0);
+  docFormState.tax_pph = parseFloat(document.getElementById('pphInput')?.value || 0);
+  document.getElementById('docTotals').innerHTML = renderDocTotals();
+}
+
+function addProductItem() {
+  const sel = document.getElementById('productSelect');
+  if (!sel.value) return;
+  const prod = getProducts().find(p => p.__backendId === sel.value);
+  if (prod) {
+    docFormItems.push({ name: prod.product_name, qty: 1, price: prod.product_price||0, uom: prod.product_uom||'' });
+    document.getElementById('docItemsContainer').innerHTML = renderDocFormItems();
+    document.getElementById('docTotals').innerHTML = renderDocTotals();
+    lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+    sel.value = '';
+  }
+}
+
+function fillCustomerDetail() {
+  const sel = document.getElementById('docCustomer');
+  const det = document.getElementById('custDetail');
+  if (!sel.value) { det.classList.add('hidden'); return; }
+  const c = getCustomers().find(x => x.__backendId === sel.value);
+  if (c) {
+    det.classList.remove('hidden');
+    det.innerHTML = `<strong>${c.customer_name}</strong> — ${c.customer_company||''}<br>${c.customer_address||''}, ${c.customer_city||''}<br>HP: ${c.customer_phone||'-'} | Email: ${c.customer_email||'-'}`;
+  }
+}
+
+async function saveDocument() {
+  const btn = document.getElementById('saveDocBtn');
+  const custSel = document.getElementById('docCustomer');
+  const cust = getCustomers().find(x => x.__backendId === custSel.value);
+  
+  if (!custSel.value) { showToast('Pilih customer terlebih dahulu', 'error'); return; }
+  if (!docFormItems.some(i => i.name && i.name.trim())) { showToast('Tambahkan minimal 1 item dengan nama', 'error'); return; }
+  if (!editingRecord && currentRecordCount >= 999) { showToast('Batas data tercapai (999). Hapus data lama.', 'error'); return; }
+
+  const sub = docFormItems.reduce((s,i)=>s+(parseFloat(i.qty)||0)*(parseFloat(i.price)||0),0);
+  const ppnAmount = docFormState.ppn_active ? Math.round(sub * (companySettings.ppn_rate/100)) : 0;
+  const discountAmount = parseFloat(docFormState.discount) || 0;
+  const shippingAmount = parseFloat(docFormState.shipping_cost) || 0;
+  const pphAmount = parseFloat(docFormState.tax_pph) || 0;
+  const grand = sub - discountAmount + ppnAmount + shippingAmount - pphAmount;
+
+  btn.disabled = true; btn.textContent = editingRecord ? 'Mengupdate...' : 'Menyimpan...';
+
+  const record = {
+    type: docFormType === 'SPH' ? 'sph' : 'invoice',
+    data_category: docFormType === 'SPH' ? 'sph' : 'invoice',
+    doc_number: document.getElementById('docNum').value || '',
+    doc_date: document.getElementById('docDate').value || new Date().toISOString().split('T')[0],
+    customer_name: cust.customer_name || '',
+    customer_company: cust.customer_company || '',
+    customer_address: cust.customer_address || '',
+    customer_city: cust.customer_city || '',
+    customer_phone: cust.customer_phone || '',
+    customer_email: cust.customer_email || '',
+    items_json: JSON.stringify(docFormItems),
+    subtotal: Math.round(sub), 
+    ppn: ppnAmount, 
+    ppn_active: docFormState.ppn_active ? 1 : 0,
+    discount: Math.round(discountAmount), 
+    shipping_cost: Math.round(shippingAmount), 
+    tax_pph: Math.round(pphAmount),
+    grand_total: Math.round(grand), 
+    terbilang: terbilang(grand),
+    notes: '',
+    status: 'active',
+    source_doc: '',
+    created_at: editingRecord ? editingRecord.created_at : new Date().toISOString(),
+    company_name:'', 
+    company_address:'', 
+    company_city:'', 
+    company_phone:'', 
+    company_email:'',
+    product_code:'', 
+    product_name:'', 
+    product_uom:'', 
+    product_price: 0, 
+    product_desc:'',
+    setting_key:'', 
+    setting_value:'',
+    logo_data: '',
+    signature_data: ''
+  };
+
+  let result;
+  if (editingRecord) {
+    result = await window.dataSdk.update({...editingRecord, ...record});
+  } else {
+    result = await window.dataSdk.create(record);
+  }
+  
+  if (result.isOk) {
+    const baseMessage = `${docFormType} berhasil ${editingRecord ? 'diupdate' : 'disimpan'}!`;
+    if (appDb?.settings?.api_auto_sync && appDb?.settings?.api_web_app_url) {
+      btn.textContent = 'Sinkronisasi...';
+      await flushRemoteSyncAfterMutation(`${docFormType} berhasil ${editingRecord ? 'diupdate' : 'disimpan'}`);
+    }
+    btn.disabled = false;
+    btn.textContent = editingRecord ? 'Update' : 'Simpan';
+    showToast(baseMessage);
+    closeModal();
+    docFormItems = [];
+    editingRecord = null;
+    docFormState = { ppn_active: true, discount: 0, shipping_cost: 0, tax_pph: 0 };
+  }
+  else {
+    btn.disabled = false;
+    btn.textContent = editingRecord ? 'Update' : 'Simpan';
+    showToast(`Gagal menyimpan: ${result.error?.message || 'Error tidak diketahui'}`, 'error');
+  }
+}
+
+// ==================== DOC PREVIEW ====================
+function previewDoc(id) {
+  const doc = allData.find(d => d.__backendId === id);
+  if (!doc) return;
+  const html = generateDocHTML(doc);
+  showModal(`<div class="p-4"><div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-bold">Preview Dokumen</h3>
+    <div class="flex gap-2">
+      <button onclick="printDoc('${id}')" class="btn-secondary flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium"><i data-lucide="printer" class="w-3.5 h-3.5"></i>Print</button>
+      <button onclick="closeModal()" class="p-1.5 hover:bg-surface-100 rounded-lg"><i data-lucide="x" class="w-5 h-5 text-surface-400"></i></button>
+    </div>
+  </div>
+  <div class="border border-surface-200 rounded-lg overflow-auto max-h-[70vh]" style="background:#f8f8f8;padding:20px">
+    <div style="margin:0 auto;box-shadow:0 2px 12px rgba(0,0,0,0.1)">${html}</div>
+  </div></div>`, true);
+}
+
+function generateDocHTML(doc) {
+  const items = JSON.parse(doc.items_json || '[]');
+  const type = doc.data_category === 'sph' ? 'SURAT PENAWARAN HARGA' : 'INVOICE';
+  const accent = companySettings.doc_accent || '#4f46e5';
+  const opening = doc.data_category === 'sph'
+    ? 'Dengan Hormat,<br>Berikut kami sampaikan penawaran harga sebagai berikut:'
+    : 'Berikut ini adalah Invoice untuk transaksi sebagai berikut:';
+
+  const boolFromSetting = (value) => value === true || value === 1 || value === '1' || String(value).toLowerCase() === 'true';
+  const ppnActive = !(doc.ppn_active === false || doc.ppn_active === 0 || doc.ppn_active === '0' || String(doc.ppn_active).toLowerCase() === 'false');
+  const secondaryEnabled = boolFromSetting(companySettings.show_secondary_signature);
+  const watermarkEnabled = boolFromSetting(companySettings.show_logo_watermark) && !!companySettings.logo_data;
+
+  const logoHtml = companySettings.logo_data
+    ? `<img src="${companySettings.logo_data}" style="height:68px;width:auto;max-width:88px;object-fit:contain">`
+    : `<div style="height:68px;width:68px;background:${accent};border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:28pt">${companySettings.company_name.charAt(0) || 'P'}</div>`;
+
+  const mainCompanyName = companySettings.company_name || 'Nama Perusahaan';
+  const mainSignerName = companySettings.director_name || '&nbsp;';
+  const mainSignerTitle = companySettings.director_title || '';
+  const secondaryLabel = companySettings.secondary_signature_label || 'Menyetujui,';
+  const secondaryCompanyName = doc.customer_company || doc.customer_name || '&nbsp;';
+  const secondarySignerName = companySettings.secondary_signature_name || '&nbsp;';
+  const secondarySignerTitle = companySettings.secondary_signature_title || '';
+
+  const renderSignatureImage = (data, emptyHeight = 34) => data
+    ? `<div style="margin:12px 0 10px;height:64px;display:flex;align-items:center;justify-content:center"><img src="${data}" style="max-height:64px;max-width:195px;object-fit:contain"></div>`
+    : `<div style="margin:20px 0 12px;height:${emptyHeight}px;border-bottom:1px solid #cbd5e1"></div>`;
+
+  const renderSignatureBlock = ({ label, companyName, image, signerName, signerTitle, align = 'center', width = '220px' }) => `
+    <div style="width:${width};max-width:${width};text-align:${align};display:flex;flex-direction:column;align-items:center;justify-content:flex-start">
+      <p style="font-size:8.8pt;margin:0 0 2px;width:100%;text-align:${align}">${label}</p>
+      <p style="font-size:9pt;font-weight:700;margin:0;width:100%;text-align:${align};line-height:1.35">${companyName || '&nbsp;'}</p>
+      <div style="width:100%;display:flex;justify-content:center">${image}</div>
+      <p style="font-size:8.9pt;font-weight:700;margin:0;width:100%;text-align:${align};line-height:1.35">${signerName || '&nbsp;'}</p>
+      ${signerTitle ? `<p style="font-size:7.8pt;color:#64748b;margin:3px 0 0;width:100%;text-align:${align};line-height:1.3">${signerTitle}</p>` : '<div style="height:12px;width:100%"></div>'}
+    </div>`;
+
+  const relevantNotes = doc.notes || (doc.data_category === 'sph' ? companySettings.sph_notes : companySettings.invoice_notes);
+  const relevantTerms = doc.terms || (doc.data_category === 'sph' ? companySettings.sph_terms : companySettings.invoice_terms);
+  const closingText = doc.data_category === 'sph'
+    ? 'Demikian penawaran ini kami buat, atas perhatian dan kerja sama Bapak/Ibu kami ucapkan terima kasih.'
+    : '';
+
+  const escapeHtml = (value = '') => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  const renderMultilineBlock = (value = '') => String(value)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .split('\n')
+    .map(line => line
+      ? `<div>${escapeHtml(line)}</div>`
+      : '<div style="height:0.55em"></div>')
+    .join('');
+
+  const renderedNotes = renderMultilineBlock(relevantNotes || '');
+  const renderedTerms = renderMultilineBlock(relevantTerms || '');
+
+  const ppnAmount = ppnActive ? (doc.ppn || 0) : 0;
+  const discountAmount = doc.discount || 0;
+  const shippingAmount = doc.shipping_cost || 0;
+  const pphAmount = doc.tax_pph || 0;
+
+  let totalsHtml = `<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:8.7pt"><span>Subtotal</span><strong>${formatCurrency(doc.subtotal)}</strong></div>`;
+  if (discountAmount > 0) totalsHtml += `<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:8.7pt"><span>Diskon</span><strong>-${formatCurrency(discountAmount)}</strong></div>`;
+  if (ppnAmount > 0) totalsHtml += `<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:8.7pt"><span>PPN ${companySettings.ppn_rate}%</span><strong>${formatCurrency(ppnAmount)}</strong></div>`;
+  if (shippingAmount > 0) totalsHtml += `<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:8.7pt"><span>Biaya Tambahan</span><strong>+${formatCurrency(shippingAmount)}</strong></div>`;
+  if (pphAmount > 0) totalsHtml += `<div style="display:flex;justify-content:space-between;padding:2px 0;font-size:8.7pt"><span>PPH ${companySettings.pph_rate}%</span><strong>-${formatCurrency(pphAmount)}</strong></div>`;
+  totalsHtml += `<div style="border-top:2px solid ${accent};margin:4px 0"></div>
+    <div style="display:flex;justify-content:space-between;padding:2px 0;font-size:10pt;font-weight:700;color:${accent}"><span>Grand Total</span><span>${formatCurrency(doc.grand_total)}</span></div>
+    <div style="font-size:7.2pt;color:#64748b;font-style:italic;margin-top:2px;line-height:1.3">Terbilang: ${doc.terbilang || ''}</div>`;
+
+  const secondaryBlockHtml = secondaryEnabled
+    ? renderSignatureBlock({
+        label: secondaryLabel,
+        companyName: secondaryCompanyName,
+        image: renderSignatureImage(companySettings.secondary_signature_data),
+        signerName: secondarySignerName,
+        signerTitle: secondarySignerTitle,
+        align: 'center',
+        width: '250px'
+      })
+    : '';
+
+  const mainBlockHtml = renderSignatureBlock({
+    label: 'Hormat Kami,',
+    companyName: mainCompanyName,
+    image: renderSignatureImage(companySettings.signature_data),
+    signerName: mainSignerName,
+    signerTitle: mainSignerTitle,
+    align: 'center',
+    width: '250px'
+  });
+
+  const watermarkHtml = watermarkEnabled
+    ? `<div class="doc-watermark-layer" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;overflow:hidden"><img class="doc-watermark-image" src="${companySettings.logo_data}" style="width:46%;max-width:340px;min-width:220px;max-height:270px;object-fit:contain;opacity:0.085;transform:translateY(-6px)"></div>`
+    : '';
+
+  return `<div class="doc-preview" style="--doc-accent:${accent};position:relative;overflow:hidden">
+    ${watermarkHtml}
+    <div style="position:relative;z-index:1">
+    <div class="doc-company-header" style="border-bottom:2px solid ${accent};padding-bottom:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px">
+      <div style="flex-shrink:0">${logoHtml}</div>
+      <div style="flex:1;text-align:right">
+        <div style="font-size:15pt;font-weight:800;color:${accent};line-height:1.15">${companySettings.company_name}</div>
+        <div style="font-size:8.8pt;font-weight:700;color:#1e293b;margin-bottom:3px">${companySettings.company_description}</div>
+        <div style="font-size:7.8pt;color:#64748b;line-height:1.35">${companySettings.company_address}, ${companySettings.company_city}</div>
+        <div style="font-size:7.8pt;color:#64748b;line-height:1.35">Telp: ${companySettings.company_phone} | Email: ${companySettings.company_email}</div>
+      </div>
+    </div>
+
+    <div class="doc-title-block" style="text-align:center;margin:14px 0 12px">
+      <div style="font-size:12pt;font-weight:700;color:${accent};letter-spacing:1px">${type}</div>
+      <div style="font-size:7.8pt;color:#64748b">No: ${doc.doc_number} | Tanggal: ${formatDate(doc.doc_date || doc.created_at)}</div>
+    </div>
+
+    <div style="margin-bottom:12px;padding:8px 10px;background:#f8fafc;border-radius:6px;border-left:3px solid ${accent}">
+      <div style="font-size:7.8pt;font-weight:600;color:#475569;margin-bottom:3px">Kepada Yth:</div>
+      <div style="font-size:9pt;font-weight:700">${doc.customer_company || doc.customer_name || '-'}</div>
+      <div style="font-size:7.8pt;color:#64748b;line-height:1.35">${doc.customer_address || ''}, ${doc.customer_city || ''}</div>
+      <div style="font-size:7.8pt;color:#64748b;line-height:1.35">HP: ${doc.customer_phone || '-'} | Email: ${doc.customer_email || '-'}</div>
+    </div>
+
+    <p style="font-size:8.8pt;margin:0 0 8px;line-height:1.45">${opening}</p>
+
+    <table style="margin-bottom:8px;font-size:8.3pt">
+      <thead><tr>
+        <th style="width:26px;text-align:center">No</th>
+        <th>Nama Barang</th>
+        <th style="width:38px;text-align:center">UoM</th>
+        <th style="width:42px;text-align:center">Qty</th>
+        <th style="text-align:right;width:96px">Harga</th>
+        <th style="text-align:right;width:106px">Total</th>
+      </tr></thead>
+      <tbody>${items.map((it, i) => `<tr>
+        <td style="text-align:center">${i + 1}</td>
+        <td>${it.name || '-'}</td>
+        <td style="text-align:center;font-size:7.8pt">${it.uom || '-'}</td>
+        <td style="text-align:center">${it.qty || 0}</td>
+        <td style="text-align:right">${formatCurrency(it.price || 0)}</td>
+        <td style="text-align:right">${formatCurrency((it.qty || 0) * (it.price || 0))}</td>
+      </tr>`).join('')}</tbody>
+    </table>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+      <div style="width:240px">${totalsHtml}</div>
+    </div>
+
+    <div class="doc-footer-group" style="width:100%">
+      ${closingText ? `<p class="doc-closing-section" style="font-size:8.6pt;margin:0 0 10px;font-style:italic;line-height:1.4">${closingText}</p>` : ''}
+      <div class="doc-after-closing-group" style="width:100%">
+        ${relevantNotes ? `<div class="doc-note-section" style="margin-bottom:6px;font-size:7.9pt;line-height:1.35"><strong>Catatan:</strong><div class="doc-text-lines" style="margin-top:2px">${renderedNotes}</div></div>` : ''}
+        ${relevantTerms ? `<div class="doc-terms-section" style="margin-bottom:10px;font-size:7.2pt;font-style:italic;color:#475569;line-height:1.35"><strong>Syarat &amp; Ketentuan:</strong><div class="doc-text-lines" style="margin-top:2px">${renderedTerms}</div></div>` : ''}
+
+        <div class="doc-signature-section" style="display:flex;justify-content:${secondaryEnabled ? 'space-between' : 'flex-end'};align-items:flex-start;gap:20px;margin-top:56px;width:100%;padding:0 8px;page-break-inside:avoid;break-inside:avoid">
+          ${secondaryBlockHtml}
+          ${mainBlockHtml}
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>`;
+}
+
+function printDoc(id) {
+  const doc = allData.find(d => d.__backendId === id);
+  if (!doc) return;
+  const html = generateDocHTML(doc);
+  const fileName = `${doc.doc_number}_${doc.customer_company || doc.customer_name || 'Customer'}`;
+  const accent = companySettings.doc_accent || '#4f46e5';
+
+  const parser = new DOMParser();
+  const parsed = parser.parseFromString(html, 'text/html');
+  const previewRoot = parsed.querySelector('.doc-preview');
+  const contentRoot = previewRoot ? previewRoot.querySelector('div[style*="position:relative;z-index:1"]') : null;
+  const headerEl = contentRoot ? contentRoot.querySelector('.doc-company-header') : null;
+  const watermarkEl = previewRoot ? previewRoot.querySelector('.doc-watermark-layer') : null;
+
+  const headerHtml = headerEl ? headerEl.outerHTML : '';
+  const watermarkHtml = watermarkEl ? watermarkEl.outerHTML : '';
+
+  if (headerEl) headerEl.remove();
+
+  const bodyInnerHtml = contentRoot ? contentRoot.innerHTML : html;
+  const printHtml = `<div class="doc-preview" style="--doc-accent:${accent};position:relative;overflow:hidden">
+    ${watermarkHtml}
+    <div style="position:relative;z-index:1">
+      <table class="doc-print-frame" role="presentation">
+        <thead>
+          <tr>
+            <td>${headerHtml}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${bodyInnerHtml}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>${fileName}</title>
+    <style>
+      @page{size:A4;margin:12mm 14mm}
+      html,body{margin:0;padding:0;background:white}
+      body{font-family:'Plus Jakarta Sans',Helvetica,Arial,sans-serif;color:#1e293b;--doc-accent:${accent}}
+      .doc-preview{padding:0;font-size:9.5pt;line-height:1.35;color:#1e293b;position:relative;overflow:hidden}
+      .doc-print-frame{width:100%;border-collapse:collapse;table-layout:fixed}
+      .doc-print-frame thead{display:table-header-group}
+      .doc-print-frame tbody{display:table-row-group}
+      .doc-print-frame tr,.doc-print-frame td{padding:0;margin:0;border:none;vertical-align:top}
+      .doc-print-frame > thead > tr > td{padding:0 0 10px 0}
+      .doc-print-frame .doc-company-header{margin:0 !important}
+      .doc-print-frame .doc-title-block{margin:0 0 12px !important}
+      .doc-watermark-layer{position:fixed !important;inset:0 !important;display:flex !important;align-items:center !important;justify-content:center !important;pointer-events:none !important;z-index:0 !important;overflow:hidden !important}
+      .doc-watermark-image{width:52vw !important;max-width:420px !important;min-width:260px !important;max-height:320px !important;object-fit:contain !important;opacity:0.09 !important;transform:translateY(-8px) !important}
+      .doc-preview > div:last-child,.doc-preview > div[style*='position:relative;z-index:1']{position:relative;z-index:1}
+      .doc-preview table:not(.doc-print-frame){width:100%;border-collapse:collapse;table-layout:fixed}
+      .doc-preview table:not(.doc-print-frame) th,.doc-preview table:not(.doc-print-frame) td{border:1px solid #cbd5e1;padding:4px 6px;vertical-align:top;word-break:break-word;page-break-inside:avoid;break-inside:avoid}
+      .doc-preview table:not(.doc-print-frame) th{background:var(--doc-accent,#4f46e5);color:white;font-weight:600;page-break-after:avoid}
+      .doc-preview tbody tr{page-break-inside:avoid;break-inside:avoid}
+      .doc-footer-group{page-break-inside:auto;break-inside:auto}
+      .doc-after-closing-group,.doc-note-section,.doc-terms-section,.doc-signature-section{page-break-inside:avoid;break-inside:avoid}
+      .doc-signature-section > div{page-break-inside:avoid;break-inside:avoid}
+      .doc-note-section .doc-text-lines,.doc-terms-section .doc-text-lines{display:block}
+      .doc-note-section .doc-text-lines > div,.doc-terms-section .doc-text-lines > div{margin:0}
+      .doc-break-before-page{page-break-before:always !important;break-before:page !important}
+    </style>
+  </head><body>${printHtml}
+    <script>
+      (function(){
+        function mmToPx(mm) {
+          const probe = document.createElement('div');
+          probe.style.position = 'absolute';
+          probe.style.visibility = 'hidden';
+          probe.style.height = mm + 'mm';
+          probe.style.width = '1px';
+          document.body.appendChild(probe);
+          const px = probe.getBoundingClientRect().height;
+          probe.remove();
+          return px;
+        }
+
+        function relativeTop(container, el) {
+          const c = container.getBoundingClientRect();
+          const e = el.getBoundingClientRect();
+          return e.top - c.top;
+        }
+
+        function relativeBottom(container, el) {
+          const c = container.getBoundingClientRect();
+          const e = el.getBoundingClientRect();
+          return e.bottom - c.top;
+        }
+
+        function fitsSinglePage(container, el, pageHeight) {
+          if (!container || !el || pageHeight <= 0) return true;
+          const top = Math.max(0, relativeTop(container, el));
+          const bottom = Math.max(top, relativeBottom(container, el) - 1);
+          return Math.floor(top / pageHeight) === Math.floor(bottom / pageHeight);
+        }
+
+        function prepareSignatureLayout() {
+          document.querySelectorAll('.doc-preview').forEach((doc) => {
+            const afterClosingGroup = doc.querySelector('.doc-after-closing-group');
+            const signatureSection = doc.querySelector('.doc-signature-section');
+            const targetGroup = afterClosingGroup || signatureSection;
+            if (!targetGroup) return;
+
+            const printFrame = doc.querySelector('.doc-print-frame');
+            const repeatedHeader = printFrame ? printFrame.querySelector('thead') : null;
+            const repeatedHeaderHeight = repeatedHeader ? repeatedHeader.getBoundingClientRect().height : 0;
+            const pageHeight = Math.max(1, mmToPx(273) - repeatedHeaderHeight);
+
+            targetGroup.classList.remove('doc-break-before-page');
+            void doc.offsetHeight;
+
+            if (!fitsSinglePage(doc, targetGroup, pageHeight)) {
+              targetGroup.classList.add('doc-break-before-page');
+              void doc.offsetHeight;
+            }
+          });
+        }
+
+        function startPrint() {
+          prepareSignatureLayout();
+          setTimeout(function(){ window.print(); }, 180);
+        }
+
+        if (document.readyState === 'complete') startPrint();
+        else window.addEventListener('load', startPrint, { once:true });
+        window.addEventListener('afterprint', function(){ window.close(); });
+      })();
+    <\/script>
+  </body></html>`);
+  w.document.close();
+}
+
+function confirmDeleteDoc(id) {
+  showModal(`<div class="p-6 text-center">
+    <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4"><i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i></div>
+    <h3 class="text-lg font-bold text-surface-900 mb-2">Hapus Dokumen?</h3>
+    <p class="text-sm text-surface-500 mb-5">Dokumen yang dihapus tidak dapat dikembalikan.</p>
+    <div class="flex gap-3 justify-center">
+      <button onclick="closeModal()" class="btn-secondary px-4 py-2.5 rounded-lg text-sm font-medium">Batal</button>
+      <button onclick="deleteDoc('${id}')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors" id="delDocBtn">Hapus</button>
+    </div>
+  </div>`);
+}
+
+function editDocument(id) {
+  const doc = allData.find(d => d.__backendId === id);
+  if (doc) {
+    const type = doc.data_category === 'sph' ? 'SPH' : 'Invoice';
+    openDocForm(type, doc);
+  }
+}
+
+async function deleteDoc(id) {
+  const rec = allData.find(d => d.__backendId === id);
+  if (!rec) return;
+  const btn = document.getElementById('delDocBtn');
+  if(btn){ btn.disabled=true; btn.textContent='Menghapus...'; }
+  const result = await window.dataSdk.delete(rec);
+  if (result.isOk) { showToast('Dokumen berhasil dihapus'); closeModal(); }
+  else { showToast('Gagal menghapus', 'error'); if(btn){btn.disabled=false;btn.textContent='Hapus';} }
+}
+
+// ==================== TRANSAKSI ====================
+function renderTransaksi() {
+  const docs = getDocuments().sort((a,b) => new Date(b.created_at)-new Date(a.created_at));
+  const year = new Date().getFullYear();
+  return `<div class="p-6 fade-in">
+    <div class="flex items-center justify-between mb-6">
+      <div><h2 class="text-2xl font-bold text-surface-900">Transaksi</h2><p class="text-sm text-surface-500">Semua dokumen tahun ${year}</p></div>
+      <div class="flex gap-2">
+        <button onclick="printTransaksi()" class="btn-secondary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="printer" class="w-4 h-4"></i>Print</button>
+        <button onclick="exportTransaksiCSV()" class="btn-success flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="download" class="w-4 h-4"></i>Export CSV</button>
+      </div>
+    </div>
+    <div class="flex gap-3 mb-4">
+      <input type="text" placeholder="Cari dokumen..." class="input-field flex-1" id="searchTrx" oninput="filterTrx()">
+      <select class="input-field w-40" id="filterTrxType" onchange="filterTrx()">
+        <option value="">Semua Tipe</option><option value="sph">SPH</option><option value="invoice">Invoice</option>
+      </select>
+    </div>
+    <div class="bg-white rounded-xl border border-surface-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto" id="trxTable">${renderTrxTable(docs)}</div>
+    </div>
+  </div>`;
+}
+
+function renderTrxTable(docs) {
+  return `<table class="w-full text-sm">
+    <thead><tr class="bg-surface-50 text-surface-500 text-xs">
+      <th class="text-left px-5 py-3 font-medium">No. Dokumen</th>
+      <th class="text-left px-5 py-3 font-medium">Tipe</th>
+      <th class="text-left px-5 py-3 font-medium">Customer</th>
+      <th class="text-left px-5 py-3 font-medium">Tanggal</th>
+      <th class="text-right px-5 py-3 font-medium">Subtotal</th>
+      <th class="text-right px-5 py-3 font-medium">PPN</th>
+      <th class="text-right px-5 py-3 font-medium">Grand Total</th>
+      <th class="text-center px-5 py-3 font-medium">Aksi</th>
+    </tr></thead>
+    <tbody>${docs.length ? docs.map(d => `<tr class="table-row border-b border-surface-50">
+      <td class="px-5 py-3 font-medium text-surface-800">${d.doc_number||'-'}</td>
+      <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${d.data_category==='sph'?'bg-blue-50 text-blue-600':'bg-emerald-50 text-emerald-600'}">${d.data_category==='sph'?'SPH':'Invoice'}</span></td>
+      <td class="px-5 py-3 text-surface-600">${d.customer_company||d.customer_name||'-'}</td>
+      <td class="px-5 py-3 text-surface-500">${formatDateShort(d.doc_date||d.created_at)}</td>
+      <td class="px-5 py-3 text-right">${formatCurrency(d.subtotal)}</td>
+      <td class="px-5 py-3 text-right">${formatCurrency(d.ppn)}</td>
+      <td class="px-5 py-3 text-right font-semibold">${formatCurrency(d.grand_total)}</td>
+      <td class="px-5 py-3 text-center">
+        <button onclick="previewDoc('${d.__backendId}')" class="p-1.5 rounded-lg hover:bg-surface-100 text-surface-500"><i data-lucide="eye" class="w-4 h-4"></i></button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="8" class="px-5 py-8 text-center text-surface-400">Belum ada transaksi</td></tr>'}</tbody>
+  </table>`;
+}
+
+function filterTrx() {
+  const q = document.getElementById('searchTrx').value.toLowerCase();
+  const t = document.getElementById('filterTrxType').value;
+  let docs = getDocuments();
+  if (t) docs = docs.filter(d => d.data_category === t);
+  if (q) docs = docs.filter(d => (d.doc_number||'').toLowerCase().includes(q) || (d.customer_company||'').toLowerCase().includes(q) || (d.customer_name||'').toLowerCase().includes(q));
+  docs.sort((a,b) => new Date(b.created_at)-new Date(a.created_at));
+  document.getElementById('trxTable').innerHTML = renderTrxTable(docs);
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+function exportTransaksiCSV() {
+  const docs = getDocuments().sort((a,b)=>new Date(b.doc_date||b.created_at)-new Date(a.doc_date||a.created_at));
+  let csv = 'No Dokumen,Tipe,Customer,Perusahaan,Tanggal,Subtotal,PPN,Grand Total\n';
+  docs.forEach(d => {
+    csv += `"${d.doc_number}","${d.data_category==='sph'?'SPH':'Invoice'}","${d.customer_name}","${d.customer_company}","${formatDateShort(d.doc_date||d.created_at)}",${d.subtotal},${d.ppn},${d.grand_total}\n`;
+  });
+  downloadFile(csv, `Transaksi_${new Date().getFullYear()}.csv`, 'text/csv');
+}
+
+function printTransaksi() {
+  const docs = getDocuments().sort((a,b)=>new Date(b.doc_date||b.created_at)-new Date(a.doc_date||a.created_at));
+  const year = new Date().getFullYear();
+  
+  let html = `<h2 style="text-align:center;margin-bottom:20px;font-size:18pt;font-weight:700">Laporan Transaksi ${year}</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:10pt">
+      <thead><tr style="background:#f1f5f9">
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:left">No. Dokumen</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:left">Tipe</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:left">Customer</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:left">Perusahaan</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:center">Tanggal</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:right">Subtotal</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:right">PPN</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:right">Grand Total</th>
+      </tr></thead>
+      <tbody>`;
+  
+  let totalSubtotal = 0, totalPPN = 0, totalGrand = 0;
+  docs.forEach(d => {
+    totalSubtotal += d.subtotal || 0;
+    totalPPN += d.ppn || 0;
+    totalGrand += d.grand_total || 0;
+    html += `<tr>
+      <td style="border:1px solid #cbd5e1;padding:8px">${d.doc_number||'-'}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px">${d.data_category==='sph'?'SPH':'Invoice'}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px">${d.customer_name||'-'}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px">${d.customer_company||'-'}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:center">${formatDateShort(d.doc_date||d.created_at)}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(d.subtotal)}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(d.ppn)}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:right;font-weight:700">${formatCurrency(d.grand_total)}</td>
+    </tr>`;
+  });
+  
+  html += `<tr style="background:#f1f5f9;font-weight:700">
+    <td style="border:1px solid #cbd5e1;padding:8px" colspan="5">TOTAL</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(totalSubtotal)}</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(totalPPN)}</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(totalGrand)}</td>
+  </tr></tbody>
+    </table>
+    <div style="margin-top:20px;font-size:9pt;color:#64748b">
+      <p>Dicetak: ${formatDate(new Date().toISOString())}</p>
+      <p>Perusahaan: ${companySettings.company_name}</p>
+    </div>`;
+  
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Laporan_Transaksi_${year}</title>
+    <style>@page{size:A4;margin:15mm}body{margin:0;font-family:'Plus Jakarta Sans',Helvetica,Arial,sans-serif;padding:20px}</style>
+  </head><body>${html}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.print(); }, 500);
+}
+
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+// ==================== CUSTOMER ====================
+function renderCustomerPage() {
+  const custs = getCustomers();
+  return `<div class="p-6 fade-in">
+    <div class="flex items-center justify-between mb-6">
+      <div><h2 class="text-2xl font-bold text-surface-900">Data Customer</h2><p class="text-sm text-surface-500">${custs.length} customer terdaftar</p></div>
+      <div class="flex gap-2">
+        <button onclick="importCSV('customer')" class="btn-secondary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="upload" class="w-4 h-4"></i>Import CSV</button>
+        <button onclick="openCustomerForm()" class="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="plus" class="w-4 h-4"></i>Tambah Customer</button>
+      </div>
+    </div>
+    <div class="mb-4"><input type="text" placeholder="Cari customer..." class="input-field" id="searchCust" oninput="filterCustomers()"></div>
+    <div class="bg-white rounded-xl border border-surface-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto" id="custTable">${renderCustTable(custs)}</div>
+    </div>
+  </div>`;
+}
+
+function renderCustTable(custs) {
+  return `<table class="w-full text-sm">
+    <thead><tr class="bg-surface-50 text-surface-500 text-xs">
+      <th class="text-left px-5 py-3 font-medium">Nama</th>
+      <th class="text-left px-5 py-3 font-medium">Perusahaan</th>
+      <th class="text-left px-5 py-3 font-medium">Kota</th>
+      <th class="text-left px-5 py-3 font-medium">HP</th>
+      <th class="text-left px-5 py-3 font-medium">Email</th>
+      <th class="text-center px-5 py-3 font-medium">Aksi</th>
+    </tr></thead>
+    <tbody>${custs.length ? custs.map(c => `<tr class="table-row border-b border-surface-50">
+      <td class="px-5 py-3 font-medium text-surface-800">${c.customer_name||'-'}</td>
+      <td class="px-5 py-3 text-surface-600">${c.customer_company||'-'}</td>
+      <td class="px-5 py-3 text-surface-500">${c.customer_city||'-'}</td>
+      <td class="px-5 py-3 text-surface-500">${c.customer_phone||'-'}</td>
+      <td class="px-5 py-3 text-surface-500">${c.customer_email||'-'}</td>
+      <td class="px-5 py-3 text-center">
+        <button onclick="editCustomer('${c.__backendId}')" class="p-1.5 rounded-lg hover:bg-surface-100 text-surface-500" title="Edit"><i data-lucide="edit" class="w-4 h-4"></i></button>
+        <button onclick="confirmDelete('${c.__backendId}','customer')" class="p-1.5 rounded-lg hover:bg-red-50 text-red-400" title="Hapus"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="6" class="px-5 py-8 text-center text-surface-400">Belum ada customer</td></tr>'}</tbody>
+  </table>`;
+}
+
+function filterCustomers() {
+  const q = document.getElementById('searchCust').value.toLowerCase();
+  const custs = getCustomers().filter(c => (c.customer_name||'').toLowerCase().includes(q) || (c.customer_company||'').toLowerCase().includes(q) || (c.customer_city||'').toLowerCase().includes(q));
+  document.getElementById('custTable').innerHTML = renderCustTable(custs);
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+function openCustomerForm(rec=null) {
+  editingRecord = rec;
+  showModal(`<div class="p-6">
+    <h3 class="text-lg font-bold text-surface-900 mb-5">${rec?'Edit':'Tambah'} Customer</h3>
+    <div class="space-y-3">
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Nama *</label><input id="cf_name" class="input-field" value="${rec?rec.customer_name:''}"></div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Perusahaan</label><input id="cf_company" class="input-field" value="${rec?rec.customer_company:''}"></div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Alamat</label><input id="cf_address" class="input-field" value="${rec?rec.customer_address:''}"></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="text-xs font-medium text-surface-600 mb-1 block">Kota</label><input id="cf_city" class="input-field" value="${rec?rec.customer_city:''}"></div>
+        <div><label class="text-xs font-medium text-surface-600 mb-1 block">HP</label><input id="cf_phone" class="input-field" value="${rec?rec.customer_phone:''}"></div>
+      </div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Email</label><input id="cf_email" class="input-field" value="${rec?rec.customer_email:''}"></div>
+    </div>
+    <div class="flex gap-3 justify-end mt-5">
+      <button onclick="closeModal()" class="btn-secondary px-4 py-2.5 rounded-lg text-sm font-medium">Batal</button>
+      <button onclick="saveCustomer()" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium" id="saveCustBtn">Simpan</button>
+    </div>
+  </div>`);
+}
+
+function editCustomer(id) {
+  const c = getCustomers().find(x => x.__backendId === id);
+  if (c) openCustomerForm(c);
+}
+
+async function saveCustomer() {
+  const name = document.getElementById('cf_name').value.trim();
+  if (!name) { showToast('Nama harus diisi', 'error'); return; }
+  const btn = document.getElementById('saveCustBtn');
+  btn.disabled=true; btn.textContent='Menyimpan...';
+
+  const data = {
+    data_category: 'customer',
+    customer_name: name,
+    customer_company: document.getElementById('cf_company').value,
+    customer_address: document.getElementById('cf_address').value,
+    customer_city: document.getElementById('cf_city').value,
+    customer_phone: document.getElementById('cf_phone').value,
+    customer_email: document.getElementById('cf_email').value,
+    type:'', doc_number:'', doc_date:'', items_json:'', subtotal:0, ppn:0, grand_total:0,
+    terbilang:'', notes:'', status:'', source_doc:'', created_at: new Date().toISOString(),
+    company_name:'', company_address:'', company_city:'', company_phone:'', company_email:'',
+    product_code:'', product_name:'', product_uom:'', product_price:0, product_desc:'',
+    setting_key:'', setting_value:''
+  };
+
+  let result;
+  if (editingRecord) {
+    result = await window.dataSdk.update({...editingRecord, ...data});
+  } else {
+    if (currentRecordCount >= 999) { showToast('Batas data tercapai (999)', 'error'); btn.disabled=false; btn.textContent='Simpan'; return; }
+    result = await window.dataSdk.create(data);
+  }
+  btn.disabled=false; btn.textContent='Simpan';
+  if (result.isOk) { showToast(`Customer berhasil ${editingRecord?'diupdate':'ditambahkan'}!`); closeModal(); editingRecord=null; }
+  else showToast('Gagal menyimpan', 'error');
+}
+
+// ==================== PRODUK ====================
+function renderProdukPage() {
+  const prods = getProducts();
+  return `<div class="p-6 fade-in">
+    <div class="flex items-center justify-between mb-6">
+      <div><h2 class="text-2xl font-bold text-surface-900">Data Produk</h2><p class="text-sm text-surface-500">${prods.length} produk terdaftar</p></div>
+      <div class="flex gap-2">
+        <button onclick="importCSV('product')" class="btn-secondary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="upload" class="w-4 h-4"></i>Import CSV</button>
+        <button onclick="openProdukForm()" class="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="plus" class="w-4 h-4"></i>Tambah Produk</button>
+      </div>
+    </div>
+    <div class="mb-4"><input type="text" placeholder="Cari produk..." class="input-field" id="searchProd" oninput="filterProducts()"></div>
+    <div class="bg-white rounded-xl border border-surface-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto" id="prodTable">${renderProdTable(prods)}</div>
+    </div>
+  </div>`;
+}
+
+function renderProdTable(prods) {
+  return `<table class="w-full text-sm">
+    <thead><tr class="bg-surface-50 text-surface-500 text-xs">
+      <th class="text-left px-5 py-3 font-medium">Kode</th>
+      <th class="text-left px-5 py-3 font-medium">Nama Barang</th>
+      <th class="text-left px-5 py-3 font-medium">Satuan</th>
+      <th class="text-right px-5 py-3 font-medium">Harga</th>
+      <th class="text-left px-5 py-3 font-medium">Keterangan</th>
+      <th class="text-center px-5 py-3 font-medium">Aksi</th>
+    </tr></thead>
+    <tbody>${prods.length ? prods.map(p => `<tr class="table-row border-b border-surface-50">
+      <td class="px-5 py-3 font-medium text-brand-600">${p.product_code||'-'}</td>
+      <td class="px-5 py-3 text-surface-800">${p.product_name||'-'}</td>
+      <td class="px-5 py-3 text-surface-500">${p.product_uom||'-'}</td>
+      <td class="px-5 py-3 text-right font-medium">${formatCurrency(p.product_price)}</td>
+      <td class="px-5 py-3 text-surface-500 text-xs">${p.product_desc||'-'}</td>
+      <td class="px-5 py-3 text-center">
+        <button onclick="editProduct('${p.__backendId}')" class="p-1.5 rounded-lg hover:bg-surface-100 text-surface-500"><i data-lucide="edit" class="w-4 h-4"></i></button>
+        <button onclick="confirmDelete('${p.__backendId}','product')" class="p-1.5 rounded-lg hover:bg-red-50 text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="6" class="px-5 py-8 text-center text-surface-400">Belum ada produk</td></tr>'}</tbody>
+  </table>`;
+}
+
+function filterProducts() {
+  const q = document.getElementById('searchProd').value.toLowerCase();
+  const prods = getProducts().filter(p => (p.product_code||'').toLowerCase().includes(q) || (p.product_name||'').toLowerCase().includes(q));
+  document.getElementById('prodTable').innerHTML = renderProdTable(prods);
+  lucide.createIcons({attrs:{class:''},nameAttr:'data-lucide'});
+}
+
+function openProdukForm(rec=null) {
+  editingRecord = rec;
+  showModal(`<div class="p-6">
+    <h3 class="text-lg font-bold text-surface-900 mb-5">${rec?'Edit':'Tambah'} Produk</h3>
+    <div class="space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="text-xs font-medium text-surface-600 mb-1 block">Kode Produk</label><input id="pf_code" class="input-field" value="${rec?rec.product_code:''}"></div>
+        <div><label class="text-xs font-medium text-surface-600 mb-1 block">Satuan (UoM)</label><input id="pf_uom" class="input-field" placeholder="pcs, unit, set" value="${rec?rec.product_uom:''}"></div>
+      </div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Nama Barang *</label><input id="pf_name" class="input-field" value="${rec?rec.product_name:''}"></div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Harga</label><input id="pf_price" type="number" class="input-field" value="${rec?rec.product_price:0}"></div>
+      <div><label class="text-xs font-medium text-surface-600 mb-1 block">Keterangan</label><textarea id="pf_desc" class="input-field" rows="2">${rec?rec.product_desc:''}</textarea></div>
+    </div>
+    <div class="flex gap-3 justify-end mt-5">
+      <button onclick="closeModal()" class="btn-secondary px-4 py-2.5 rounded-lg text-sm font-medium">Batal</button>
+      <button onclick="saveProduct()" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium" id="saveProdBtn">Simpan</button>
+    </div>
+  </div>`);
+}
+
+function editProduct(id) {
+  const p = getProducts().find(x => x.__backendId === id);
+  if (p) openProdukForm(p);
+}
+
+async function saveProduct() {
+  const name = document.getElementById('pf_name').value.trim();
+  if (!name) { showToast('Nama barang harus diisi', 'error'); return; }
+  const btn = document.getElementById('saveProdBtn');
+  btn.disabled=true; btn.textContent='Menyimpan...';
+
+  const data = {
+    data_category: 'product',
+    product_code: document.getElementById('pf_code').value,
+    product_name: name,
+    product_uom: document.getElementById('pf_uom').value,
+    product_price: parseFloat(document.getElementById('pf_price').value)||0,
+    product_desc: document.getElementById('pf_desc').value,
+    type:'', doc_number:'', doc_date:'', customer_name:'', customer_company:'',
+    customer_address:'', customer_city:'', customer_phone:'', customer_email:'',
+    items_json:'', subtotal:0, ppn:0, grand_total:0, terbilang:'', notes:'',
+    status:'', source_doc:'', created_at: new Date().toISOString(),
+    company_name:'', company_address:'', company_city:'', company_phone:'', company_email:'',
+    setting_key:'', setting_value:''
+  };
+
+  let result;
+  if (editingRecord) {
+    result = await window.dataSdk.update({...editingRecord, ...data});
+  } else {
+    if (currentRecordCount >= 999) { showToast('Batas data tercapai (999)', 'error'); btn.disabled=false; btn.textContent='Simpan'; return; }
+    result = await window.dataSdk.create(data);
+  }
+  btn.disabled=false; btn.textContent='Simpan';
+  if (result.isOk) { showToast(`Produk berhasil ${editingRecord?'diupdate':'ditambahkan'}!`); closeModal(); editingRecord=null; }
+  else showToast('Gagal menyimpan', 'error');
+}
+
+// ==================== CSV IMPORT ====================
+function importCSV(type) {
+  showModal(`<div class="p-6">
+    <h3 class="text-lg font-bold text-surface-900 mb-4">Import CSV - ${type==='customer'?'Customer':'Produk'}</h3>
+    <p class="text-sm text-surface-500 mb-3">Format CSV: ${type==='customer'?'Nama, Perusahaan, Alamat, Kota, HP, Email':'Kode, Nama, Satuan, Harga, Keterangan'}</p>
+    <textarea id="csvInput" class="input-field font-mono text-xs" rows="8" placeholder="Paste data CSV di sini..."></textarea>
+    <div class="flex gap-3 justify-end mt-4">
+      <button onclick="closeModal()" class="btn-secondary px-4 py-2.5 rounded-lg text-sm font-medium">Batal</button>
+      <button onclick="processCSV('${type}')" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium" id="importBtn">Import</button>
+    </div>
+  </div>`);
+}
+
+async function processCSV(type) {
+  const csv = document.getElementById('csvInput').value.trim();
+  if (!csv) { showToast('Paste data CSV', 'error'); return; }
+  const btn = document.getElementById('importBtn');
+  btn.disabled=true; btn.textContent='Importing...';
+  
+  const lines = csv.split('\n').filter(l => l.trim());
+  let count = 0;
+  for (const line of lines) {
+    if (currentRecordCount + count >= 999) { showToast(`Batas data tercapai. ${count} berhasil diimport.`, 'info'); break; }
+    const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g,''));
+    
+    if (type === 'customer' && cols.length >= 1) {
+      await window.dataSdk.create({
+        data_category:'customer', customer_name:cols[0]||'', customer_company:cols[1]||'',
+        customer_address:cols[2]||'', customer_city:cols[3]||'', customer_phone:cols[4]||'', customer_email:cols[5]||'',
+        type:'', doc_number:'', doc_date:'', items_json:'', subtotal:0, ppn:0, grand_total:0,
+        terbilang:'', notes:'', status:'', source_doc:'', created_at:new Date().toISOString(),
+        company_name:'', company_address:'', company_city:'', company_phone:'', company_email:'',
+        product_code:'', product_name:'', product_uom:'', product_price:0, product_desc:'',
+        setting_key:'', setting_value:''
+      });
+      count++;
+    } else if (type === 'product' && cols.length >= 2) {
+      await window.dataSdk.create({
+        data_category:'product', product_code:cols[0]||'', product_name:cols[1]||'',
+        product_uom:cols[2]||'', product_price:parseFloat(cols[3])||0, product_desc:cols[4]||'',
+        type:'', doc_number:'', doc_date:'', customer_name:'', customer_company:'',
+        customer_address:'', customer_city:'', customer_phone:'', customer_email:'',
+        items_json:'', subtotal:0, ppn:0, grand_total:0, terbilang:'', notes:'',
+        status:'', source_doc:'', created_at:new Date().toISOString(),
+        company_name:'', company_address:'', company_city:'', company_phone:'', company_email:'',
+        setting_key:'', setting_value:''
+      });
+      count++;
+    }
+  }
+  btn.disabled=false; btn.textContent='Import';
+  showToast(`${count} data berhasil diimport!`);
+  closeModal();
+}
+
+// ==================== DELETE GENERIC ====================
+function confirmDelete(id, type) {
+  showModal(`<div class="p-6 text-center">
+    <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4"><i data-lucide="alert-triangle" class="w-6 h-6 text-red-500"></i></div>
+    <h3 class="text-lg font-bold text-surface-900 mb-2">Hapus Data?</h3>
+    <p class="text-sm text-surface-500 mb-5">Data yang dihapus tidak dapat dikembalikan.</p>
+    <div class="flex gap-3 justify-center">
+      <button onclick="closeModal()" class="btn-secondary px-4 py-2.5 rounded-lg text-sm font-medium">Batal</button>
+      <button onclick="deleteRecord('${id}')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors" id="delRecBtn">Hapus</button>
+    </div>
+  </div>`);
+}
+
+async function deleteRecord(id) {
+  const rec = allData.find(d => d.__backendId === id);
+  if (!rec) return;
+  const btn = document.getElementById('delRecBtn');
+  if(btn){btn.disabled=true;btn.textContent='Menghapus...';}
+  const result = await window.dataSdk.delete(rec);
+  if (result.isOk) { showToast('Data berhasil dihapus'); closeModal(); }
+  else { showToast('Gagal menghapus', 'error'); if(btn){btn.disabled=false;btn.textContent='Hapus';} }
+}
+
+// ==================== REKAP BULANAN ====================
+function getAvailableYears() {
+  const docs = getDocuments();
+  const years = new Set();
+  docs.forEach(d => {
+    const dt = new Date(d.doc_date || d.created_at);
+    years.add(dt.getFullYear());
+  });
+  return Array.from(years).sort((a,b) => b-a);
+}
+
+function renderRekap() {
+  const availableYears = getAvailableYears();
+  const selectedYear = parseInt(localStorage.getItem('rekapSelectedYear')) || new Date().getFullYear();
+  
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const docs = getDocuments();
+  
+  const rekapData = months.map((m,i) => {
+    const mDocs = docs.filter(d => { const dt = new Date(d.doc_date||d.created_at); return dt.getFullYear()===selectedYear && dt.getMonth()===i; });
+    const mSPH = mDocs.filter(d=>d.data_category==='sph');
+    const mInv = mDocs.filter(d=>d.data_category==='invoice');
+    return { month:m, sph:mSPH.length, inv:mInv.length, total:mDocs.reduce((s,d)=>s+(d.grand_total||0),0), ppn:mDocs.reduce((s,d)=>s+(d.ppn||0),0) };
+  });
+  
+  const grandTotal = rekapData.reduce((s,r)=>s+r.total,0);
+  const grandPPN = rekapData.reduce((s,r)=>s+r.ppn,0);
+  const hasData = rekapData.some(r => r.sph > 0 || r.inv > 0);
+
+  return `<div class="p-6 fade-in">
+    <div class="flex items-center justify-between mb-6">
+      <div><h2 class="text-2xl font-bold text-surface-900">Rekap Bulanan</h2><p class="text-sm text-surface-500">Ringkasan transaksi per bulan</p></div>
+      <div class="flex gap-2">
+        <button onclick="printRekap()" class="btn-secondary flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="printer" class="w-4 h-4"></i>Print</button>
+        <button onclick="exportRekapCSV()" class="btn-success flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium"><i data-lucide="download" class="w-4 h-4"></i>Export CSV</button>
+      </div>
+    </div>
+    
+    <div class="mb-6 flex items-center gap-3">
+      <label class="text-sm font-medium text-surface-600">Pilih Tahun:</label>
+      <select id="rekapYearSelect" class="input-field w-40" onchange="changeRekapYear()">
+        ${availableYears.length ? availableYears.map(y => `<option value="${y}" ${y===selectedYear?'selected':''}>${y}</option>`).join('') : '<option>Tidak ada data</option>'}
+      </select>
+    </div>
+
+    ${!hasData ? `<div class="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center mb-6">
+      <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3"><i data-lucide="calendar" class="w-6 h-6 text-amber-600"></i></div>
+      <p class="text-sm font-medium text-amber-900">Belum ada data pada tahun ${selectedYear}</p>
+      <p class="text-xs text-amber-700 mt-1">Data akan muncul setelah ada transaksi SPH atau Invoice di tahun ini</p>
+    </div>` : `
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <div class="text-xs text-surface-400 mb-1">Total Transaksi ${selectedYear}</div>
+        <div class="text-xl font-bold text-brand-600">${formatCurrency(grandTotal)}</div>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-surface-100 shadow-sm">
+        <div class="text-xs text-surface-400 mb-1">Total PPN ${selectedYear}</div>
+        <div class="text-xl font-bold text-amber-600">${formatCurrency(grandPPN)}</div>
+      </div>
+    </div>
+    `}
+    
+    <div class="bg-white rounded-xl border border-surface-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-surface-50 text-surface-500 text-xs">
+            <th class="text-left px-5 py-3 font-medium">Bulan</th>
+            <th class="text-center px-5 py-3 font-medium">Jml SPH</th>
+            <th class="text-center px-5 py-3 font-medium">Jml Invoice</th>
+            <th class="text-right px-5 py-3 font-medium">Total Transaksi</th>
+            <th class="text-right px-5 py-3 font-medium">Total PPN</th>
+          </tr></thead>
+          <tbody>${rekapData.map(r => `<tr class="table-row border-b border-surface-50">
+            <td class="px-5 py-3 font-medium text-surface-800">${r.month}</td>
+            <td class="px-5 py-3 text-center"><span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full text-xs font-medium">${r.sph}</span></td>
+            <td class="px-5 py-3 text-center"><span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-xs font-medium">${r.inv}</span></td>
+            <td class="px-5 py-3 text-right font-medium">${formatCurrency(r.total)}</td>
+            <td class="px-5 py-3 text-right text-surface-500">${formatCurrency(r.ppn)}</td>
+          </tr>`).join('')}
+          <tr class="bg-surface-50 font-semibold">
+            <td class="px-5 py-3">Total</td>
+            <td class="px-5 py-3 text-center">${rekapData.reduce((s,r)=>s+r.sph,0)}</td>
+            <td class="px-5 py-3 text-center">${rekapData.reduce((s,r)=>s+r.inv,0)}</td>
+            <td class="px-5 py-3 text-right text-brand-600">${formatCurrency(grandTotal)}</td>
+            <td class="px-5 py-3 text-right text-amber-600">${formatCurrency(grandPPN)}</td>
+          </tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+}
+
+function changeRekapYear() {
+  const year = document.getElementById('rekapYearSelect').value;
+  localStorage.setItem('rekapSelectedYear', year);
+  renderPage();
+}
+
+function exportRekapCSV() {
+  const selectedYear = parseInt(localStorage.getItem('rekapSelectedYear')) || new Date().getFullYear();
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const docs = getDocuments();
+  let csv = `Rekap Bulanan ${selectedYear}\nBulan,Jumlah SPH,Jumlah Invoice,Total Transaksi,Total PPN\n`;
+  months.forEach((m,i) => {
+    const mDocs = docs.filter(d => { const dt = new Date(d.doc_date||d.created_at); return dt.getFullYear()===selectedYear && dt.getMonth()===i; });
+    csv += `${m},${mDocs.filter(d=>d.data_category==='sph').length},${mDocs.filter(d=>d.data_category==='invoice').length},${mDocs.reduce((s,d)=>s+(d.grand_total||0),0)},${mDocs.reduce((s,d)=>s+(d.ppn||0),0)}\n`;
+  });
+  downloadFile(csv, `Rekap_Bulanan_${selectedYear}.csv`, 'text/csv');
+}
+
+function printRekap() {
+  const selectedYear = parseInt(localStorage.getItem('rekapSelectedYear')) || new Date().getFullYear();
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const docs = getDocuments();
+  
+  const rekapData = months.map((m,i) => {
+    const mDocs = docs.filter(d => { const dt = new Date(d.doc_date||d.created_at); return dt.getFullYear()===selectedYear && dt.getMonth()===i; });
+    return { month:m, sph:mDocs.filter(d=>d.data_category==='sph').length, inv:mDocs.filter(d=>d.data_category==='invoice').length, total:mDocs.reduce((s,d)=>s+(d.grand_total||0),0), ppn:mDocs.reduce((s,d)=>s+(d.ppn||0),0) };
+  });
+  
+  let html = `<h2 style="text-align:center;margin-bottom:20px;font-size:18pt;font-weight:700">Rekap Bulanan Tahun ${selectedYear}</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:10pt">
+      <thead><tr style="background:#f1f5f9">
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:left">Bulan</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:center">Jml SPH</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:center">Jml Invoice</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:right">Total Transaksi</th>
+        <th style="border:1px solid #cbd5e1;padding:8px;text-align:right">Total PPN</th>
+      </tr></thead>
+      <tbody>`;
+  
+  let totalSPH = 0, totalInv = 0, totalTrx = 0, totalPPN = 0;
+  rekapData.forEach(r => {
+    totalSPH += r.sph;
+    totalInv += r.inv;
+    totalTrx += r.total;
+    totalPPN += r.ppn;
+    html += `<tr>
+      <td style="border:1px solid #cbd5e1;padding:8px">${r.month}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:center">${r.sph}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:center">${r.inv}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(r.total)}</td>
+      <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(r.ppn)}</td>
+    </tr>`;
+  });
+  
+  html += `<tr style="background:#f1f5f9;font-weight:700">
+    <td style="border:1px solid #cbd5e1;padding:8px">TOTAL</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:center">${totalSPH}</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:center">${totalInv}</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(totalTrx)}</td>
+    <td style="border:1px solid #cbd5e1;padding:8px;text-align:right">${formatCurrency(totalPPN)}</td>
+  </tr></tbody>
+    </table>
+    <div style="margin-top:20px;font-size:9pt;color:#64748b">
+      <p>Dicetak: ${formatDate(new Date().toISOString())}</p>
+      <p>Perusahaan: ${companySettings.company_name}</p>
+    </div>`;
+  
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Rekap_Bulanan_${selectedYear}</title>
+    <style>@page{size:A4;margin:15mm}body{margin:0;font-family:'Plus Jakarta Sans',Helvetica,Arial,sans-serif;padding:20px}</style>
+  </head><body>${html}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.print(); }, 500);
+}
+
+
+// ==================== SETTINGS ====================
+function renderSettings() {
+  return `<div class="p-6 fade-in">
+    <div class="mb-6"><h2 class="text-2xl font-bold text-surface-900">Pengaturan</h2><p class="text-sm text-surface-500">Konfigurasi profil perusahaan & dokumen</p></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-xl border border-brand-100 shadow-sm p-5 lg:col-span-2">
+        <h3 class="text-sm font-semibold text-surface-800 mb-2 flex items-center gap-2"><i data-lucide="cloud" class="w-4 h-4 text-brand-500"></i>Google Sheets Online</h3>
+        <p class="text-xs text-surface-500 leading-5">Tempel URL Web App dari Google Apps Script di sini. Aplikasi tetap jalan lokal di browser atau GitHub Pages. Saat startup, aplikasi akan otomatis mencoba memuat data dari Google Sheets bila URL sudah tersimpan. Sync otomatis hanya mendorong perubahan lokal ke Google Sheets.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+          <div class="md:col-span-2">
+            <label class="text-xs font-medium text-surface-600 mb-1 block">URL Web App Apps Script</label>
+            <input id="s_api_web_app_url" class="input-field text-xs" placeholder="https://script.google.com/macros/s/AKfycb.../exec" value="${companySettings.api_web_app_url || ''}" onchange="saveOnlineConfigFromSettings(false)">
+          </div>
+          <div class="rounded-lg border border-surface-200 bg-surface-50 p-3">
+            <div class="text-[11px] text-surface-500">Status</div>
+            <div class="text-sm font-semibold text-surface-800">${companySettings.api_web_app_url ? 'URL tersimpan' : 'Belum terhubung'}</div>
+            <div class="text-[11px] text-surface-500 mt-1 leading-5">Last sync: ${companySettings.api_last_sync ? new Date(companySettings.api_last_sync).toLocaleString('id-ID', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : 'Belum pernah'}</div>
+          </div>
+        </div>
+        <label class="flex items-center gap-2 cursor-pointer mt-3">
+          <input type="checkbox" id="s_api_auto_sync" ${companySettings.api_auto_sync ? 'checked' : ''} class="w-4 h-4" onchange="saveOnlineConfigFromSettings(true)">
+          <span class="text-xs text-surface-600">Aktifkan sync otomatis (push lokal ke Google Sheets) setiap ada perubahan data</span>
+        </label>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <button onclick="testOnlineConnection()" class="btn-secondary px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2"><i data-lucide="wifi" class="w-3.5 h-3.5"></i>Test Koneksi</button>
+          <button onclick="loadOnlineDatabase()" class="btn-secondary px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2"><i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>Muat Data Online</button>
+          <button onclick="syncOnlineNow()" class="btn-primary px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-2"><i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>Sinkronkan Sekarang</button>
+        </div>
+        <div class="text-[11px] text-surface-500 mt-3 leading-5">Urutan pakai: isi <strong>SPREADSHEET_ID</strong> di Apps Script, deploy sebagai Web App, copy URL <strong>/exec</strong>, tempel di sini, klik <strong>Test Koneksi</strong>. Setelah URL tersimpan, aplikasi akan auto-load dari Google Sheets saat startup. Gunakan <strong>Sinkronkan Sekarang</strong> untuk kirim data lokal ke Google Sheets, atau <strong>Muat Data Online</strong> bila ingin tarik ulang manual.</div>
+      </div>
+      <div class="bg-white rounded-xl border border-surface-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4 flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4 text-brand-500"></i>Profil Perusahaan</h3>
+        <div class="space-y-3">
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Nama Perusahaan</label><input id="s_company" class="input-field" value="${companySettings.company_name}"></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Deskripsi Perusahaan</label><input id="s_description" class="input-field" placeholder="Contoh: Contractor & Supplier" value="${companySettings.company_description}"></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Alamat</label><input id="s_address" class="input-field" value="${companySettings.company_address}"></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-xs font-medium text-surface-600 mb-1 block">Kota</label><input id="s_city" class="input-field" value="${companySettings.company_city}"></div>
+            <div><label class="text-xs font-medium text-surface-600 mb-1 block">Telepon</label><input id="s_phone" class="input-field" value="${companySettings.company_phone}"></div>
+          </div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Email</label><input id="s_email" class="input-field" value="${companySettings.company_email}"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-surface-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4 flex items-center gap-2"><i data-lucide="image" class="w-4 h-4 text-brand-500"></i>Logo & TTD Dokumen</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs font-medium text-surface-600 mb-1 block">Logo Perusahaan</label>
+            <div class="flex items-center gap-2">
+              <div id="logoPreview" style="width:50px;height:50px;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#f8fafc;font-size:8pt;color:#94a3b8;overflow:hidden">
+                ${companySettings.logo_data ? `<img src="${companySettings.logo_data}" style="max-width:100%;max-height:100%;object-fit:contain">` : 'Logo'}
+              </div>
+              <input type="file" id="logoUpload" accept="image/*" onchange="handleLogoUpload()" style="display:none">
+              <button onclick="document.getElementById('logoUpload').click()" class="btn-secondary text-xs px-3 py-1.5 rounded-lg">Unggah</button>
+              ${companySettings.logo_data ? '<button onclick="clearLogo()" class="btn-danger text-xs px-3 py-1.5 rounded-lg">Hapus</button>' : ''}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-medium text-surface-600 mb-1 block">TTD Utama</label>
+              <div class="flex items-center gap-2">
+                <div id="signaturePreview" style="width:90px;height:46px;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#f8fafc;font-size:8pt;color:#94a3b8;overflow:hidden">
+                  ${companySettings.signature_data ? `<img src="${companySettings.signature_data}" style="max-width:100%;max-height:100%;object-fit:contain">` : 'TTD'}
+                </div>
+                <input type="file" id="signatureUpload" accept="image/*" onchange="handleSignatureUpload()" style="display:none">
+                <button onclick="document.getElementById('signatureUpload').click()" class="btn-secondary text-xs px-3 py-1.5 rounded-lg">Unggah</button>
+                ${companySettings.signature_data ? '<button onclick="clearSignature()" class="btn-danger text-xs px-3 py-1.5 rounded-lg">Hapus</button>' : ''}
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-surface-600 mb-1 block">TTD Kedua (opsional, sisi kiri dokumen)</label>
+              <div class="flex items-center gap-2">
+                <div id="secondarySignaturePreview" style="width:90px;height:46px;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#f8fafc;font-size:8pt;color:#94a3b8;overflow:hidden">
+                  ${companySettings.secondary_signature_data ? `<img src="${companySettings.secondary_signature_data}" style="max-width:100%;max-height:100%;object-fit:contain">` : 'TTD 2'}
+                </div>
+                <input type="file" id="secondarySignatureUpload" accept="image/*" onchange="handleSecondarySignatureUpload()" style="display:none">
+                <button onclick="document.getElementById('secondarySignatureUpload').click()" class="btn-secondary text-xs px-3 py-1.5 rounded-lg">Unggah</button>
+                ${companySettings.secondary_signature_data ? '<button onclick="clearSecondarySignature()" class="btn-danger text-xs px-3 py-1.5 rounded-lg">Hapus</button>' : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-surface-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4 flex items-center gap-2"><i data-lucide="palette" class="w-4 h-4 text-brand-500"></i>Tema & Dokumen</h3>
+        <div class="space-y-3">
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Warna Aksen Dokumen</label>
+            <div class="flex gap-2 items-center">
+              <input type="color" id="s_accent" value="${companySettings.doc_accent}" class="w-10 h-10 rounded cursor-pointer border-0">
+              <span class="text-xs text-surface-500" id="accentLabel">${companySettings.doc_accent}</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-xs font-medium text-surface-600 mb-1 block">Format No. SPH</label><input id="s_sphfmt" class="input-field text-xs" value="${companySettings.sph_format}"></div>
+            <div><label class="text-xs font-medium text-surface-600 mb-1 block">Format No. Invoice</label><input id="s_invfmt" class="input-field text-xs" value="${companySettings.inv_format}"></div>
+          </div>
+          <div class="text-[11px] text-surface-500 -mt-1">Token format: {NUM}, {ABBR}, {MM} (bulan romawi), {MM_NUM}, {YY}, {YYYY}, {PREFIX} — format lama NUM/MM/YY tanpa kurung juga tetap didukung</div>
+          <div class="rounded-lg border border-surface-200 bg-surface-50 p-3 space-y-2">
+            <div class="text-xs font-semibold text-surface-700">Layout Cetak Lebih Ringkas</div>
+            <p class="text-[11px] text-surface-500 leading-5">Versi ini sudah dibuat lebih hemat tempat: font dokumen diperkecil, padding tabel dirapatkan, area total dipersempit, dan blok tanda tangan tampil rapi kiri-kanan.</p>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer pt-1">
+            <input type="checkbox" id="s_show_logo_watermark" ${companySettings.show_logo_watermark ? 'checked' : ''} class="w-4 h-4">
+            <span class="text-xs text-surface-600">Aktifkan watermark logo di tengah dokumen</span>
+          </label>
+          <div class="text-[11px] text-surface-500 -mt-1 leading-5">Watermark otomatis memakai logo perusahaan yang sudah di-upload. Tampil tipis di tengah halaman dan tetap berada di belakang konten dokumen.</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-surface-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4 flex items-center gap-2"><i data-lucide="percent" class="w-4 h-4 text-brand-500"></i>Opsi Pajak & Biaya</h3>
+        <div class="space-y-3">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="s_ppn_enabled" ${companySettings.ppn_enabled ? 'checked' : ''} class="w-4 h-4">
+            <span class="text-xs text-surface-600">Aktifkan PPN</span>
+          </label>
+          <div class="flex gap-2 items-center">
+            <input type="number" id="s_ppn_rate" class="input-field text-xs w-20" min="0" max="100" placeholder="%" value="${companySettings.ppn_rate}">
+            <span class="text-xs text-surface-500">Tarif PPN (%)</span>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="s_discount_enabled" ${companySettings.discount_enabled ? 'checked' : ''} class="w-4 h-4">
+            <span class="text-xs text-surface-600">Aktifkan Diskon</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="s_shipping_enabled" ${companySettings.shipping_enabled ? 'checked' : ''} class="w-4 h-4">
+            <span class="text-xs text-surface-600">Aktifkan Biaya Tambahan</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="s_pph_enabled" ${companySettings.pph_enabled ? 'checked' : ''} class="w-4 h-4">
+            <span class="text-xs text-surface-600">Aktifkan PPH</span>
+          </label>
+          <div class="flex gap-2 items-center">
+            <input type="number" id="s_pph_rate" class="input-field text-xs w-20" min="0" max="100" placeholder="%" value="${companySettings.pph_rate}">
+            <span class="text-xs text-surface-500">Tarif PPH (%)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-surface-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-brand-500"></i>Catatan & Syarat Ketentuan</h3>
+        <div class="space-y-3">
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Catatan SPH</label><textarea id="s_sphnotes" class="input-field text-xs" rows="2">${companySettings.sph_notes}</textarea></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Syarat & Ketentuan SPH</label><textarea id="s_sphterms" class="input-field text-xs" rows="2">${companySettings.sph_terms}</textarea></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Catatan Invoice</label><textarea id="s_invnotes" class="input-field text-xs" rows="2">${companySettings.invoice_notes}</textarea></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Syarat & Ketentuan Invoice</label><textarea id="s_invterms" class="input-field text-xs" rows="2">${companySettings.invoice_terms}</textarea></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-surface-100 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-surface-800 mb-4 flex items-center gap-2"><i data-lucide="pen-tool" class="w-4 h-4 text-brand-500"></i>Tanda Tangan</h3>
+        <div class="space-y-3">
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Nama Penandatangan Utama</label><input id="s_dirname" class="input-field" value="${companySettings.director_name}"><div class="text-[11px] text-surface-500 mt-1">Nama perusahaan di atasnya akan otomatis memakai nama perusahaan user.</div></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Jabatan Penandatangan Utama</label><input id="s_dirtitle" class="input-field" value="${companySettings.director_title}"></div>
+          <label class="flex items-center gap-2 cursor-pointer pt-1">
+            <input type="checkbox" id="s_show_secondary_signature" ${companySettings.show_secondary_signature ? 'checked' : ''} class="w-4 h-4">
+            <span class="text-xs text-surface-600">Aktifkan kolom TTD kiri</span>
+          </label>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Label Kolom TTD Kiri</label><input id="s_secondary_label" class="input-field" placeholder="Contoh: Menyetujui," value="${companySettings.secondary_signature_label || 'Menyetujui,'}"><div class="text-[11px] text-surface-500 mt-1">Nama perusahaan/customer di bawah label akan otomatis mengambil data customer.</div></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Nama Penandatangan Kolom Kiri</label><input id="s_secondary_name" class="input-field" value="${companySettings.secondary_signature_name || ''}"></div>
+          <div><label class="text-xs font-medium text-surface-600 mb-1 block">Jabatan Penandatangan Kolom Kiri</label><input id="s_secondary_title" class="input-field" value="${companySettings.secondary_signature_title || ''}"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end">
+      <button onclick="saveSettings()" class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium flex items-center gap-2" id="saveSettingsBtn"><i data-lucide="save" class="w-4 h-4"></i>Simpan Pengaturan</button>
+    </div>
+  </div>`;
+}
+
+async function saveSettings() {
+  const btn = document.getElementById('saveSettingsBtn');
+  btn.disabled = true;
+  btn.textContent = 'Menyimpan...';
+
+  companySettings.company_name = document.getElementById('s_company').value;
+  companySettings.company_description = document.getElementById('s_description').value;
+  companySettings.company_address = document.getElementById('s_address').value;
+  companySettings.company_city = document.getElementById('s_city').value;
+  companySettings.company_phone = document.getElementById('s_phone').value;
+  companySettings.company_email = document.getElementById('s_email').value;
+  companySettings.doc_accent = document.getElementById('s_accent').value;
+  companySettings.sph_format = document.getElementById('s_sphfmt').value;
+  companySettings.inv_format = document.getElementById('s_invfmt').value;
+  companySettings.sph_notes = document.getElementById('s_sphnotes').value;
+  companySettings.invoice_notes = document.getElementById('s_invnotes').value;
+  companySettings.sph_terms = document.getElementById('s_sphterms').value;
+  companySettings.invoice_terms = document.getElementById('s_invterms').value;
+  companySettings.director_name = document.getElementById('s_dirname').value;
+  companySettings.director_title = document.getElementById('s_dirtitle').value;
+  companySettings.show_secondary_signature = document.getElementById('s_show_secondary_signature')?.checked || false;
+  companySettings.secondary_signature_label = document.getElementById('s_secondary_label').value;
+  companySettings.show_logo_watermark = document.getElementById('s_show_logo_watermark')?.checked || false;
+  companySettings.secondary_signature_name = document.getElementById('s_secondary_name').value;
+  companySettings.secondary_signature_title = document.getElementById('s_secondary_title').value;
+  companySettings.ppn_enabled = document.getElementById('s_ppn_enabled')?.checked || false;
+  companySettings.ppn_rate = parseFloat(document.getElementById('s_ppn_rate')?.value || 0) || 0;
+  companySettings.discount_enabled = document.getElementById('s_discount_enabled')?.checked || false;
+  companySettings.shipping_enabled = document.getElementById('s_shipping_enabled')?.checked || false;
+  companySettings.pph_enabled = document.getElementById('s_pph_enabled')?.checked || false;
+  companySettings.pph_rate = parseFloat(document.getElementById('s_pph_rate')?.value || 0) || 0;
+
+  const existingSettings = getSettings();
+  const keysToSave = Object.keys(companySettings);
+
+  for (const key of keysToSave) {
+    const value = companySettings[key];
+    const existing = existingSettings.find(s => s.setting_key === key);
+
+    if (existing) {
+      await window.dataSdk.update({...existing, setting_value: String(value)});
+    } else {
+      if (currentRecordCount >= 999) break;
+      await window.dataSdk.create({
+        data_category:'setting', setting_key: key, setting_value: String(value),
+        type:'', doc_number:'', doc_date:'', customer_name:'', customer_company:'',
+        customer_address:'', customer_city:'', customer_phone:'', customer_email:'',
+        items_json:'', subtotal:0, ppn:0, grand_total:0, terbilang:'', notes:'',
+        status:'', source_doc:'', created_at: new Date().toISOString(),
+        company_name:'', company_address:'', company_city:'', company_phone:'', company_email:'',
+        product_code:'', product_name:'', product_uom:'', product_price:0, product_desc:'',
+        setting_key: key, setting_value: String(value), logo_data:'', signature_data:''
+      });
+    }
+  }
+  btn.disabled = false;
+  btn.textContent = 'Simpan Pengaturan';
+  showToast('Pengaturan berhasil disimpan!');
+}
+
+function handleLogoUpload() {
+  const file = document.getElementById('logoUpload').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    companySettings.logo_data = e.target.result;
+    document.getElementById('logoPreview').innerHTML = `<img src="${e.target.result}" style="max-width:100%;max-height:100%;object-fit:contain">`;
+    showToast('Logo berhasil dimuat. Simpan pengaturan untuk menyimpan.');
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleSignatureUpload() {
+  const file = document.getElementById('signatureUpload').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    companySettings.signature_data = e.target.result;
+    document.getElementById('signaturePreview').innerHTML = `<img src="${e.target.result}" style="max-width:100%;max-height:100%;object-fit:contain">`;
+    showToast('TTD utama berhasil dimuat. Simpan pengaturan untuk menyimpan.');
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleSecondarySignatureUpload() {
+  const file = document.getElementById('secondarySignatureUpload').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    companySettings.secondary_signature_data = e.target.result;
+    document.getElementById('secondarySignaturePreview').innerHTML = `<img src="${e.target.result}" style="max-width:100%;max-height:100%;object-fit:contain">`;
+    showToast('TTD kedua berhasil dimuat. Simpan pengaturan untuk menyimpan.');
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearLogo() {
+  companySettings.logo_data = '';
+  document.getElementById('logoPreview').innerHTML = 'Logo';
+  showToast('Logo dihapus');
+}
+
+function clearSignature() {
+  companySettings.signature_data = '';
+  document.getElementById('signaturePreview').innerHTML = 'TTD';
+  showToast('TTD utama dihapus');
+}
+
+function clearSecondarySignature() {
+  companySettings.secondary_signature_data = '';
+  document.getElementById('secondarySignaturePreview').innerHTML = 'TTD 2';
+  showToast('TTD kedua dihapus');
+}
+
+// ==================== DATA SDK ====================
+const defaultConfig = {
+  app_title: 'SPH & Invoice Manager',
+  background_color: '#f8fafc',
+  surface_color: '#ffffff',
+  text_color: '#1e293b',
+  primary_action_color: '#6366f1',
+  secondary_action_color: '#64748b'
+};
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    
+    // Load settings
+    const settings = data.filter(d => d.data_category === 'setting');
+    settings.forEach(s => {
+      if (s.setting_key && companySettings.hasOwnProperty(s.setting_key)) {
+        companySettings[s.setting_key] = s.setting_value;
+      }
+    });
+    
+    renderPage();
+  }
+};
+
+// ==================== ELEMENT SDK ====================
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const title = config.app_title || defaultConfig.app_title;
+    const el = document.getElementById('sidebarTitle');
+    if (el) el.textContent = title.length > 14 ? title.substring(0,14) : title;
+    document.title = title;
+
+    document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color=v; window.elementSdk.setConfig({background_color:v}); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color=v; window.elementSdk.setConfig({surface_color:v}); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color=v; window.elementSdk.setConfig({text_color:v}); }},
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color=v; window.elementSdk.setConfig({primary_action_color:v}); }},
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color=v; window.elementSdk.setConfig({secondary_action_color:v}); }}
+    ],
+    borderables: [],
+    fontEditable: undefined,
+    fontSizeable: undefined
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['app_title', config.app_title || defaultConfig.app_title]
+  ])
+});
+
+// Initialize Data SDK
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) {
+    console.error('Data SDK init failed');
+    renderPage();
+  }
+  lucide.createIcons();
+})();
+</script>
+ <script>
+(function(){
+  const STORAGE_KEY = 'sph_invoice_db_v2';
+  const DB_VERSION = 2;
+  let appDb = null;
+
+  const SETTING_TYPES = {
+    company_name:'string', company_description:'string', company_address:'string', company_city:'string', company_phone:'string', company_email:'string',
+    doc_accent:'string', sph_notes:'string', invoice_notes:'string', sph_terms:'string', invoice_terms:'string',
+    director_name:'string', director_title:'string', sph_format:'string', inv_format:'string', logo_data:'string', signature_data:'string',
+    show_secondary_signature:'boolean', secondary_signature_label:'string', secondary_signature_name:'string', secondary_signature_title:'string', secondary_signature_data:'string', show_logo_watermark:'boolean',
+    ppn_rate:'number', ppn_enabled:'boolean', discount_enabled:'boolean', shipping_enabled:'boolean', pph_enabled:'boolean', pph_rate:'number',
+    api_web_app_url:'string', api_auto_sync:'boolean', api_last_sync:'string'
+  };
+
+  function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
+  function uid(prefix){ return prefix + '_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
+  function toNumber(val, fallback=0){
+    if (typeof val === 'number' && Number.isFinite(val)) return val;
+    if (typeof val === 'string') {
+      const normalized = val.replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+      const num = parseFloat(normalized);
+      return Number.isFinite(num) ? num : fallback;
+    }
+    return fallback;
+  }
+  function toBool(val){
+    if (typeof val === 'boolean') return val;
+    if (typeof val === 'number') return val !== 0;
+    if (typeof val === 'string') return ['true','1','yes','y','on'].includes(val.trim().toLowerCase());
+    return false;
+  }
+  function safeDate(val){
+    if (!val) return new Date().toISOString().split('T')[0];
+    const d = new Date(val);
+    return Number.isNaN(d.getTime()) ? new Date().toISOString().split('T')[0] : d.toISOString().split('T')[0];
+  }
+  function parseJson(val, fallback){
+    try { return JSON.parse(val); } catch (_) { return fallback; }
+  }
+  function escapeCsv(value){
+    const s = String(value ?? '');
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function parseCsv(text){
+    const rows = [];
+    let row = [];
+    let field = '';
+    let inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const next = text[i+1];
+      if (ch === '"') {
+        if (inQuotes && next === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (ch === ',' && !inQuotes) {
+        row.push(field.trim());
+        field = '';
+      } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+        if (ch === '\r' && next === '\n') i++;
+        row.push(field.trim());
+        if (row.some(cell => cell !== '')) rows.push(row.map(cell => cell.replace(/^"|"$/g,'')));
+        row = [];
+        field = '';
+      } else {
+        field += ch;
+      }
+    }
+    if (field.length || row.length) {
+      row.push(field.trim());
+      if (row.some(cell => cell !== '')) rows.push(row.map(cell => cell.replace(/^"|"$/g,'')));
+    }
+    return rows;
+  }
+
+  function normalizeSettings(raw){
+    const base = clone(companySettings || {});
+    Object.keys(SETTING_TYPES).forEach(key => {
+      const type = SETTING_TYPES[key];
+      const value = raw && Object.prototype.hasOwnProperty.call(raw, key) ? raw[key] : base[key];
+      if (type === 'boolean') base[key] = toBool(value);
+      else if (type === 'number') base[key] = toNumber(value, toNumber(base[key], 0));
+      else base[key] = value == null ? '' : String(value);
+    });
+    const legacySph = 'SPH-{NUM}/SSG/{YY}';
+    const legacyInv = 'INV-{NUM}/SSG/{YY}';
+    if (!base.sph_format || base.sph_format === legacySph) base.sph_format = 'SPH-{NUM}/{ABBR}/{MM}/{YY}';
+    if (!base.inv_format || base.inv_format === legacyInv) base.inv_format = 'INV-{NUM}/{ABBR}/{MM}/{YY}';
+    if (!String(base.sph_format).includes('{ABBR}')) base.sph_format = String(base.sph_format).replaceAll('SSG', '{ABBR}');
+    if (!String(base.inv_format).includes('{ABBR}')) base.inv_format = String(base.inv_format).replaceAll('SSG', '{ABBR}');
+    return base;
+  }
+
+  function defaultDb(){
+    return {
+      version: DB_VERSION,
+      updated_at: new Date().toISOString(),
+      settings: normalizeSettings(companySettings),
+      sheets: {
+        customers: [],
+        products: [],
+        doc_headers: [],
+        doc_items: [],
+        doc_sequences: []
+      }
+    };
+  }
+
+  let onlineLoadStarted = false;
+  let onlineSyncInFlight = false;
+  let onlineSyncQueued = false;
+  let onlineSyncTimer = null;
+  const EMBEDDED_WEB_APP_URL = ''; // isi URL /exec di sini sebelum upload ke GitHub Pages jika ingin auto-load lintas device
+  const REMOTE_OMIT_SETTING_KEYS = ['logo_data','signature_data','secondary_signature_data'];
+
+  function getStartupUrlOverride(){
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      return String(params.get('api') || params.get('webapp') || '').trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function normalizeDbObject(parsed){
+    if (!parsed || typeof parsed !== 'object') return null;
+    const db = defaultDb();
+    db.version = parsed.version || DB_VERSION;
+    db.updated_at = parsed.updated_at || new Date().toISOString();
+    db.settings = normalizeSettings(parsed.settings || {});
+    if (parsed.sheets && typeof parsed.sheets === 'object') {
+      db.sheets.customers = Array.isArray(parsed.sheets.customers) ? parsed.sheets.customers : [];
+      db.sheets.products = Array.isArray(parsed.sheets.products) ? parsed.sheets.products : [];
+      db.sheets.doc_headers = Array.isArray(parsed.sheets.doc_headers) ? parsed.sheets.doc_headers : [];
+      db.sheets.doc_items = Array.isArray(parsed.sheets.doc_items) ? parsed.sheets.doc_items : [];
+      db.sheets.doc_sequences = Array.isArray(parsed.sheets.doc_sequences) ? parsed.sheets.doc_sequences : [];
+    }
+    return db;
+  }
+
+  function hasMeaningfulData(db){
+    if (!db || !db.sheets) return false;
+    return !!(
+      (db.sheets.customers && db.sheets.customers.length) ||
+      (db.sheets.products && db.sheets.products.length) ||
+      (db.sheets.doc_headers && db.sheets.doc_headers.length) ||
+      (db.sheets.doc_items && db.sheets.doc_items.length) ||
+      (db.sheets.doc_sequences && db.sheets.doc_sequences.length)
+    );
+  }
+
+  function getRemoteConfig(){
+    const fallbackUrl = localStorage.getItem('sph_invoice_online_url') || '';
+    const fallbackAuto = localStorage.getItem('sph_invoice_online_auto_sync');
+    const startupUrl = getStartupUrlOverride() || EMBEDDED_WEB_APP_URL;
+    const url = String((appDb && appDb.settings && appDb.settings.api_web_app_url) || companySettings.api_web_app_url || fallbackUrl || startupUrl || '').trim();
+    const autoSync = toBool(appDb && appDb.settings ? appDb.settings.api_auto_sync : (companySettings.api_auto_sync || fallbackAuto));
+    return { url, autoSync };
+  }
+
+  function persistRemoteConfig(url, autoSync){
+    if (typeof url !== 'undefined') localStorage.setItem('sph_invoice_online_url', String(url || '').trim());
+    if (typeof autoSync !== 'undefined') localStorage.setItem('sph_invoice_online_auto_sync', autoSync ? '1' : '0');
+  }
+
+  function cloneDbForRemoteSync(db){
+    const payload = clone(normalizeDbObject(db) || defaultDb());
+    payload.settings = normalizeSettings(payload.settings || {});
+    REMOTE_OMIT_SETTING_KEYS.forEach(key => {
+      delete payload.settings[key];
+    });
+    return payload;
+  }
+
+  function preserveLocalAssetSettings(snapshot){
+    const normalized = normalizeDbObject(snapshot) || defaultDb();
+    const localSettings = normalizeSettings(((appDb && appDb.settings) || loadDbFromStorage()?.settings || {}));
+    REMOTE_OMIT_SETTING_KEYS.forEach(key => {
+      if ((normalized.settings[key] == null || normalized.settings[key] === '') && localSettings[key]) {
+        normalized.settings[key] = localSettings[key];
+      }
+    });
+    return normalized;
+  }
+
+  const COMPARABLE_SHEET_KEYS = {
+    customers: ['id','name','company','address','city','phone','email','created_at','updated_at','is_active'],
+    products: ['id','code','name','uom','price','description','created_at','updated_at','is_active'],
+    doc_headers: ['id','doc_type','doc_number','doc_date','customer_id','customer_name','customer_company','customer_address','customer_city','customer_phone','customer_email','subtotal','discount_amount','shipping_amount','taxable_base','ppn_enabled','ppn_rate','ppn_amount','pph_enabled','pph_rate','pph_amount','grand_total','notes','terms','terbilang','status','source_doc_id','created_at','updated_at'],
+    doc_items: ['id','doc_id','seq_no','product_id','item_name','description','qty','uom','unit_price','line_total'],
+    doc_sequences: ['id','doc_type','year','last_number','updated_at']
+  };
+
+  function canonicalizeRow(row, keys){
+    const source = row && typeof row === 'object' ? row : {};
+    const result = {};
+    keys.forEach(key => {
+      const value = source[key];
+      if (typeof value === 'boolean') result[key] = value;
+      else if (typeof value === 'number') result[key] = Number.isFinite(value) ? value : 0;
+      else result[key] = value == null ? '' : String(value);
+    });
+    return result;
+  }
+
+  function normalizeComparableSheets(db){
+    const sourceSheets = db && db.sheets && typeof db.sheets === 'object' ? db.sheets : {};
+    const sheets = {};
+    Object.keys(COMPARABLE_SHEET_KEYS).forEach(sheetName => {
+      const keys = COMPARABLE_SHEET_KEYS[sheetName];
+      const rows = Array.isArray(sourceSheets[sheetName]) ? sourceSheets[sheetName] : [];
+      sheets[sheetName] = rows.map(row => canonicalizeRow(row, keys));
+    });
+    return sheets;
+  }
+
+  function getComparableDbSnapshot(db){
+    const normalized = normalizeDbObject(db) || defaultDb();
+    return {
+      version: normalized.version || DB_VERSION,
+      settings: (() => {
+        const settings = normalizeSettings(normalized.settings || {});
+        delete settings.api_last_sync;
+        return settings;
+      })(),
+      sheets: normalizeComparableSheets(normalized)
+    };
+  }
+
+  function sameDbSnapshot(a, b){
+    return JSON.stringify(getComparableDbSnapshot(a)) === JSON.stringify(getComparableDbSnapshot(b));
+  }
+
+  function onlineJsonp(url, params={}){
+    return new Promise((resolve, reject) => {
+      if (!url) return reject(new Error('URL Web App belum diisi'));
+      const callbackName = 'onlineJsonp_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+      const script = document.createElement('script');
+      let finished = false;
+      const cleanup = () => {
+        if (script.parentNode) script.parentNode.removeChild(script);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+      };
+      const done = (fn, payload) => {
+        if (finished) return;
+        finished = true;
+        cleanup();
+        fn(payload);
+      };
+      window[callbackName] = (payload) => done(resolve, payload);
+      script.onerror = () => done(reject, new Error('Gagal memuat respon dari Google Apps Script'));
+      const qs = new URLSearchParams({ ...params, callback: callbackName, _ts: String(Date.now()) });
+      script.src = url + (url.includes('?') ? '&' : '?') + qs.toString();
+      document.body.appendChild(script);
+      setTimeout(() => done(reject, new Error('Timeout saat menghubungi Google Apps Script')), 15000);
+    });
+  }
+
+  function onlinePostViaForm(url, fields={}){
+    return new Promise(async (resolve, reject) => {
+      if (!url) return reject(new Error('URL Web App belum diisi'));
+      try {
+        const body = new URLSearchParams();
+        Object.entries(fields).forEach(([key, value]) => {
+          body.append(key, typeof value === 'string' ? value : JSON.stringify(value));
+        });
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: body.toString()
+        });
+        resolve({ ok: true });
+      } catch (err) {
+        reject(err instanceof Error ? err : new Error('Gagal mengirim data ke Google Apps Script'));
+      }
+    });
+  }
+
+  function applyDbSnapshot(snapshot, renderAfter=true){
+    const normalized = preserveLocalAssetSettings(snapshot);
+    if (!normalized) return false;
+    appDb = normalized;
+    syncCompanySettings();
+    rebuildLegacyView();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appDb));
+    persistRemoteConfig(appDb.settings.api_web_app_url, appDb.settings.api_auto_sync);
+    if (renderAfter) renderPage();
+    return true;
+  }
+
+  async function fetchRemoteDb(){
+    const { url, autoSync } = getRemoteConfig();
+    persistRemoteConfig(url, autoSync);
+    let result = await onlineJsonp(url, { action: 'getDbLite' }).catch(() => null);
+    if (!result || result.ok === false) {
+      result = await onlineJsonp(url, { action: 'getDb' });
+    }
+    if (!result || result.ok === false) throw new Error((result && result.message) || 'Tidak ada respon database');
+    return preserveLocalAssetSettings(result.db || result.data || result);
+  }
+
+  async function pushDbToRemote(force=false, showSuccess=false){
+    const { url, autoSync } = getRemoteConfig();
+    persistRemoteConfig(url, autoSync);
+    if (!url) {
+      if (force) throw new Error('URL Web App belum diisi');
+      return false;
+    }
+    if (!force && !autoSync) return false;
+    if (!appDb) return false;
+    if (onlineSyncInFlight) {
+      onlineSyncQueued = true;
+      return true;
+    }
+    onlineSyncInFlight = true;
+    try {
+      appDb.updated_at = new Date().toISOString();
+      const payloadDb = cloneDbForRemoteSync(appDb);
+      payloadDb.updated_at = appDb.updated_at;
+      await onlinePostViaForm(url, { action: 'saveDb', payload: JSON.stringify(payloadDb) });
+      appDb.settings.api_last_sync = new Date().toISOString();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appDb));
+      syncCompanySettings();
+      if (currentPage === 'settings') renderPage();
+      if (showSuccess) showToast('Sinkronisasi dikirim ke Google Sheets');
+      return true;
+    } catch (err) {
+      throw err instanceof Error ? err : new Error('Gagal mengirim data ke Google Sheets');
+    } finally {
+      onlineSyncInFlight = false;
+      if (onlineSyncQueued) {
+        onlineSyncQueued = false;
+        setTimeout(() => pushDbToRemote(force, false).catch(err => console.error(err)), 500);
+      }
+    }
+  }
+
+  async function flushRemoteSyncAfterMutation(contextLabel='Perubahan data'){
+    const { url, autoSync } = getRemoteConfig();
+    if (!url || !autoSync) return false;
+    clearTimeout(onlineSyncTimer);
+    try {
+      await pushDbToRemote(false, false);
+      return true;
+    } catch (err) {
+      console.error(err);
+      showToast(`${contextLabel} tersimpan, tetapi sync ke Google Sheets gagal. Data lokal tetap aman.`, 'info');
+      return false;
+    }
+  }
+
+  function scheduleRemoteSync(){
+    const { url, autoSync } = getRemoteConfig();
+    if (!url || !autoSync) return;
+    clearTimeout(onlineSyncTimer);
+    onlineSyncTimer = setTimeout(() => {
+      pushDbToRemote(false, false).catch(err => {
+        console.error(err);
+        showToast('Auto sync gagal. Data lokal tetap aman di browser.', 'error');
+      });
+    }, 1200);
+  }
+
+  async function bootstrapRemoteDb(showToastOnLoad=false){
+    if (onlineLoadStarted) return false;
+    onlineLoadStarted = true;
+    try {
+      const { url, autoSync } = getRemoteConfig();
+      persistRemoteConfig(url, autoSync);
+      if (!url) return false;
+      if (appDb && appDb.settings && !appDb.settings.api_web_app_url) {
+        appDb.settings.api_web_app_url = url;
+      }
+      const remoteDb = await fetchRemoteDb();
+      if (!hasMeaningfulData(remoteDb)) return false;
+      const localDb = normalizeDbObject(appDb) || defaultDb();
+      const localHasData = hasMeaningfulData(localDb);
+      const remoteTime = new Date(remoteDb.updated_at || 0).getTime() || 0;
+      const localTime = new Date(localDb.updated_at || 0).getTime() || 0;
+      if (!localHasData || remoteTime >= localTime) {
+        applyDbSnapshot(remoteDb, true);
+        if (showToastOnLoad) showToast('Data Google Sheets berhasil dimuat otomatis');
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error('Startup online load failed:', err);
+      return false;
+    }
+  }
+
+  window.saveOnlineConfigFromSettings = function(triggerSync=false){
+    ensureDb();
+    const url = (document.getElementById('s_api_web_app_url')?.value || '').trim();
+    const autoSync = !!document.getElementById('s_api_auto_sync')?.checked;
+    appDb.settings.api_web_app_url = url;
+    appDb.settings.api_auto_sync = autoSync;
+    persistRemoteConfig(url, autoSync);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appDb));
+    syncCompanySettings();
+    if (triggerSync && autoSync && url) {
+      showToast('Sync otomatis diaktifkan', 'info');
+      scheduleRemoteSync();
+    }
+  };
+
+  window.testOnlineConnection = async function(){
+    const url = (document.getElementById('s_api_web_app_url')?.value || '').trim();
+    const autoSync = document.getElementById('s_api_auto_sync')?.checked;
+    persistRemoteConfig(url, autoSync);
+    if (!url) { showToast('Isi URL Web App terlebih dahulu', 'error'); return; }
+    try {
+      const ping = await onlineJsonp(url, { action: 'ping' });
+      if (!ping || ping.ok === false) throw new Error((ping && ping.message) || 'Ping gagal');
+      showToast('Koneksi Google Sheets berhasil');
+    } catch (err) {
+      showToast('Koneksi gagal: ' + (err.message || 'Error'), 'error');
+    }
+  };
+
+  window.loadOnlineDatabase = async function(){
+    const url = (document.getElementById('s_api_web_app_url')?.value || '').trim();
+    const autoSync = document.getElementById('s_api_auto_sync')?.checked;
+    persistRemoteConfig(url, autoSync);
+    if (appDb && appDb.settings) {
+      appDb.settings.api_web_app_url = url;
+      appDb.settings.api_auto_sync = !!autoSync;
+    }
+    if (!url) { showToast('Isi URL Web App terlebih dahulu', 'error'); return; }
+    try {
+      const remoteDb = await fetchRemoteDb();
+      if (!hasMeaningfulData(remoteDb)) {
+        showToast('Database online masih kosong', 'info');
+        return;
+      }
+      applyDbSnapshot(remoteDb, true);
+      showToast('Data Google Sheets berhasil dimuat');
+    } catch (err) {
+      showToast('Gagal memuat data online: ' + (err.message || 'Error'), 'error');
+    }
+  };
+
+  window.syncOnlineNow = async function(){
+    ensureDb();
+    const url = (document.getElementById('s_api_web_app_url')?.value || '').trim();
+    const autoSync = document.getElementById('s_api_auto_sync')?.checked;
+    persistRemoteConfig(url, autoSync);
+    appDb.settings.api_web_app_url = url;
+    appDb.settings.api_auto_sync = !!autoSync;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appDb));
+    if (!url) { showToast('Isi URL Web App terlebih dahulu', 'error'); return; }
+    try {
+      await pushDbToRemote(true, true);
+    } catch (err) {
+      showToast('Gagal sinkron: ' + (err.message || 'Error'), 'error');
+    }
+  };
+
+  function extractRunningNumber(docNumber){
+    const match = String(docNumber || '').match(/(\d{3,})/);
+    return match ? parseInt(match[1], 10) : 0;
+  }
+
+  function migrateLegacyFlatData(records){
+    const db = defaultDb();
+    const customerMap = new Map();
+    const productMap = new Map();
+    const now = new Date().toISOString();
+    const rows = Array.isArray(records) ? records : [];
+
+    rows.forEach(rec => {
+      if (!rec || !rec.data_category) return;
+      if (rec.data_category === 'setting' && rec.setting_key) {
+        db.settings[rec.setting_key] = rec.setting_value;
+      }
+    });
+    db.settings = normalizeSettings(db.settings);
+
+    rows.forEach(rec => {
+      if (!rec || !rec.data_category) return;
+      if (rec.data_category === 'customer') {
+        const id = rec.__backendId || rec.id || uid('cust');
+        const entity = {
+          id,
+          name: rec.customer_name || '', company: rec.customer_company || '', address: rec.customer_address || '', city: rec.customer_city || '',
+          phone: rec.customer_phone || '', email: rec.customer_email || '', created_at: rec.created_at || now, updated_at: now, is_active: rec.status !== 'deleted'
+        };
+        db.sheets.customers.push(entity);
+        const key = [entity.name, entity.company, entity.phone, entity.email].join('|').toLowerCase();
+        if (key.replace(/\|/g,'')) customerMap.set(key, id);
+      } else if (rec.data_category === 'product') {
+        const id = rec.__backendId || rec.id || uid('prod');
+        const entity = {
+          id,
+          code: rec.product_code || '', name: rec.product_name || '', uom: rec.product_uom || '', price: toNumber(rec.product_price),
+          description: rec.product_desc || '', created_at: rec.created_at || now, updated_at: now, is_active: rec.status !== 'deleted'
+        };
+        db.sheets.products.push(entity);
+        const key = [entity.code, entity.name].join('|').toLowerCase();
+        if (key.replace(/\|/g,'')) productMap.set(key, id);
+      }
+    });
+
+    rows.forEach(rec => {
+      if (!rec || !['sph','invoice'].includes(rec.data_category)) return;
+      const headerId = rec.__backendId || rec.id || uid('doc');
+      const customerKey = [rec.customer_name || '', rec.customer_company || '', rec.customer_phone || '', rec.customer_email || ''].join('|').toLowerCase();
+      let customerId = customerMap.get(customerKey) || '';
+      if (!customerId && (rec.customer_name || rec.customer_company)) {
+        customerId = uid('cust');
+        db.sheets.customers.push({
+          id: customerId,
+          name: rec.customer_name || '', company: rec.customer_company || '', address: rec.customer_address || '', city: rec.customer_city || '',
+          phone: rec.customer_phone || '', email: rec.customer_email || '', created_at: rec.created_at || now, updated_at: now, is_active: true
+        });
+        customerMap.set(customerKey, customerId);
+      }
+      const header = {
+        id: headerId,
+        doc_type: rec.data_category,
+        doc_number: rec.doc_number || '',
+        doc_date: safeDate(rec.doc_date || rec.created_at),
+        customer_id: customerId,
+        customer_name: rec.customer_name || '', customer_company: rec.customer_company || '', customer_address: rec.customer_address || '', customer_city: rec.customer_city || '', customer_phone: rec.customer_phone || '', customer_email: rec.customer_email || '',
+        subtotal: Math.round(toNumber(rec.subtotal)),
+        discount_amount: Math.round(toNumber(rec.discount)),
+        shipping_amount: Math.round(toNumber(rec.shipping_cost)),
+        taxable_base: Math.round(toNumber(rec.subtotal) - toNumber(rec.discount) + toNumber(rec.shipping_cost)),
+        ppn_enabled: rec.ppn_active === undefined ? !!db.settings.ppn_enabled : toBool(rec.ppn_active),
+        ppn_rate: toNumber(rec.ppn_rate, db.settings.ppn_rate),
+        ppn_amount: Math.round(toNumber(rec.ppn)),
+        pph_enabled: toNumber(rec.tax_pph) > 0,
+        pph_rate: toNumber(rec.pph_rate, db.settings.pph_rate),
+        pph_amount: Math.round(toNumber(rec.tax_pph)),
+        grand_total: Math.round(toNumber(rec.grand_total)),
+        notes: rec.notes || '',
+        terms: rec.data_category === 'sph' ? db.settings.sph_terms : db.settings.invoice_terms,
+        terbilang: rec.terbilang || '',
+        status: rec.status || 'active',
+        source_doc_id: rec.source_doc || '',
+        created_at: rec.created_at || now,
+        updated_at: now
+      };
+      db.sheets.doc_headers.push(header);
+      const items = parseJson(rec.items_json || '[]', []);
+      items.forEach((item, idx) => {
+        const prodKey = [item.code || '', item.name || ''].join('|').toLowerCase();
+        const productId = productMap.get(prodKey) || '';
+        db.sheets.doc_items.push({
+          id: uid('item'),
+          doc_id: headerId,
+          seq_no: idx + 1,
+          product_id: productId,
+          item_name: item.name || '',
+          description: item.description || '',
+          qty: toNumber(item.qty, 0),
+          uom: item.uom || '',
+          unit_price: Math.round(toNumber(item.price)),
+          line_total: Math.round(toNumber(item.qty,0) * toNumber(item.price,0))
+        });
+      });
+      const year = new Date(header.doc_date).getFullYear();
+      const running = extractRunningNumber(header.doc_number);
+      let seq = db.sheets.doc_sequences.find(x => x.doc_type === header.doc_type && x.year === year);
+      if (!seq) {
+        seq = { id: uid('seq'), doc_type: header.doc_type, year, last_number: 0, updated_at: now };
+        db.sheets.doc_sequences.push(seq);
+      }
+      seq.last_number = Math.max(seq.last_number, running);
+      seq.updated_at = now;
+    });
+
+    db.settings = normalizeSettings(db.settings);
+    db.updated_at = now;
+    return db;
+  }
+
+  function loadDbFromStorage(){
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    try {
+      return normalizeDbObject(JSON.parse(raw));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function saveDb(renderAfter=true){
+    if (!appDb) appDb = defaultDb();
+    appDb.updated_at = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appDb));
+    persistRemoteConfig(appDb.settings?.api_web_app_url, appDb.settings?.api_auto_sync);
+    syncCompanySettings();
+    rebuildLegacyView();
+    if (renderAfter) renderPage();
+    scheduleRemoteSync();
+  }
+
+  function syncCompanySettings(){
+    companySettings = normalizeSettings(appDb.settings || {});
+  }
+
+  function mapCustomerLegacy(c){
+    return {
+      __backendId: c.id,
+      data_category: 'customer',
+      customer_name: c.name || '', customer_company: c.company || '', customer_address: c.address || '', customer_city: c.city || '', customer_phone: c.phone || '', customer_email: c.email || '',
+      created_at: c.created_at || '', status: c.is_active === false ? 'deleted' : 'active'
+    };
+  }
+  function mapProductLegacy(p){
+    return {
+      __backendId: p.id,
+      data_category: 'product',
+      product_code: p.code || '', product_name: p.name || '', product_uom: p.uom || '', product_price: toNumber(p.price), product_desc: p.description || '',
+      created_at: p.created_at || '', status: p.is_active === false ? 'deleted' : 'active'
+    };
+  }
+  function mapHeaderLegacy(h){
+    const items = appDb.sheets.doc_items
+      .filter(it => it.doc_id === h.id)
+      .sort((a,b) => (a.seq_no || 0) - (b.seq_no || 0))
+      .map(it => ({ name: it.item_name || '', description: it.description || '', qty: toNumber(it.qty), uom: it.uom || '', price: toNumber(it.unit_price), product_id: it.product_id || '' }));
+    return {
+      __backendId: h.id,
+      data_category: h.doc_type,
+      type: h.doc_type,
+      doc_number: h.doc_number || '',
+      doc_date: h.doc_date || '',
+      customer_id: h.customer_id || '',
+      customer_name: h.customer_name || '', customer_company: h.customer_company || '', customer_address: h.customer_address || '', customer_city: h.customer_city || '', customer_phone: h.customer_phone || '', customer_email: h.customer_email || '',
+      items_json: JSON.stringify(items),
+      subtotal: Math.round(toNumber(h.subtotal)),
+      discount: Math.round(toNumber(h.discount_amount)),
+      shipping_cost: Math.round(toNumber(h.shipping_amount)),
+      ppn_active: toBool(h.ppn_enabled),
+      ppn_rate: toNumber(h.ppn_rate),
+      ppn: Math.round(toNumber(h.ppn_amount)),
+      tax_pph: Math.round(toNumber(h.pph_amount)),
+      pph_rate: toNumber(h.pph_rate),
+      grand_total: Math.round(toNumber(h.grand_total)),
+      terbilang: h.terbilang || '',
+      notes: h.notes || '',
+      status: h.status || 'active',
+      source_doc: h.source_doc_id || '',
+      created_at: h.created_at || '',
+      updated_at: h.updated_at || ''
+    };
+  }
+
+  function rebuildLegacyView(){
+    const settingsRows = Object.keys(appDb.settings).map(key => ({ __backendId: 'setting_' + key, data_category: 'setting', setting_key: key, setting_value: appDb.settings[key], created_at: appDb.updated_at }));
+    allData = [
+      ...appDb.sheets.customers.filter(x => x.is_active !== false).map(mapCustomerLegacy),
+      ...appDb.sheets.products.filter(x => x.is_active !== false).map(mapProductLegacy),
+      ...appDb.sheets.doc_headers.filter(x => x.status !== 'deleted').map(mapHeaderLegacy),
+      ...settingsRows
+    ];
+    currentRecordCount = appDb.sheets.customers.length + appDb.sheets.products.length + appDb.sheets.doc_headers.length + settingsRows.length;
+  }
+
+  function ensureDb(){
+    if (appDb) return;
+    const stored = loadDbFromStorage();
+    if (stored) appDb = stored;
+    else if (Array.isArray(allData) && allData.length) appDb = migrateLegacyFlatData(allData);
+    else appDb = defaultDb();
+    const fallbackUrl = getStartupUrlOverride() || EMBEDDED_WEB_APP_URL || localStorage.getItem('sph_invoice_online_url') || '';
+    if (fallbackUrl && !appDb.settings.api_web_app_url) appDb.settings.api_web_app_url = String(fallbackUrl).trim();
+    syncCompanySettings();
+    rebuildLegacyView();
+  }
+
+  function getSheet(type){ ensureDb(); return appDb.sheets[type]; }
+
+  function getNextAvailableRunningNumber(docType, docDate, excludeId){
+    ensureDb();
+    const normalizedType = docType === 'SPH' || docType === 'sph' ? 'sph' : 'invoice';
+    const dt = new Date(docDate || new Date().toISOString());
+    const safeDt = Number.isNaN(dt.getTime()) ? new Date() : dt;
+    const year = safeDt.getFullYear();
+    const used = new Set(
+      appDb.sheets.doc_headers
+        .filter(h => h.status !== 'deleted' && h.doc_type === normalizedType && h.id !== excludeId)
+        .filter(h => {
+          const hd = new Date(h.doc_date || h.created_at || new Date().toISOString());
+          const hYear = Number.isNaN(hd.getTime()) ? year : hd.getFullYear();
+          return hYear === year;
+        })
+        .map(h => extractRunningNumber(h.doc_number))
+        .filter(Boolean)
+    );
+    let next = 1;
+    while (used.has(next)) next++;
+    return next;
+  }
+
+  function peekNextDocumentNumber(type, docDate, excludeId){
+    ensureDb();
+    const docType = type === 'SPH' || type === 'sph' ? 'sph' : 'invoice';
+    const next = getNextAvailableRunningNumber(docType, docDate, excludeId);
+    return formatDocumentNumber(docType, next, docDate, 'SSG');
+  }
+
+  function reserveDocumentNumber(docType, docNumber, docDate){
+    ensureDb();
+    const dt = new Date(docDate || new Date().toISOString());
+    const year = Number.isNaN(dt.getTime()) ? new Date().getFullYear() : dt.getFullYear();
+    let seq = appDb.sheets.doc_sequences.find(x => x.doc_type === docType && x.year === year);
+    if (!seq) {
+      seq = { id: uid('seq'), doc_type: docType, year, last_number: 0, updated_at: new Date().toISOString() };
+      appDb.sheets.doc_sequences.push(seq);
+    }
+    const running = extractRunningNumber(docNumber);
+    if (running > seq.last_number) seq.last_number = running;
+    seq.updated_at = new Date().toISOString();
+  }
+
+  function documentExists(docType, docNumber, excludeId){
+    ensureDb();
+    return appDb.sheets.doc_headers.some(h => h.doc_type === docType && h.doc_number === docNumber && h.id !== excludeId && h.status !== 'deleted');
+  }
+
+  function calculateDocumentTotals(items, state){
+    ensureDb();
+    const sanitizedItems = (items || []).map(item => ({
+      qty: Math.max(0, toNumber(item.qty)),
+      price: Math.max(0, toNumber(item.price)),
+      name: item.name || '',
+      uom: item.uom || '',
+      description: item.description || ''
+    }));
+    const subtotal = Math.round(sanitizedItems.reduce((sum, item) => sum + (item.qty * item.price), 0));
+    const discount = Math.round(Math.max(0, toNumber(state.discount || 0)));
+    const shipping = Math.round(Math.max(0, toNumber(state.shipping_cost || 0)));
+    const taxableBase = Math.max(0, subtotal - discount + shipping);
+    const ppnEnabled = !!companySettings.ppn_enabled && !!state.ppn_active;
+    const ppnAmount = ppnEnabled ? Math.round(taxableBase * (toNumber(companySettings.ppn_rate) / 100)) : 0;
+    const pphAmount = !!companySettings.pph_enabled ? Math.round(Math.max(0, toNumber(state.tax_pph || 0))) : 0;
+    const grandTotal = taxableBase + ppnAmount - pphAmount;
+    return { subtotal, discount, shipping, taxableBase, ppnAmount, pphAmount, grandTotal };
+  }
+
+  function upsertCustomer(entity){
+    ensureDb();
+    const list = appDb.sheets.customers;
+    const now = new Date().toISOString();
+    if (entity.id) {
+      const idx = list.findIndex(x => x.id === entity.id);
+      if (idx >= 0) list[idx] = { ...list[idx], ...entity, updated_at: now, is_active: true };
+      else list.push({ ...entity, created_at: now, updated_at: now, is_active: true });
+    } else {
+      list.push({ ...entity, id: uid('cust'), created_at: now, updated_at: now, is_active: true });
+    }
+    saveDb(false);
+  }
+
+  function upsertProduct(entity){
+    ensureDb();
+    const list = appDb.sheets.products;
+    const now = new Date().toISOString();
+    if (entity.id) {
+      const idx = list.findIndex(x => x.id === entity.id);
+      if (idx >= 0) list[idx] = { ...list[idx], ...entity, updated_at: now, is_active: true };
+      else list.push({ ...entity, created_at: now, updated_at: now, is_active: true });
+    } else {
+      list.push({ ...entity, id: uid('prod'), created_at: now, updated_at: now, is_active: true });
+    }
+    saveDb(false);
+  }
+
+  function upsertDocument(payload){
+    ensureDb();
+    const now = new Date().toISOString();
+    const headerList = appDb.sheets.doc_headers;
+    const itemList = appDb.sheets.doc_items;
+    const idx = payload.id ? headerList.findIndex(x => x.id === payload.id) : -1;
+    const id = idx >= 0 ? headerList[idx].id : uid('doc');
+    const header = { ...payload, id, updated_at: now };
+    if (idx >= 0) headerList[idx] = { ...headerList[idx], ...header };
+    else headerList.push({ ...header, created_at: now, updated_at: now });
+    for (let i = itemList.length - 1; i >= 0; i--) {
+      if (itemList[i].doc_id === id) itemList.splice(i, 1);
+    }
+    (payload.items || []).forEach((item, idxItem) => {
+      itemList.push({
+        id: uid('item'),
+        doc_id: id,
+        seq_no: idxItem + 1,
+        product_id: item.product_id || '',
+        item_name: item.name || '',
+        description: item.description || '',
+        qty: Math.max(0, toNumber(item.qty)),
+        uom: item.uom || '',
+        unit_price: Math.round(Math.max(0, toNumber(item.price))),
+        line_total: Math.round(Math.max(0, toNumber(item.qty)) * Math.max(0, toNumber(item.price)))
+      });
+    });
+    reserveDocumentNumber(header.doc_type, header.doc_number, header.doc_date);
+    saveDb(false);
+    return id;
+  }
+
+  function removeEntity(id){
+    ensureDb();
+    const now = new Date().toISOString();
+    const customer = appDb.sheets.customers.find(x => x.id === id);
+    if (customer) {
+      customer.is_active = false;
+      customer.updated_at = now;
+      saveDb(false);
+      return true;
+    }
+    const product = appDb.sheets.products.find(x => x.id === id);
+    if (product) {
+      product.is_active = false;
+      product.updated_at = now;
+      saveDb(false);
+      return true;
+    }
+    const header = appDb.sheets.doc_headers.find(x => x.id === id);
+    if (header) {
+      header.status = 'deleted';
+      header.updated_at = now;
+      saveDb(false);
+      return true;
+    }
+    return false;
+  }
+
+  dataHandler.onDataChanged = function(data){
+    const stored = loadDbFromStorage();
+    if (stored && stored.sheets && (stored.sheets.customers.length || stored.sheets.products.length || stored.sheets.doc_headers.length)) {
+      appDb = stored;
+    } else if (Array.isArray(data) && data.length) {
+      appDb = migrateLegacyFlatData(data);
+    } else {
+      appDb = stored || defaultDb();
+    }
+    syncCompanySettings();
+    saveDb();
+  };
+
+  window.generateDocNumber = function(type){
+    const dateInput = document.getElementById('docDate')?.value || new Date().toISOString().split('T')[0];
+    return peekNextDocumentNumber(type, dateInput, editingRecord?.__backendId);
+  };
+
+  window.getByCategory = function(cat){ ensureDb(); return allData.filter(d => d.data_category === cat); };
+  window.getCustomers = function(){ ensureDb(); return appDb.sheets.customers.filter(x => x.is_active !== false).map(mapCustomerLegacy); };
+  window.getProducts = function(){ ensureDb(); return appDb.sheets.products.filter(x => x.is_active !== false).map(mapProductLegacy); };
+  window.getSPHs = function(){ ensureDb(); return appDb.sheets.doc_headers.filter(x => x.status !== 'deleted' && x.doc_type === 'sph').map(mapHeaderLegacy); };
+  window.getInvoices = function(){ ensureDb(); return appDb.sheets.doc_headers.filter(x => x.status !== 'deleted' && x.doc_type === 'invoice').map(mapHeaderLegacy); };
+  window.getSettings = function(){ ensureDb(); return Object.keys(appDb.settings).map(key => ({ __backendId: 'setting_' + key, data_category: 'setting', setting_key: key, setting_value: appDb.settings[key] })); };
+  window.getDocuments = function(){ return [...window.getSPHs(), ...window.getInvoices()]; };
+
+  window.renderDocTotals = function(){
+    const totals = calculateDocumentTotals(docFormItems, docFormState);
+    let html = `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">Subtotal</span><span class="font-medium">${formatCurrency(totals.subtotal)}</span></div>`;
+    if (companySettings.discount_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">Diskon</span><span class="font-medium">-${formatCurrency(totals.discount)}</span></div>`;
+    if (companySettings.shipping_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">Biaya Tambahan</span><span class="font-medium">+${formatCurrency(totals.shipping)}</span></div>`;
+    if (companySettings.ppn_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">PPN ${companySettings.ppn_rate}%</span><span class="font-medium">${docFormState.ppn_active ? formatCurrency(totals.ppnAmount) : '0'}</span></div>`;
+    if (companySettings.pph_enabled) html += `<div class="flex justify-between text-xs mb-1"><span class="text-surface-500">PPH ${companySettings.pph_rate}%</span><span class="font-medium">-${formatCurrency(totals.pphAmount)}</span></div>`;
+    html += `<div class="border-t border-surface-200 my-2"></div><div class="flex justify-between text-sm"><span class="font-semibold text-surface-800">Grand Total</span><span class="font-bold text-brand-600">${formatCurrency(totals.grandTotal)}</span></div><div class="text-[10px] text-surface-400 mt-1 italic">${terbilang(totals.grandTotal)}</div>`;
+    return html;
+  };
+
+  window.updateDocItem = function(idx, field, val){
+    if (field === 'qty') docFormItems[idx].qty = Math.max(0, toNumber(val));
+    else if (field === 'price') docFormItems[idx].price = Math.max(0, toNumber(val));
+    else docFormItems[idx][field] = val;
+    document.getElementById('docTotals').innerHTML = renderDocTotals();
+  };
+
+  window.updateDocForm = function(){
+    docFormState.ppn_active = document.getElementById('ppnCheck')?.checked ?? docFormState.ppn_active;
+    docFormState.discount = Math.max(0, toNumber(document.getElementById('discountInput')?.value || 0));
+    docFormState.shipping_cost = Math.max(0, toNumber(document.getElementById('shippingInput')?.value || 0));
+    docFormState.tax_pph = Math.max(0, toNumber(document.getElementById('pphInput')?.value || 0));
+    document.getElementById('docTotals').innerHTML = renderDocTotals();
+  };
+
+  window.saveDocument = async function(){
+    ensureDb();
+    const btn = document.getElementById('saveDocBtn');
+    const custSel = document.getElementById('docCustomer');
+    const cust = getCustomers().find(x => x.__backendId === custSel.value);
+    if (!custSel.value || !cust) { showToast('Pilih customer terlebih dahulu', 'error'); return; }
+    if (!docFormItems.some(i => i.name && String(i.name).trim())) { showToast('Tambahkan minimal 1 item dengan nama', 'error'); return; }
+    const docDate = document.getElementById('docDate').value || new Date().toISOString().split('T')[0];
+    const docType = docFormType === 'SPH' ? 'sph' : 'invoice';
+    let docNumber = (document.getElementById('docNum').value || '').trim();
+    if (!docNumber || documentExists(docType, docNumber, editingRecord?.__backendId)) {
+      docNumber = peekNextDocumentNumber(docFormType, docDate);
+    }
+    btn.disabled = true;
+    btn.textContent = editingRecord ? 'Mengupdate...' : 'Menyimpan...';
+    const totals = calculateDocumentTotals(docFormItems, docFormState);
+    const id = upsertDocument({
+      id: editingRecord?.__backendId,
+      doc_type: docType,
+      doc_number: docNumber,
+      doc_date: safeDate(docDate),
+      customer_id: cust.__backendId,
+      customer_name: cust.customer_name || '', customer_company: cust.customer_company || '', customer_address: cust.customer_address || '', customer_city: cust.customer_city || '', customer_phone: cust.customer_phone || '', customer_email: cust.customer_email || '',
+      subtotal: totals.subtotal,
+      discount_amount: totals.discount,
+      shipping_amount: totals.shipping,
+      taxable_base: totals.taxableBase,
+      ppn_enabled: !!docFormState.ppn_active,
+      ppn_rate: toNumber(companySettings.ppn_rate),
+      ppn_amount: totals.ppnAmount,
+      pph_enabled: !!companySettings.pph_enabled,
+      pph_rate: toNumber(companySettings.pph_rate),
+      pph_amount: totals.pphAmount,
+      grand_total: totals.grandTotal,
+      notes: docType === 'sph' ? companySettings.sph_notes : companySettings.invoice_notes,
+      terms: docType === 'sph' ? companySettings.sph_terms : companySettings.invoice_terms,
+      terbilang: terbilang(totals.grandTotal),
+      status: 'active',
+      source_doc_id: editingRecord?.source_doc || '',
+      items: docFormItems
+    });
+    saveDb();
+    await flushRemoteSyncAfterMutation(`${docFormType} tersimpan`);
+    btn.disabled = false;
+    btn.textContent = editingRecord ? 'Update' : 'Simpan';
+    showToast(`${docFormType} berhasil ${editingRecord ? 'diupdate' : 'disimpan'}!`);
+    closeModal();
+    docFormItems = [];
+    editingRecord = null;
+    docFormState = { ppn_active: true, discount: 0, shipping_cost: 0, tax_pph: 0 };
+    return id;
+  };
+
+  window.convertToInvoice = async function(id){
+    ensureDb();
+    const source = getSPHs().find(d => d.__backendId === id);
+    if (!source) return;
+    const items = parseJson(source.items_json || '[]', []);
+    const invoiceDate = new Date().toISOString().split('T')[0];
+    const invoiceNumber = peekNextDocumentNumber('Invoice', invoiceDate);
+    upsertDocument({
+      doc_type: 'invoice',
+      doc_number: invoiceNumber,
+      doc_date: invoiceDate,
+      customer_id: source.customer_id || '',
+      customer_name: source.customer_name || '', customer_company: source.customer_company || '', customer_address: source.customer_address || '', customer_city: source.customer_city || '', customer_phone: source.customer_phone || '', customer_email: source.customer_email || '',
+      subtotal: Math.round(toNumber(source.subtotal)),
+      discount_amount: Math.round(toNumber(source.discount)),
+      shipping_amount: Math.round(toNumber(source.shipping_cost)),
+      taxable_base: Math.round(toNumber(source.subtotal) - toNumber(source.discount) + toNumber(source.shipping_cost)),
+      ppn_enabled: toBool(source.ppn_active),
+      ppn_rate: toNumber(source.ppn_rate, companySettings.ppn_rate),
+      ppn_amount: Math.round(toNumber(source.ppn)),
+      pph_enabled: toNumber(source.tax_pph) > 0,
+      pph_rate: toNumber(source.pph_rate, companySettings.pph_rate),
+      pph_amount: Math.round(toNumber(source.tax_pph)),
+      grand_total: Math.round(toNumber(source.grand_total)),
+      notes: companySettings.invoice_notes,
+      terms: companySettings.invoice_terms,
+      terbilang: source.terbilang || terbilang(toNumber(source.grand_total)),
+      status: 'active',
+      source_doc_id: source.doc_number || id,
+      items
+    });
+    saveDb();
+    showToast(`Invoice ${invoiceNumber} berhasil dibuat dari SPH!`);
+  };
+
+  window.saveCustomer = async function(){
+    ensureDb();
+    const name = document.getElementById('cf_name').value.trim();
+    if (!name) { showToast('Nama harus diisi', 'error'); return; }
+    const btn = document.getElementById('saveCustBtn');
+    btn.disabled = true;
+    btn.textContent = 'Menyimpan...';
+    upsertCustomer({
+      id: editingRecord?.__backendId,
+      name,
+      company: document.getElementById('cf_company').value.trim(),
+      address: document.getElementById('cf_address').value.trim(),
+      city: document.getElementById('cf_city').value.trim(),
+      phone: document.getElementById('cf_phone').value.trim(),
+      email: document.getElementById('cf_email').value.trim()
+    });
+    saveDb();
+    await flushRemoteSyncAfterMutation('Customer tersimpan');
+    btn.disabled = false;
+    btn.textContent = 'Simpan';
+    showToast(`Customer berhasil ${editingRecord ? 'diupdate' : 'ditambahkan'}!`);
+    closeModal();
+    editingRecord = null;
+  };
+
+  window.saveProduct = async function(){
+    ensureDb();
+    const name = document.getElementById('pf_name').value.trim();
+    if (!name) { showToast('Nama produk harus diisi', 'error'); return; }
+    const btn = document.getElementById('saveProdBtn');
+    btn.disabled = true;
+    btn.textContent = 'Menyimpan...';
+    upsertProduct({
+      id: editingRecord?.__backendId,
+      code: document.getElementById('pf_code').value.trim(),
+      name,
+      uom: document.getElementById('pf_uom').value.trim(),
+      price: Math.max(0, toNumber(document.getElementById('pf_price').value)),
+      description: document.getElementById('pf_desc').value.trim()
+    });
+    saveDb();
+    await flushRemoteSyncAfterMutation('Produk tersimpan');
+    btn.disabled = false;
+    btn.textContent = 'Simpan';
+    showToast(`Produk berhasil ${editingRecord ? 'diupdate' : 'ditambahkan'}!`);
+    closeModal();
+    editingRecord = null;
+  };
+
+  window.deleteRecord = async function(id){
+    const btn = document.getElementById('delRecBtn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Menghapus...'; }
+    const ok = removeEntity(id);
+    if (ok) {
+      saveDb();
+      showToast('Data berhasil dihapus');
+      closeModal();
+    } else {
+      showToast('Data tidak ditemukan', 'error');
+      if (btn) { btn.disabled = false; btn.textContent = 'Hapus'; }
+    }
+  };
+
+  window.deleteDoc = async function(id){
+    const btn = document.getElementById('delDocBtn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Menghapus...'; }
+    const ok = removeEntity(id);
+    if (ok) {
+      saveDb();
+      showToast('Dokumen berhasil dihapus');
+      closeModal();
+    } else {
+      showToast('Dokumen tidak ditemukan', 'error');
+      if (btn) { btn.disabled = false; btn.textContent = 'Hapus'; }
+    }
+  };
+
+  window.processCSV = async function(type){
+    ensureDb();
+    const csv = document.getElementById('csvInput').value.trim();
+    if (!csv) { showToast('Paste data CSV', 'error'); return; }
+    const btn = document.getElementById('importBtn');
+    btn.disabled = true;
+    btn.textContent = 'Importing...';
+    const rows = parseCsv(csv);
+    if (!rows.length) {
+      btn.disabled = false;
+      btn.textContent = 'Import';
+      showToast('CSV kosong atau tidak valid', 'error');
+      return;
+    }
+    let count = 0;
+    rows.forEach(cols => {
+      const isHeader = cols[0] && /^(nama|kode)$/i.test(cols[0]);
+      if (isHeader) return;
+      if (type === 'customer' && (cols[0] || '').trim()) {
+        upsertCustomer({ name: cols[0] || '', company: cols[1] || '', address: cols[2] || '', city: cols[3] || '', phone: cols[4] || '', email: cols[5] || '' });
+        count++;
+      }
+      if (type === 'product' && (cols[0] || '').trim()) {
+        upsertProduct({ code: cols[0] || '', name: cols[1] || '', uom: cols[2] || '', price: Math.max(0, toNumber(cols[3])), description: cols[4] || '' });
+        count++;
+      }
+    });
+    saveDb();
+    btn.disabled = false;
+    btn.textContent = 'Import';
+    showToast(`${count} data berhasil diimport!`);
+    closeModal();
+  };
+
+  window.saveSettings = async function(){
+    ensureDb();
+    const btn = document.getElementById('saveSettingsBtn');
+    btn.disabled = true;
+    btn.textContent = 'Menyimpan...';
+    appDb.settings = normalizeSettings({
+      ...appDb.settings,
+      company_name: document.getElementById('s_company').value.trim(),
+      company_description: document.getElementById('s_description').value.trim(),
+      company_address: document.getElementById('s_address').value.trim(),
+      company_city: document.getElementById('s_city').value.trim(),
+      company_phone: document.getElementById('s_phone').value.trim(),
+      company_email: document.getElementById('s_email').value.trim(),
+      doc_accent: document.getElementById('s_accent').value || '#4f46e5',
+      sph_format: document.getElementById('s_sphfmt').value.trim() || 'SPH-{NUM}/{ABBR}/{MM}/{YY}',
+      inv_format: document.getElementById('s_invfmt').value.trim() || 'INV-{NUM}/{ABBR}/{MM}/{YY}',
+      sph_notes: document.getElementById('s_sphnotes').value,
+      invoice_notes: document.getElementById('s_invnotes').value,
+      sph_terms: document.getElementById('s_sphterms').value,
+      invoice_terms: document.getElementById('s_invterms').value,
+      director_name: document.getElementById('s_dirname').value.trim(),
+      director_title: document.getElementById('s_dirtitle').value.trim(),
+      show_secondary_signature: document.getElementById('s_show_secondary_signature')?.checked,
+      secondary_signature_label: document.getElementById('s_secondary_label')?.value || 'Menyetujui,',
+      show_logo_watermark: document.getElementById('s_show_logo_watermark')?.checked,
+      secondary_signature_name: document.getElementById('s_secondary_name')?.value || '',
+      secondary_signature_title: document.getElementById('s_secondary_title')?.value || '',
+      ppn_enabled: document.getElementById('s_ppn_enabled')?.checked,
+      ppn_rate: document.getElementById('s_ppn_rate')?.value,
+      discount_enabled: document.getElementById('s_discount_enabled')?.checked,
+      shipping_enabled: document.getElementById('s_shipping_enabled')?.checked,
+      pph_enabled: document.getElementById('s_pph_enabled')?.checked,
+      pph_rate: document.getElementById('s_pph_rate')?.value,
+      api_web_app_url: document.getElementById('s_api_web_app_url')?.value.trim() || '',
+      api_auto_sync: document.getElementById('s_api_auto_sync')?.checked,
+      api_last_sync: appDb.settings.api_last_sync || '',
+      logo_data: companySettings.logo_data || appDb.settings.logo_data || '',
+      signature_data: companySettings.signature_data || appDb.settings.signature_data || '',
+      secondary_signature_data: companySettings.secondary_signature_data || appDb.settings.secondary_signature_data || ''
+    });
+    persistRemoteConfig(appDb.settings.api_web_app_url, appDb.settings.api_auto_sync);
+    saveDb();
+    await flushRemoteSyncAfterMutation('Pengaturan tersimpan');
+    btn.disabled = false;
+    btn.textContent = 'Simpan Pengaturan';
+    showToast('Pengaturan berhasil disimpan!');
+  };
+
+  window.exportTransaksiCSV = function(){
+    const docs = getDocuments().sort((a,b)=>new Date(b.doc_date||b.created_at)-new Date(a.doc_date||a.created_at));
+    let csv = 'No Dokumen,Tipe,Customer,Perusahaan,Tanggal,Subtotal,Diskon,Biaya Tambahan,PPN,PPH,Grand Total\n';
+    docs.forEach(d => {
+      csv += [
+        escapeCsv(d.doc_number),
+        escapeCsv(d.data_category === 'sph' ? 'SPH' : 'Invoice'),
+        escapeCsv(d.customer_name),
+        escapeCsv(d.customer_company),
+        escapeCsv(formatDateShort(d.doc_date || d.created_at)),
+        Math.round(toNumber(d.subtotal)),
+        Math.round(toNumber(d.discount)),
+        Math.round(toNumber(d.shipping_cost)),
+        Math.round(toNumber(d.ppn)),
+        Math.round(toNumber(d.tax_pph)),
+        Math.round(toNumber(d.grand_total))
+      ].join(',') + '\n';
+    });
+    downloadFile(csv, `Transaksi_${new Date().getFullYear()}.csv`, 'text/csv');
+  };
+
+  window.generateSpreadsheetMapping = function(){
+    ensureDb();
+    return {
+      settings: Object.keys(appDb.settings).map(key => ({ sheet: 'settings', key, value: appDb.settings[key], value_type: SETTING_TYPES[key] || typeof appDb.settings[key] })),
+      customers: clone(appDb.sheets.customers),
+      products: clone(appDb.sheets.products),
+      doc_headers: clone(appDb.sheets.doc_headers),
+      doc_items: clone(appDb.sheets.doc_items),
+      doc_sequences: clone(appDb.sheets.doc_sequences)
+    };
+  };
+
+  async function initOnlineReadyMode(){
+    ensureDb();
+    renderPage();
+    const startupUrl = getStartupUrlOverride() || EMBEDDED_WEB_APP_URL || localStorage.getItem('sph_invoice_online_url') || '';
+    if (startupUrl) {
+      persistRemoteConfig(startupUrl, localStorage.getItem('sph_invoice_online_auto_sync') === '1');
+      if (appDb && appDb.settings && !appDb.settings.api_web_app_url) {
+        appDb.settings.api_web_app_url = startupUrl;
+      }
+    }
+    await bootstrapRemoteDb(false);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { initOnlineReadyMode(); });
+  else initOnlineReadyMode();
+})();
+
+</script>
+</body>
+</html>
