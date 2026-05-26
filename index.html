@@ -643,7 +643,7 @@ function renderDocList(type) {
                 <input type="text" placeholder="Cari nomor dokumen atau pelanggan..." class="input-field pl-11 py-2.5 bg-white font-medium" id="searchDoc${type}" oninput="filterDocList('${type}')">
             </div>
         </div>
-        <div class="overflow-y-auto flex-1 p-2 md:p-0" id="docListTable${type}">
+        <div class="overflow-y-auto flex-1 p-0" id="docListTable${type}">
             ${renderDocTable(sorted, type)}
         </div>
     </div>
@@ -651,51 +651,29 @@ function renderDocList(type) {
 }
 
 function renderDocTable(docs, type) {
-  const desktopHtml = `<table class="w-full text-sm text-left">
-    <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 z-10 shadow-sm border-b border-surface-100">
-      <tr><th class="px-6 py-4">No. Dokumen</th><th class="px-6 py-4">Pelanggan</th><th class="px-6 py-4">Tanggal</th><th class="px-6 py-4 text-right">Grand Total</th><th class="px-6 py-4 text-center">Aksi</th></tr>
-    </thead>
-    <tbody class="divide-y divide-surface-100">
-      ${docs.length ? docs.map(d => `<tr class="hover:bg-surface-50/80 transition-colors">
-      <td class="px-6 py-5 font-extrabold text-surface-900">${d.doc_number||'-'}</td>
-      <td class="px-6 py-5 text-surface-700 font-bold">${d.customer_company||d.customer_name||'-'}</td>
-      <td class="px-6 py-5 text-surface-500 font-medium">${formatDateShort(d.doc_date||d.created_at)}</td>
-      <td class="px-6 py-5 text-right font-extrabold text-brand-600 text-base">${formatCurrency(d.grand_total)}</td>
-      <td class="px-6 py-5 text-center">
-        <div class="flex items-center justify-center gap-2">
-          <button onclick="previewDoc('${d.__backendId}')" class="p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors" title="Preview/Print"><i data-lucide="printer" class="w-4 h-4"></i></button>
-          <button onclick="editDocument('${d.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors" title="Edit Dokumen"><i data-lucide="edit" class="w-4 h-4"></i></button>
-          ${type==='SPH'?`<button onclick="convertToInvoice('${d.__backendId}')" class="p-2 rounded-xl hover:bg-emerald-50 text-emerald-600 transition-colors" title="Konversi ke Invoice"><i data-lucide="arrow-right-circle" class="w-4 h-4"></i></button>`:''}
-          <button onclick="confirmDeleteDoc('${d.__backendId}')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors" title="Hapus"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-        </div>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="5" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada dokumen</td></tr>'}
-    </tbody>
-  </table>`;
-
-  const mobileHtml = docs.length ? docs.map(d => `
-    <div class="mobile-record-card">
-      <div class="flex items-start justify-between mb-4 border-b border-surface-100 pb-4">
-        <div><div class="text-[10px] uppercase font-extrabold text-surface-400 tracking-wider mb-1.5">No Dokumen</div><div class="text-base font-extrabold text-brand-600">${d.doc_number||'-'}</div></div>
-        <div class="text-right"><div class="text-[10px] uppercase font-extrabold text-surface-400 tracking-wider mb-1.5">Tanggal</div><div class="text-sm font-bold text-surface-800">${formatDateShort(d.doc_date||d.created_at)}</div></div>
-      </div>
-      <div class="mb-4">
-        <div class="text-[10px] uppercase font-extrabold text-surface-400 tracking-wider mb-1">Pelanggan</div>
-        <div class="font-bold text-surface-800 text-base">${d.customer_company||d.customer_name||'-'}</div>
-      </div>
-      <div class="flex justify-between items-center mb-5 bg-surface-50 p-3.5 rounded-xl border border-surface-200/60">
-          <span class="text-xs font-bold text-surface-500 uppercase tracking-wide">Total</span>
-          <span class="font-black text-brand-600 text-lg">${formatCurrency(d.grand_total)}</span>
-      </div>
-      <div class="flex gap-2">
-        <button onclick="previewDoc('${d.__backendId}')" class="flex-1 btn-secondary py-2.5 rounded-xl flex justify-center text-slate-500 font-bold text-xs"><i data-lucide="printer" class="w-4 h-4"></i></button>
-        <button onclick="editDocument('${d.__backendId}')" class="flex-1 btn-secondary py-2.5 rounded-xl flex justify-center text-blue-600 bg-blue-50/50 border-blue-100 font-bold text-xs"><i data-lucide="edit" class="w-4 h-4"></i></button>
-        ${type==='SPH'?`<button onclick="convertToInvoice('${d.__backendId}')" class="flex-1 btn-secondary py-2.5 rounded-xl flex justify-center text-emerald-600 bg-emerald-50/50 border-emerald-100 font-bold text-xs"><i data-lucide="arrow-right-circle" class="w-4 h-4"></i></button>`:''}
-        <button onclick="confirmDeleteDoc('${d.__backendId}')" class="flex-1 btn-secondary py-2.5 rounded-xl flex justify-center text-red-500 bg-red-50/50 border-red-100 font-bold text-xs"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-      </div>
-    </div>`).join('') : '<div class="text-center p-12 text-surface-400 border border-dashed border-surface-300 rounded-2xl m-2 bg-white/50"><i data-lucide="inbox" class="w-10 h-10 mx-auto mb-3 text-surface-300"></i><span class="font-semibold">Belum ada dokumen</span></div>';
-
-  return renderResponsiveList(desktopHtml, mobileHtml);
+  return `<div class="overflow-x-auto w-full">
+    <table class="w-full text-sm text-left min-w-[900px]">
+      <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 z-10 shadow-sm border-b border-surface-100">
+        <tr><th class="px-6 py-4">No. Dokumen</th><th class="px-6 py-4">Pelanggan</th><th class="px-6 py-4">Tanggal</th><th class="px-6 py-4 text-right">Grand Total</th><th class="px-6 py-4 text-center">Aksi</th></tr>
+      </thead>
+      <tbody class="divide-y divide-surface-100">
+        ${docs.length ? docs.map(d => `<tr class="hover:bg-surface-50/80 transition-colors">
+        <td class="px-6 py-5 font-extrabold text-surface-900">${d.doc_number||'-'}</td>
+        <td class="px-6 py-5 text-surface-700 font-bold">${d.customer_company||d.customer_name||'-'}</td>
+        <td class="px-6 py-5 text-surface-500 font-medium">${formatDateShort(d.doc_date||d.created_at)}</td>
+        <td class="px-6 py-5 text-right font-extrabold text-brand-600 text-base">${formatCurrency(d.grand_total)}</td>
+        <td class="px-6 py-5 text-center">
+          <div class="flex items-center justify-center gap-2">
+            <button onclick="previewDoc('${d.__backendId}')" class="p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors" title="Preview/Print"><i data-lucide="printer" class="w-4 h-4"></i></button>
+            <button onclick="editDocument('${d.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors" title="Edit Dokumen"><i data-lucide="edit" class="w-4 h-4"></i></button>
+            ${type==='SPH'?`<button onclick="convertToInvoice('${d.__backendId}')" class="p-2 rounded-xl hover:bg-emerald-50 text-emerald-600 transition-colors" title="Konversi ke Invoice"><i data-lucide="arrow-right-circle" class="w-4 h-4"></i></button>`:''}
+            <button onclick="confirmDeleteDoc('${d.__backendId}')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors" title="Hapus"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </div>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="5" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada dokumen</td></tr>'}
+      </tbody>
+    </table>
+  </div>`;
 }
 
 function filterDocList(type) {
@@ -732,7 +710,7 @@ function openDocForm(type, prefill=null) {
                 <label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Pelanggan</label>
                 <select id="docCustomer" class="input-field font-medium" onchange="fillCustomerDetail()">
                     <option value="">-- Pilih Pelanggan --</option>
-                    ${custs.map(c => `<option value="${c.__backendId}" ${prefill && prefill.customer_name===c.customer_name?'selected':''}>${c.customer_name} ${c.customer_company?`- ${c.customer_company}`:''}</option>`).join('')}
+                    ${custs.map((c, idx) => `<option value="${idx}" ${prefill && prefill.customer_name===c.customer_name?'selected':''}>${escapeHtml(c.customer_name)} ${c.customer_company?`- ${escapeHtml(c.customer_company)}`:''}</option>`).join('')}
                 </select>
             </div>
             <div id="custDetail" class="p-4 bg-blue-50/50 border border-blue-100 rounded-2xl text-xs font-medium text-blue-800 hidden leading-relaxed"></div>
@@ -745,7 +723,7 @@ function openDocForm(type, prefill=null) {
                 <div class="flex gap-2 w-full md:w-auto">
                     <select id="productSelect" class="input-field text-sm py-2 flex-1 md:w-56 font-medium">
                         <option value="">+ Dari Katalog...</option>
-                        ${prods.map(p => `<option value="${p.__backendId}">${p.product_code} - ${p.product_name}</option>`).join('')}
+                        ${prods.map((p, idx) => `<option value="${idx}">${escapeHtml(p.product_code)} - ${escapeHtml(p.product_name)}</option>`).join('')}
                     </select>
                     <button onclick="addProductItem()" class="btn-secondary text-sm px-5 py-2 rounded-xl font-bold whitespace-nowrap">Tambah</button>
                 </div>
@@ -867,57 +845,82 @@ function updateDocForm() {
 
 function addProductItem() {
   const sel = document.getElementById('productSelect');
-  if (!sel.value) return;
-  const prod = getProducts().find(p => p.__backendId === sel.value);
+  if (!sel || !sel.value) {
+    showToast('Pilih produk dari katalog terlebih dahulu', 'error');
+    return;
+  }
+  const prod = getProducts()[parseInt(sel.value, 10)];
   if (prod) {
-    docFormItems.push({ name: prod.product_name, qty: 1, price: prod.product_price||0, uom: prod.product_uom||'pcs' });
+    docFormItems.push({ product_id: prod.__backendId || '', name: prod.product_name, qty: 1, price: prod.product_price||0, uom: prod.product_uom||'pcs' });
     document.getElementById('docItemsContainer').innerHTML = renderDocFormItems();
     document.getElementById('docTotals').innerHTML = renderDocTotals();
     lucide.createIcons();
     sel.value = '';
+  } else {
+    showToast('Gagal menambahkan produk', 'error');
   }
 }
 
 function fillCustomerDetail() {
   const sel = document.getElementById('docCustomer');
   const det = document.getElementById('custDetail');
-  if (!sel.value) { det.classList.add('hidden'); return; }
-  const c = getCustomers().find(x => x.__backendId === sel.value);
+  if (!sel || !sel.value) { det.classList.add('hidden'); return; }
+  const c = getCustomers()[parseInt(sel.value, 10)];
   if (c) {
     det.classList.remove('hidden');
-    det.innerHTML = `<span class="font-extrabold text-sm">${c.customer_name}</span> ${c.customer_company?`<span class="text-blue-600/80">— ${c.customer_company}</span>`:''}<br><div class="mt-1">${c.customer_address||''}, ${c.customer_city||''}</div><div>HP: ${c.customer_phone||'-'} | Email: ${c.customer_email||'-'}</div>`;
+    det.innerHTML = `<span class="font-extrabold text-sm">${escapeHtml(c.customer_name)}</span> ${c.customer_company?`<span class="text-blue-600/80">— ${escapeHtml(c.customer_company)}</span>`:''}<br><div class="mt-1">${escapeHtml(c.customer_address||'')}, ${escapeHtml(c.customer_city||'')}</div><div>HP: ${escapeHtml(c.customer_phone||'-')} | Email: ${escapeHtml(c.customer_email||'-')}</div>`;
   }
 }
 
 async function saveDocument() {
   const btn = document.getElementById('saveDocBtn');
   const custSel = document.getElementById('docCustomer');
-  const cust = getCustomers().find(x => x.__backendId === custSel.value);
   
-  if (!custSel.value) { showToast('Pilih pelanggan terlebih dahulu', 'error'); return; }
-  if (!docFormItems.some(i => i.name && i.name.trim())) { showToast('Tambahkan minimal 1 item', 'error'); return; }
+  if (!custSel || !custSel.value) { showToast('Pilih pelanggan terlebih dahulu', 'error'); return; }
+  const cust = getCustomers()[parseInt(custSel.value, 10)];
+  if (!cust) { showToast('Pelanggan tidak valid', 'error'); return; }
+  
+  const validItems = docFormItems.filter(item => (item.name || '').trim()).map(item => ({
+    product_id: item.product_id || '',
+    name: (item.name || '').trim(),
+    description: (item.description || '').trim(),
+    qty: Math.max(0, parseInt(item.qty) || 0),
+    uom: (item.uom || '').trim(),
+    price: Math.max(0, parseFloat(item.price) || 0)
+  }));
 
-  const sub = docFormItems.reduce((s,i)=>s+(parseFloat(i.qty)||0)*(parseFloat(i.price)||0),0);
+  if (!validItems.length) { showToast('Tambahkan minimal 1 item dengan nama', 'error'); return; }
+  
+  // Hitung total dengan akurat
+  const sub = validItems.reduce((s,i) => s + (i.qty * i.price), 0);
   const ppnAmount = docFormState.ppn_active ? Math.round(sub * (companySettings.ppn_rate/100)) : 0;
   const discountAmount = parseFloat(docFormState.discount) || 0;
   const shippingAmount = parseFloat(docFormState.shipping_cost) || 0;
   const pphAmount = parseFloat(docFormState.tax_pph) || 0;
   const grand = sub - discountAmount + ppnAmount + shippingAmount - pphAmount;
 
-  btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Menyimpan...`; lucide.createIcons();
-
+  const docDate = document.getElementById('docDate').value || new Date().toISOString().split('T')[0];
+  const docType = docFormType === 'SPH' ? 'sph' : 'invoice';
+  const userDocNumber = (document.getElementById('docNum').value || '').trim();
+  
+  btn.disabled = true; 
+  btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin inline-block align-middle mr-2"></i>Menyimpan...`;
+  lucide.createIcons();
+  
   const record = {
-    type: docFormType === 'SPH' ? 'sph' : 'invoice',
-    data_category: docFormType === 'SPH' ? 'sph' : 'invoice',
-    doc_number: document.getElementById('docNum').value || '',
-    doc_date: document.getElementById('docDate').value || new Date().toISOString().split('T')[0],
+    type: docType,
+    data_category: docType,
+    doc_number: userDocNumber,
+    doc_date: docDate,
+    customer_id: cust.__backendId || '',
     customer_name: cust.customer_name || '',
     customer_company: cust.customer_company || '',
     customer_address: cust.customer_address || '',
     customer_city: cust.customer_city || '',
     customer_phone: cust.customer_phone || '',
     customer_email: cust.customer_email || '',
-    items_json: JSON.stringify(docFormItems),
+    items_json: JSON.stringify(validItems),
+    items: validItems,
     subtotal: Math.round(sub), 
     ppn: ppnAmount, 
     ppn_active: docFormState.ppn_active ? 1 : 0,
@@ -926,18 +929,33 @@ async function saveDocument() {
     tax_pph: Math.round(pphAmount),
     grand_total: Math.round(grand), 
     terbilang: terbilang(grand),
-    notes: '', status: 'active', source_doc: '', created_at: editingRecord ? editingRecord.created_at : new Date().toISOString()
+    notes: docType === 'sph' ? companySettings.sph_notes : companySettings.invoice_notes,
+    terms: docType === 'sph' ? companySettings.sph_terms : companySettings.invoice_terms,
+    status: 'active',
+    source_doc_id: editingRecord?.source_doc || editingRecord?.source_doc_id || '',
+    created_at: editingRecord ? editingRecord.created_at : new Date().toISOString()
   };
-
-  let result = editingRecord ? await window.dataSdk.update({...editingRecord, ...record}) : await window.dataSdk.create(record);
   
-  if (result.isOk) { 
-    showToast(`${docFormType} berhasil ${editingRecord ? 'diupdate' : 'disimpan'}!`); 
-    closeModal();
-    navigate(docFormType.toLowerCase()); // Refresh
-  } else { 
-    showToast(`Gagal menyimpan: ${result.error?.message || 'Error'}`, 'error'); 
-    btn.disabled = false; btn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Coba Lagi`; lucide.createIcons();
+  try {
+    let result = editingRecord ? await window.dataSdk.update({...editingRecord, ...record}) : await window.dataSdk.create(record);
+    
+    if (result.isOk) { 
+      showToast(`${docFormType} berhasil ${editingRecord ? 'diupdate' : 'disimpan'}!`); 
+      closeModal();
+      docFormItems = [];
+      editingRecord = null;
+      docFormState = { ppn_active: true, discount: 0, shipping_cost: 0, tax_pph: 0 };
+      // Refresh Data secara Otomatis
+      navigate(docFormType.toLowerCase()); 
+    } else { 
+      showToast(`Gagal menyimpan: ${result.error?.message || 'Error'}`, 'error'); 
+    }
+  } catch (err) {
+    showToast(err.message || 'Gagal menyimpan dokumen', 'error');
+  } finally {
+    btn.disabled = false; 
+    btn.innerHTML = `<i data-lucide="save" class="w-4 h-4 inline-block align-middle mr-2"></i>${editingRecord ? 'Update' : 'Simpan'} ${docFormType}`;
+    lucide.createIcons();
   }
 }
 
@@ -1098,43 +1116,36 @@ function renderTransaksi() {
                 <option value="">Semua Tipe</option><option value="sph">SPH</option><option value="invoice">Invoice</option>
             </select>
         </div>
-        <div class="overflow-y-auto flex-1 p-2 md:p-0" id="trxTable">${renderTrxTable(docs)}</div>
+        <div class="overflow-y-auto flex-1 p-0" id="trxTable">${renderTrxTable(docs)}</div>
     </div>
   </div>`;
 }
 
 function renderTrxTable(docs) {
-  const desktopHtml = `<table class="w-full text-sm text-left">
-    <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-surface-100">
-      <tr><th class="px-6 py-4">No. Dokumen</th><th class="px-6 py-4">Pelanggan</th><th class="px-6 py-4">Tanggal</th><th class="px-6 py-4 text-right">Subtotal</th><th class="px-6 py-4 text-right">PPN</th><th class="px-6 py-4 text-right">Grand Total</th></tr>
-    </thead>
-    <tbody class="divide-y divide-surface-100">
-      ${docs.length ? docs.map(d => `<tr class="hover:bg-surface-50/80 transition-colors cursor-pointer" onclick="previewDoc('${d.__backendId}')">
-      <td class="px-6 py-5 font-extrabold text-surface-900"><span class="px-2.5 py-1 rounded-full text-[9px] font-extrabold mr-2 uppercase tracking-wide ${d.data_category==='sph'?'bg-blue-100 text-blue-700':'bg-emerald-100 text-emerald-700'}">${d.data_category==='sph'?'SPH':'INV'}</span>${d.doc_number||'-'}</td>
-      <td class="px-6 py-5 text-surface-700 font-bold">${d.customer_company||d.customer_name||'-'}</td>
-      <td class="px-6 py-5 text-surface-500 font-medium">${formatDateShort(d.doc_date||d.created_at)}</td>
-      <td class="px-6 py-5 text-right font-semibold">${formatCurrency(d.subtotal)}</td>
-      <td class="px-6 py-5 text-right text-surface-400 font-medium">${formatCurrency(d.ppn)}</td>
-      <td class="px-6 py-5 text-right font-extrabold text-brand-600 text-base">${formatCurrency(d.grand_total)}</td>
-    </tr>`).join('') : '<tr><td colspan="6" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada transaksi</td></tr>'}
-    </tbody>
-  </table>`;
-
-  const mobileHtml = docs.length ? docs.map(d => `
-    <div class="mobile-record-card cursor-pointer hover:shadow-md transition-shadow" onclick="previewDoc('${d.__backendId}')">
-      <div class="flex items-start justify-between mb-3">
-        <div><span class="px-2.5 py-1 rounded-full text-[9px] font-extrabold mr-2 uppercase tracking-wide ${d.data_category==='sph'?'bg-blue-100 text-blue-700':'bg-emerald-100 text-emerald-700'}">${d.data_category==='sph'?'SPH':'INV'}</span><span class="text-base font-extrabold text-surface-900">${d.doc_number||'-'}</span></div>
-      </div>
-      <div class="text-base font-bold text-surface-700 mb-4">${d.customer_company||d.customer_name||'-'}</div>
-      <div class="mobile-record-grid border-t border-surface-100 pt-3">
-        ${renderMobileInfoCell('Tanggal', formatDateShort(d.doc_date||d.created_at))}
-        ${renderMobileInfoCell('Subtotal', formatCurrency(d.subtotal))}
-        ${renderMobileInfoCell('PPN', formatCurrency(d.ppn))}
-        ${renderMobileInfoCell('Total', formatCurrency(d.grand_total))}
-      </div>
-    </div>`).join('') : '<div class="text-center p-12 text-surface-400 border border-dashed border-surface-300 rounded-2xl m-2 bg-white/50"><i data-lucide="inbox" class="w-10 h-10 mx-auto mb-3 text-surface-300"></i><span class="font-semibold">Kosong</span></div>';
-
-  return renderResponsiveList(desktopHtml, mobileHtml);
+  return `<div class="overflow-x-auto w-full">
+    <table class="w-full text-sm text-left min-w-[900px]">
+      <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-surface-100 z-10">
+        <tr><th class="px-6 py-4">No. Dokumen</th><th class="px-6 py-4">Pelanggan</th><th class="px-6 py-4">Tanggal</th><th class="px-6 py-4 text-right">Subtotal</th><th class="px-6 py-4 text-right">PPN</th><th class="px-6 py-4 text-right">Grand Total</th><th class="px-6 py-4 text-center">Aksi</th></tr>
+      </thead>
+      <tbody class="divide-y divide-surface-100">
+        ${docs.length ? docs.map(d => `<tr class="hover:bg-surface-50/80 transition-colors cursor-pointer" onclick="previewDoc('${d.__backendId}')">
+        <td class="px-6 py-5 font-extrabold text-surface-900"><span class="px-2.5 py-1 rounded-full text-[9px] font-extrabold mr-2 uppercase tracking-wide ${d.data_category==='sph'?'bg-blue-100 text-blue-700':'bg-emerald-100 text-emerald-700'}">${d.data_category==='sph'?'SPH':'INV'}</span>${d.doc_number||'-'}</td>
+        <td class="px-6 py-5 text-surface-700 font-bold">${d.customer_company||d.customer_name||'-'}</td>
+        <td class="px-6 py-5 text-surface-500 font-medium">${formatDateShort(d.doc_date||d.created_at)}</td>
+        <td class="px-6 py-5 text-right font-semibold">${formatCurrency(d.subtotal)}</td>
+        <td class="px-6 py-5 text-right text-surface-400 font-medium">${formatCurrency(d.ppn)}</td>
+        <td class="px-6 py-5 text-right font-extrabold text-brand-600 text-base">${formatCurrency(d.grand_total)}</td>
+        <td class="px-6 py-5 text-center" onclick="event.stopPropagation()">
+          <div class="flex items-center justify-center gap-2">
+            <button onclick="previewDoc('${d.__backendId}')" class="p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors" title="Preview/Print"><i data-lucide="printer" class="w-4 h-4"></i></button>
+            <button onclick="editDocument('${d.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors" title="Edit Dokumen"><i data-lucide="edit" class="w-4 h-4"></i></button>
+            <button onclick="confirmDeleteDoc('${d.__backendId}')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors" title="Hapus"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </div>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="7" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada transaksi</td></tr>'}
+      </tbody>
+    </table>
+  </div>`;
 }
 
 function filterTrx() {
@@ -1163,43 +1174,31 @@ function renderCustomerPage() {
         <div class="p-5 md:px-8 border-b border-surface-100 bg-surface-50/50">
             <div class="relative max-w-md w-full"><i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400"></i><input type="text" placeholder="Cari pelanggan..." class="input-field pl-11 py-2.5 font-medium bg-white" id="searchCust" oninput="filterCustomers()"></div>
         </div>
-        <div class="overflow-y-auto flex-1 p-2 md:p-0" id="custTable">${renderCustTable(custs)}</div>
+        <div class="overflow-y-auto flex-1 p-0" id="custTable">${renderCustTable(custs)}</div>
     </div>
   </div>`;
 }
 
 function renderCustTable(custs) {
-  const desktopHtml = `<table class="w-full text-sm text-left">
-    <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-surface-100">
-      <tr><th class="px-6 py-4">Nama Lengkap</th><th class="px-6 py-4">Perusahaan</th><th class="px-6 py-4">Kota</th><th class="px-6 py-4">HP</th><th class="px-6 py-4 text-center">Aksi</th></tr>
-    </thead>
-    <tbody class="divide-y divide-surface-100">
-      ${custs.length ? custs.map(c => `<tr class="hover:bg-surface-50/80 transition-colors">
-      <td class="px-6 py-5 font-extrabold text-surface-900">${c.customer_name||'-'}</td>
-      <td class="px-6 py-5 text-surface-700 font-bold">${c.customer_company||'-'}</td>
-      <td class="px-6 py-5 text-surface-500 font-medium">${c.customer_city||'-'}</td>
-      <td class="px-6 py-5 text-surface-500 font-medium">${c.customer_phone||'-'}</td>
-      <td class="px-6 py-5 text-center">
-        <button onclick="editCustomer('${c.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors"><i data-lucide="edit" class="w-4 h-4"></i></button>
-        <button onclick="confirmDelete('${c.__backendId}','customer')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="5" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada pelanggan</td></tr>'}
-    </tbody>
-  </table>`;
-  const mobileHtml = custs.length ? custs.map(c => `
-    <div class="mobile-record-card">
-      <div class="font-extrabold text-surface-900 text-lg mb-1">${c.customer_name||'-'}</div>
-      <div class="text-sm font-bold text-surface-500 mb-4">${c.customer_company||'-'}</div>
-      <div class="mobile-record-grid border-t border-surface-100 pt-4">
-        ${renderMobileInfoCell('Kota', c.customer_city||'-')}
-        ${renderMobileInfoCell('HP', c.customer_phone||'-')}
-      </div>
-      <div class="flex gap-2 mt-5">
-        <button onclick="editCustomer('${c.__backendId}')" class="flex-1 btn-secondary py-2.5 rounded-xl text-blue-600 text-xs font-bold"><i data-lucide="edit" class="w-4 h-4 inline mr-1"></i> Edit</button>
-        <button onclick="confirmDelete('${c.__backendId}','customer')" class="flex-1 btn-secondary py-2.5 rounded-xl text-red-500 text-xs font-bold"><i data-lucide="trash-2" class="w-4 h-4 inline mr-1"></i> Hapus</button>
-      </div>
-    </div>`).join('') : '<div class="text-center p-12 text-surface-400 border border-dashed border-surface-300 rounded-2xl m-2 bg-white/50"><i data-lucide="inbox" class="w-10 h-10 mx-auto mb-3 text-surface-300"></i><span class="font-semibold">Kosong</span></div>';
-  return renderResponsiveList(desktopHtml, mobileHtml);
+  return `<div class="overflow-x-auto w-full">
+    <table class="w-full text-sm text-left min-w-[800px]">
+      <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-surface-100 z-10">
+        <tr><th class="px-6 py-4">Nama Lengkap</th><th class="px-6 py-4">Perusahaan</th><th class="px-6 py-4">Kota</th><th class="px-6 py-4">HP</th><th class="px-6 py-4 text-center">Aksi</th></tr>
+      </thead>
+      <tbody class="divide-y divide-surface-100">
+        ${custs.length ? custs.map(c => `<tr class="hover:bg-surface-50/80 transition-colors">
+        <td class="px-6 py-5 font-extrabold text-surface-900">${c.customer_name||'-'}</td>
+        <td class="px-6 py-5 text-surface-700 font-bold">${c.customer_company||'-'}</td>
+        <td class="px-6 py-5 text-surface-500 font-medium">${c.customer_city||'-'}</td>
+        <td class="px-6 py-5 text-surface-500 font-medium">${c.customer_phone||'-'}</td>
+        <td class="px-6 py-5 text-center">
+          <button onclick="editCustomer('${c.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors"><i data-lucide="edit" class="w-4 h-4"></i></button>
+          <button onclick="confirmDelete('${c.__backendId}','customer')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="5" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada pelanggan</td></tr>'}
+      </tbody>
+    </table>
+  </div>`;
 }
 
 function renderProdukPage() {
@@ -1216,96 +1215,33 @@ function renderProdukPage() {
         <div class="p-5 md:px-8 border-b border-surface-100 bg-surface-50/50">
             <div class="relative max-w-md w-full"><i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400"></i><input type="text" placeholder="Cari item..." class="input-field pl-11 py-2.5 font-medium bg-white" id="searchProd" oninput="filterProducts()"></div>
         </div>
-        <div class="overflow-y-auto flex-1 p-2 md:p-0" id="prodTable">${renderProdTable(prods)}</div>
+        <div class="overflow-y-auto flex-1 p-0" id="prodTable">${renderProdTable(prods)}</div>
     </div>
   </div>`;
 }
 
 function renderProdTable(prods) {
-  const desktopHtml = `<table class="w-full text-sm text-left">
-    <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-surface-100">
-      <tr><th class="px-6 py-4">Kode</th><th class="px-6 py-4">Nama Barang/Jasa</th><th class="px-6 py-4">Satuan</th><th class="px-6 py-4 text-right">Harga</th><th class="px-6 py-4 text-center">Aksi</th></tr>
-    </thead>
-    <tbody class="divide-y divide-surface-100">
-      ${prods.length ? prods.map(p => `<tr class="hover:bg-surface-50/80 transition-colors">
-      <td class="px-6 py-5 font-extrabold text-brand-600">${p.product_code||'-'}</td>
-      <td class="px-6 py-5 text-surface-900 font-bold">${p.product_name||'-'}</td>
-      <td class="px-6 py-5 text-surface-500 font-medium">${p.product_uom||'-'}</td>
-      <td class="px-6 py-5 text-right font-extrabold text-surface-900 text-base">${formatCurrency(p.product_price)}</td>
-      <td class="px-6 py-5 text-center">
-        <button onclick="editProduct('${p.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors"><i data-lucide="edit" class="w-4 h-4"></i></button>
-        <button onclick="confirmDelete('${p.__backendId}','product')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="5" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada produk</td></tr>'}
-    </tbody>
-  </table>`;
-  const mobileHtml = prods.length ? prods.map(p => `
-    <div class="mobile-record-card">
-      <div class="flex justify-between items-start mb-3">
-          <div><div class="text-[10px] font-extrabold text-brand-600 uppercase tracking-wider mb-1">${p.product_code||'-'}</div><div class="font-extrabold text-surface-900 text-lg">${p.product_name||'-'}</div></div>
-          <div class="text-right"><div class="font-extrabold text-surface-900 text-base">${formatCurrency(p.product_price)}</div><div class="text-[10px] font-bold text-surface-400 uppercase tracking-wider mt-0.5">per ${p.product_uom||'pcs'}</div></div>
-      </div>
-      <div class="flex gap-2 mt-5 pt-4 border-t border-surface-100">
-        <button onclick="editProduct('${p.__backendId}')" class="flex-1 btn-secondary py-2.5 rounded-xl text-blue-600 text-xs font-bold"><i data-lucide="edit" class="w-4 h-4 inline mr-1"></i> Edit</button>
-        <button onclick="confirmDelete('${p.__backendId}','product')" class="flex-1 btn-secondary py-2.5 rounded-xl text-red-500 text-xs font-bold"><i data-lucide="trash-2" class="w-4 h-4 inline mr-1"></i> Hapus</button>
-      </div>
-    </div>`).join('') : '<div class="text-center p-12 text-surface-400 border border-dashed border-surface-300 rounded-2xl m-2 bg-white/50"><i data-lucide="inbox" class="w-10 h-10 mx-auto mb-3 text-surface-300"></i><span class="font-semibold">Kosong</span></div>';
-  return renderResponsiveList(desktopHtml, mobileHtml);
+  return `<div class="overflow-x-auto w-full">
+    <table class="w-full text-sm text-left min-w-[800px]">
+      <thead class="bg-surface-50/50 text-surface-500 uppercase text-[10px] font-extrabold tracking-wider sticky top-0 border-b border-surface-100 z-10">
+        <tr><th class="px-6 py-4">Kode</th><th class="px-6 py-4">Nama Barang/Jasa</th><th class="px-6 py-4">Satuan</th><th class="px-6 py-4 text-right">Harga</th><th class="px-6 py-4 text-center">Aksi</th></tr>
+      </thead>
+      <tbody class="divide-y divide-surface-100">
+        ${prods.length ? prods.map(p => `<tr class="hover:bg-surface-50/80 transition-colors">
+        <td class="px-6 py-5 font-extrabold text-brand-600">${p.product_code||'-'}</td>
+        <td class="px-6 py-5 text-surface-900 font-bold">${p.product_name||'-'}</td>
+        <td class="px-6 py-5 text-surface-500 font-medium">${p.product_uom||'-'}</td>
+        <td class="px-6 py-5 text-right font-extrabold text-surface-900 text-base">${formatCurrency(p.product_price)}</td>
+        <td class="px-6 py-5 text-center">
+          <button onclick="editProduct('${p.__backendId}')" class="p-2 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors"><i data-lucide="edit" class="w-4 h-4"></i></button>
+          <button onclick="confirmDelete('${p.__backendId}','product')" class="p-2 rounded-xl hover:bg-red-50 text-red-500 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </td>
+      </tr>`).join('') : '<tr><td colspan="5" class="px-6 py-16 text-center text-surface-400 font-medium"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 text-surface-300"></i>Belum ada produk</td></tr>'}
+      </tbody>
+    </table>
+  </div>`;
 }
 
-// ==================== FORMS CUSTOMER & PRODUCT ====================
-function openCustomerForm(rec=null) {
-  editingRecord = rec;
-  showModal(`<div class="p-6 md:p-8">
-    <div class="flex items-center justify-between mb-6 border-b border-surface-100 pb-4">
-        <h3 class="text-2xl font-extrabold text-surface-900">${rec?'Edit':'Tambah'} Pelanggan</h3>
-        <button onclick="closeModal()" class="p-2 hover:bg-surface-100 rounded-full text-surface-500 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
-    </div>
-    <div class="space-y-5">
-      <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Nama Lengkap *</label><input id="cf_name" class="input-field font-medium bg-surface-50/50" value="${rec?rec.customer_name:''}"></div>
-      <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Perusahaan</label><input id="cf_company" class="input-field font-medium bg-surface-50/50" value="${rec?rec.customer_company:''}"></div>
-      <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Alamat</label><input id="cf_address" class="input-field font-medium bg-surface-50/50" value="${rec?rec.customer_address:''}"></div>
-      <div class="grid grid-cols-2 gap-5">
-        <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Kota</label><input id="cf_city" class="input-field font-medium bg-surface-50/50" value="${rec?rec.customer_city:''}"></div>
-        <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">HP / Telp</label><input id="cf_phone" class="input-field font-medium bg-surface-50/50" value="${rec?rec.customer_phone:''}"></div>
-      </div>
-      <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Email</label><input id="cf_email" class="input-field font-medium bg-surface-50/50" value="${rec?rec.customer_email:''}"></div>
-    </div>
-    <div class="flex gap-3 justify-end mt-8 pt-5 border-t border-surface-100">
-      <button onclick="closeModal()" class="btn-secondary px-6 py-3 rounded-xl text-sm font-bold">Batal</button>
-      <button onclick="saveCustomer()" class="btn-primary px-8 py-3 rounded-xl text-sm font-bold shadow-lg shadow-brand-500/20" id="saveCustBtn">Simpan</button>
-    </div>
-  </div>`);
-}
-
-function openProdukForm(rec=null) {
-  editingRecord = rec;
-  showModal(`<div class="p-6 md:p-8">
-    <div class="flex items-center justify-between mb-6 border-b border-surface-100 pb-4">
-        <h3 class="text-2xl font-extrabold text-surface-900">${rec?'Edit':'Tambah'} Produk/Jasa</h3>
-        <button onclick="closeModal()" class="p-2 hover:bg-surface-100 rounded-full text-surface-500 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
-    </div>
-    <div class="space-y-5">
-      <div class="grid grid-cols-2 gap-5">
-        <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Kode Produk</label><input id="pf_code" class="input-field font-medium bg-surface-50/50" value="${rec?rec.product_code:''}"></div>
-        <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Satuan (UoM)</label><input id="pf_uom" class="input-field font-medium bg-surface-50/50" placeholder="pcs, lot, hari" value="${rec?rec.product_uom:''}"></div>
-      </div>
-      <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Nama Barang/Jasa *</label><input id="pf_name" class="input-field font-medium bg-surface-50/50" value="${rec?rec.product_name:''}"></div>
-      <div><label class="text-[10px] font-extrabold text-brand-600 uppercase tracking-wider mb-2 block">Harga Jual</label><input id="pf_price" type="number" class="input-field font-black text-brand-600 text-xl bg-brand-50/50 border-brand-200 focus:border-brand-500" value="${rec?rec.product_price:0}"></div>
-      <div><label class="text-[10px] font-extrabold text-surface-500 uppercase tracking-wider mb-2 block">Keterangan Tambahan</label><textarea id="pf_desc" class="input-field font-medium bg-surface-50/50" rows="3">${rec?rec.product_desc:''}</textarea></div>
-    </div>
-    <div class="flex gap-3 justify-end mt-8 pt-5 border-t border-surface-100">
-      <button onclick="closeModal()" class="btn-secondary px-6 py-3 rounded-xl text-sm font-bold">Batal</button>
-      <button onclick="saveProduct()" class="btn-primary px-8 py-3 rounded-xl text-sm font-bold shadow-lg shadow-brand-500/20" id="saveProdBtn">Simpan</button>
-    </div>
-  </div>`);
-}
-
-function filterCustomers() {
-  const q = document.getElementById('searchCust').value.toLowerCase();
-  const custs = getCustomers().filter(c => (c.customer_name||'').toLowerCase().includes(q) || (c.customer_company||'').toLowerCase().includes(q));
-  document.getElementById('custTable').innerHTML = renderCustTable(custs); lucide.createIcons();
-}
 function filterProducts() {
   const q = document.getElementById('searchProd').value.toLowerCase();
   const prods = getProducts().filter(p => (p.product_code||'').toLowerCase().includes(q) || (p.product_name||'').toLowerCase().includes(q));
@@ -1969,10 +1905,19 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
     } throw new Error('Kategori tidak didukung');
   }
 
+  // SINKRONISASI OTOMATIS SETELAH MENYIMPAN
+  async function syncAfterSave() {
+    if (WEB_APP_URL && WEB_APP_URL.trim() !== '') {
+      await refreshRemoteData(false);
+    } else {
+      rerenderAfterDataMutation();
+    }
+  }
+
   window.dataSdk = {
-    async create(record){ const mapped = normalizeLegacyRecord(record); const data = await apiPost(mapped.action, mapped.payload); return { isOk: true, data }; },
-    async update(record){ const mapped = normalizeLegacyRecord(record); const data = await apiPost(mapped.action, mapped.payload); return { isOk: true, data }; },
-    async delete(record){ const id = record?.__backendId || record?.id; const data = await apiPost('deleteRecord', { id }); return { isOk: true, data }; }
+    async create(record){ const mapped = normalizeLegacyRecord(record); const data = await apiPost(mapped.action, mapped.payload); await syncAfterSave(); return { isOk: true, data }; },
+    async update(record){ const mapped = normalizeLegacyRecord(record); const data = await apiPost(mapped.action, mapped.payload); await syncAfterSave(); return { isOk: true, data }; },
+    async delete(record){ const id = record?.__backendId || record?.id; const data = await apiPost('deleteRecord', { id }); await syncAfterSave(); return { isOk: true, data }; }
   };
 
   const originalOpenDocForm = window.openDocForm; window.openDocForm = function(type, prefill=null){ originalOpenDocForm(type, prefill); setTimeout(() => { refreshDocNumberPreview(!prefill); }, 0); };
@@ -2009,62 +1954,90 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
   // Global Actions Hooks
   window.saveCustomer = async function(){
     const name = document.getElementById('cf_name').value.trim(); if (!name) { showToast('Nama harus diisi', 'error'); return; }
-    const btn = document.getElementById('saveCustBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-4 h-4 mr-2"></i>Menyimpan`; lucide.createIcons();
+    const btn = document.getElementById('saveCustBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-4 h-4 mr-2 inline"></i>Menyimpan`; lucide.createIcons();
     try {
-      const saved = await apiPost('saveCustomer', { id: editingRecord?.__backendId, name, company: document.getElementById('cf_company').value.trim(), address: document.getElementById('cf_address').value.trim(), city: document.getElementById('cf_city').value.trim(), phone: document.getElementById('cf_phone').value.trim(), email: document.getElementById('cf_email').value.trim(), created_at: editingRecord?.created_at || '' });
-      upsertSheetRow('customers', saved); rerenderAfterDataMutation(); showToast(`Pelanggan berhasil ${editingRecord ? 'diupdate' : 'ditambahkan'}`); closeModal(); editingRecord = null;
-    } catch(err) { showToast(err.message, 'error'); btn.disabled=false; btn.textContent='Simpan'; }
+      await apiPost('saveCustomer', { id: editingRecord?.__backendId, name, company: document.getElementById('cf_company').value.trim(), address: document.getElementById('cf_address').value.trim(), city: document.getElementById('cf_city').value.trim(), phone: document.getElementById('cf_phone').value.trim(), email: document.getElementById('cf_email').value.trim(), created_at: editingRecord?.created_at || '' });
+      await syncAfterSave(); 
+      showToast(`Pelanggan berhasil ${editingRecord ? 'diupdate' : 'ditambahkan'}`); closeModal(); editingRecord = null;
+    } catch(err) { showToast(err.message, 'error'); } finally { btn.disabled=false; btn.textContent='Simpan'; }
   };
   
   window.saveProduct = async function(){
-    const name = document.getElementById('pf_name').value.trim(); if (!name) { showToast('Nama produk harus diisi', 'error'); return; }
-    const btn = document.getElementById('saveProdBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-4 h-4 mr-2"></i>Menyimpan`; lucide.createIcons();
+    ensureDb();
+    const name = document.getElementById('pf_name').value.trim();
+    if (!name) { showToast('Nama produk harus diisi', 'error'); return; }
+    const btn = document.getElementById('saveProdBtn');
+    btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-4 h-4 mr-2 inline"></i>Menyimpan`; lucide.createIcons();
     try {
-      const saved = await apiPost('saveProduct', { id: editingRecord?.__backendId, code: document.getElementById('pf_code').value.trim(), name, uom: document.getElementById('pf_uom').value.trim(), price: Math.max(0, toNumber(document.getElementById('pf_price').value)), description: document.getElementById('pf_desc').value.trim(), created_at: editingRecord?.created_at || '' });
-      upsertSheetRow('products', saved); rerenderAfterDataMutation(); showToast(`Produk berhasil ${editingRecord ? 'diupdate' : 'ditambahkan'}`); closeModal(); editingRecord = null;
-    } catch(err) { showToast(err.message, 'error'); btn.disabled=false; btn.textContent='Simpan'; }
+      await apiPost('saveProduct', {
+        id: editingRecord?.__backendId,
+        code: document.getElementById('pf_code').value.trim(),
+        name,
+        uom: document.getElementById('pf_uom').value.trim(),
+        price: Math.max(0, toNumber(document.getElementById('pf_price').value)),
+        description: document.getElementById('pf_desc').value.trim(),
+        created_at: editingRecord?.created_at || ''
+      });
+      await syncAfterSave();
+      showToast(`Produk berhasil ${editingRecord ? 'diupdate' : 'ditambahkan'}!`);
+      closeModal();
+      editingRecord = null;
+    } catch (err) {
+      showToast(err.message || 'Gagal menyimpan produk', 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Simpan';
+    }
+  };
+
+  window.editDocument = function(id){
+    const doc = allData.find(d => String(d.__backendId) === String(id));
+    if (doc) {
+      const type = doc.data_category === 'sph' ? 'SPH' : 'Invoice';
+      openDocForm(type, doc);
+    } else {
+      showToast('Dokumen tidak ditemukan', 'error');
+    }
   };
 
   window.deleteRecord = async function(id){
     const btn = document.getElementById('delRecBtn'); if(btn){btn.disabled=true;btn.textContent='Menghapus...';}
     try {
-      const result = await apiPost('deleteRecord', { id });
-      if (result.type === 'customer') { const row = appDb.sheets.customers.find(x => String(x.id) === String(result.id)); if (row) row.is_active = false; }
-      else if (result.type === 'product') { const row = appDb.sheets.products.find(x => String(x.id) === String(result.id)); if (row) row.is_active = false; }
-      appDb.updated_at = new Date().toISOString(); rerenderAfterDataMutation(); showToast('Data berhasil dihapus'); closeModal();
+      await apiPost('deleteRecord', { id });
+      await syncAfterSave(); 
+      showToast('Data berhasil dihapus'); closeModal();
     } catch(err) { showToast(err.message, 'error'); if(btn){btn.disabled=false;btn.textContent='Ya, Hapus';} }
   };
 
   window.deleteDoc = async function(id){
     const btn = document.getElementById('delDocBtn'); if(btn){btn.disabled=true;btn.textContent='Menghapus...';}
     try {
-      const result = await apiPost('deleteRecord', { id });
-      const row = appDb.sheets.doc_headers.find(x => String(x.id) === String(result.id)); if (row) row.status = 'deleted';
-      appDb.updated_at = new Date().toISOString(); rerenderAfterDataMutation(); showToast('Dokumen berhasil dihapus'); closeModal();
+      await apiPost('deleteRecord', { id });
+      await syncAfterSave(); 
+      showToast('Dokumen berhasil dihapus'); closeModal();
     } catch(err) { showToast(err.message, 'error'); if(btn){btn.disabled=false;btn.textContent='Ya, Hapus';} }
   };
 
   window.processCSV = async function(type){
     const csv = document.getElementById('csvInput').value.trim(); if (!csv) { showToast('Tempel (paste) data CSV', 'error'); return; }
-    const btn = document.getElementById('importBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-4 h-4 mr-2"></i>Processing...`; lucide.createIcons();
+    const btn = document.getElementById('importBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-4 h-4 mr-2 inline"></i>Processing...`; lucide.createIcons();
     try {
       const rawRows = parseCsv(csv); if (!rawRows.length) throw new Error('CSV kosong/invalid');
       const isCustomer = type === 'customer';
       const rows = rawRows.filter(cols => cols.some(cell => String(cell || '').trim() !== '')).filter(cols => !(cols[0] && /^(nama|kode)$/i.test(cols[0]))).map(cols => isCustomer ? { name: cols[0] || '', company: cols[1] || '', address: cols[2] || '', city: cols[3] || '', phone: cols[4] || '', email: cols[5] || '' } : { code: cols[0] || '', name: cols[1] || '', uom: cols[2] || '', price: Math.max(0, toNumber(cols[3])), description: cols[4] || '' }).filter(row => (row.name || '').trim());
-      const result = await apiPost('bulkImport', { type, rows });
-      if (result.type === 'customer') result.rows.forEach(r => upsertSheetRow('customers', r));
-      if (result.type === 'product') result.rows.forEach(r => upsertSheetRow('products', r));
-      rerenderAfterDataMutation(); showToast(`${result?.count || 0} data berhasil diimport!`); closeModal();
-    } catch(err) { showToast(err.message, 'error'); btn.disabled=false; btn.innerHTML=`<i data-lucide="upload-cloud" class="w-4 h-4 mr-2"></i>Proses Import`; lucide.createIcons(); }
+      await apiPost('bulkImport', { type, rows });
+      await syncAfterSave(); 
+      showToast(`${rows.length || 0} data berhasil diimport!`); closeModal();
+    } catch(err) { showToast(err.message, 'error'); btn.disabled=false; btn.innerHTML=`<i data-lucide="upload-cloud" class="w-4 h-4 mr-2 inline"></i>Proses Import`; lucide.createIcons(); }
   };
 
   window.saveSettings = async function(){
-    const btn = document.getElementById('saveSettingsBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-5 h-5 mr-2"></i>MENYIMPAN...`; lucide.createIcons();
+    const btn = document.getElementById('saveSettingsBtn'); btn.disabled = true; btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-5 h-5 mr-2 inline"></i>MENYIMPAN...`; lucide.createIcons();
     try {
       companySettings.company_name = document.getElementById('s_company').value; companySettings.company_description = document.getElementById('s_description').value; companySettings.company_address = document.getElementById('s_address').value; companySettings.company_city = document.getElementById('s_city').value; companySettings.company_phone = document.getElementById('s_phone').value; companySettings.company_email = document.getElementById('s_email').value; companySettings.doc_accent = document.getElementById('s_accent').value; companySettings.sph_format = document.getElementById('s_sphfmt').value; companySettings.inv_format = document.getElementById('s_invfmt').value; companySettings.sph_notes = document.getElementById('s_sphnotes').value; companySettings.invoice_notes = document.getElementById('s_invnotes').value; companySettings.sph_terms = document.getElementById('s_sphterms').value; companySettings.invoice_terms = document.getElementById('s_invterms').value; companySettings.director_name = document.getElementById('s_dirname').value; companySettings.director_title = document.getElementById('s_dirtitle').value; companySettings.show_secondary_signature = document.getElementById('s_show_secondary_signature')?.checked; companySettings.secondary_signature_label = document.getElementById('s_secondary_label')?.value || 'Menyetujui,'; companySettings.show_logo_watermark = document.getElementById('s_show_logo_watermark')?.checked; companySettings.secondary_signature_name = document.getElementById('s_secondary_name')?.value || ''; companySettings.secondary_signature_title = document.getElementById('s_secondary_title')?.value || ''; companySettings.ppn_enabled = document.getElementById('s_ppn_enabled')?.checked; companySettings.ppn_rate = document.getElementById('s_ppn_rate')?.value; companySettings.discount_enabled = document.getElementById('s_discount_enabled')?.checked; companySettings.shipping_enabled = document.getElementById('s_shipping_enabled')?.checked; companySettings.pph_enabled = document.getElementById('s_pph_enabled')?.checked; companySettings.pph_rate = document.getElementById('s_pph_rate')?.value;
-      const result = await apiPost('saveSettings', companySettings);
-      if (result.settings) appDb.settings = normalizeSettings(result.settings); else if (Array.isArray(result.rows)) appDb.settings = settingsRowsToObject(result.rows); appDb.updated_at = new Date().toISOString(); rerenderAfterDataMutation(); showToast('Pengaturan berhasil disimpan!');
-    } catch(err) { showToast(err.message, 'error'); } finally { btn.disabled = false; btn.innerHTML = `<i data-lucide="save" class="w-5 h-5 mr-2"></i>SIMPAN SEMUA PENGATURAN`; lucide.createIcons(); }
+      await apiPost('saveSettings', companySettings);
+      await syncAfterSave(); 
+      showToast('Pengaturan berhasil disimpan!');
+    } catch(err) { showToast(err.message, 'error'); } finally { btn.disabled = false; btn.innerHTML = `<i data-lucide="save" class="w-5 h-5 mr-2 inline"></i>SIMPAN SEMUA PENGATURAN`; lucide.createIcons(); }
   };
 
   window.convertToInvoice = async function(id){
@@ -2072,8 +2045,9 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
     try {
       const items = JSON.parse(source.items_json || '[]').map(item => ({ product_id: item.product_id || '', name: item.name || '', description: item.description || '', qty: Math.max(0, toNumber(item.qty)), uom: item.uom || '', price: Math.max(0, toNumber(item.price)) }));
       const invoiceDate = new Date().toISOString().split('T')[0]; const preview = await requestServerDocNumber('Invoice', invoiceDate);
-      const result = await apiPost('saveDocument', { doc_type: 'invoice', doc_number: preview?.doc_number || '', doc_date: invoiceDate, customer_id: source.customer_id || '', customer_name: source.customer_name || '', customer_company: source.customer_company || '', customer_address: source.customer_address || '', customer_city: source.customer_city || '', customer_phone: source.customer_phone || '', customer_email: source.customer_email || '', subtotal: Math.round(toNumber(source.subtotal)), discount_amount: Math.round(toNumber(source.discount)), shipping_amount: Math.round(toNumber(source.shipping_cost)), taxable_base: Math.round(toNumber(source.subtotal) - toNumber(source.discount) + toNumber(source.shipping_cost)), ppn_enabled: toBool(source.ppn_active), ppn_rate: toNumber(source.ppn_rate, companySettings.ppn_rate), ppn_amount: Math.round(toNumber(source.ppn)), pph_enabled: toNumber(source.tax_pph) > 0, pph_rate: toNumber(source.pph_rate, companySettings.pph_rate), pph_amount: Math.round(toNumber(source.tax_pph)), grand_total: Math.round(toNumber(source.grand_total)), notes: companySettings.invoice_notes, terms: companySettings.invoice_terms, terbilang: source.terbilang || terbilang(toNumber(source.grand_total)), status: 'active', source_doc_id: source.__backendId || id, items });
-      upsertSheetRow('doc_headers', result.header); removeSheetRowsBy('doc_items', 'doc_id', result.header.id); (result.items || []).forEach(item => upsertSheetRow('doc_items', item)); rerenderAfterDataMutation(); showToast(`Invoice berhasil dibuat dari SPH!`);
+      await apiPost('saveDocument', { doc_type: 'invoice', doc_number: preview?.doc_number || '', doc_date: invoiceDate, customer_id: source.customer_id || '', customer_name: source.customer_name || '', customer_company: source.customer_company || '', customer_address: source.customer_address || '', customer_city: source.customer_city || '', customer_phone: source.customer_phone || '', customer_email: source.customer_email || '', subtotal: Math.round(toNumber(source.subtotal)), discount_amount: Math.round(toNumber(source.discount)), shipping_amount: Math.round(toNumber(source.shipping_cost)), taxable_base: Math.round(toNumber(source.subtotal) - toNumber(source.discount) + toNumber(source.shipping_cost)), ppn_enabled: toBool(source.ppn_active), ppn_rate: toNumber(source.ppn_rate, companySettings.ppn_rate), ppn_amount: Math.round(toNumber(source.ppn)), pph_enabled: toNumber(source.tax_pph) > 0, pph_rate: toNumber(source.pph_rate, companySettings.pph_rate), pph_amount: Math.round(toNumber(source.tax_pph)), grand_total: Math.round(toNumber(source.grand_total)), notes: companySettings.invoice_notes, terms: companySettings.invoice_terms, terbilang: source.terbilang || terbilang(toNumber(source.grand_total)), status: 'active', source_doc_id: source.__backendId || id, items });
+      await syncAfterSave(); 
+      showToast(`Invoice berhasil dibuat dari SPH!`);
     } catch(err) { showToast(err.message, 'error'); }
   };
 
